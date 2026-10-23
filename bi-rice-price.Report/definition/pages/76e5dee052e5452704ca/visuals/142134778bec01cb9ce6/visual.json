@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "142134778bec01cb9ce6",
   "position": {
-    "x": 234.28571428571431,
-    "y": 331.42857142857144,
+    "x": 234,
+    "y": 332,
     "z": 0,
     "height": 448,
-    "width": 1674,
+    "width": 1675,
     "tabOrder": 0
   },
   "visual": {
@@ -29,6 +29,24 @@
               "queryRef": "Dim_Date.Date",
               "nativeQueryRef": "Date",
               "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_Product"
+                    }
+                  },
+                  "Property": "Product Name"
+                }
+              },
+              "queryRef": "Dim_Product.Product Name",
+              "nativeQueryRef": "Product Name"
             }
           ]
         },
@@ -69,6 +87,28 @@
         ],
         "isDefaultSort": true
       }
+    },
+    "objects": {
+      "legend": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top'"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "drillFilterOtherVisuals": true
   }

@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "84ab5684f08bedf70015",
   "position": {
-    "x": 233.75,
-    "y": 791.25,
+    "x": 234,
+    "y": 792,
     "z": 3000,
-    "height": 272.5,
+    "height": 272,
     "width": 1675,
     "tabOrder": 3000
   },
@@ -76,12 +76,27 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Price MoM %"
+                  "Property": "Price Oryza MoM %"
                 }
               },
-              "queryRef": "_Measures.Price MoM %",
+              "queryRef": "_Measures.Price Oryza MoM %",
               "nativeQueryRef": "MoM %",
               "displayName": "MoM %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Price Oryza YoY %"
+                }
+              },
+              "queryRef": "_Measures.Price Oryza YoY %",
+              "nativeQueryRef": "YoY %",
+              "displayName": "YoY %"
             }
           ]
         }
@@ -108,14 +123,14 @@
       "subTotals": [
         {
           "properties": {
-            "columnSubtotals": {
+            "rowSubtotals": {
               "expr": {
                 "Literal": {
                   "Value": "false"
                 }
               }
             },
-            "rowSubtotals": {
+            "columnSubtotals": {
               "expr": {
                 "Literal": {
                   "Value": "false"
@@ -171,7 +186,21 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Price MoM %"
+            "metadata": "_Measures.Price Oryza MoM %"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "75D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Price Oryza YoY %"
           }
         }
       ]
@@ -205,63 +234,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "cf02ee3ff3b059d4d3e9",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Dim_Source"
-              }
-            },
-            "Property": "SourceCode"
-          }
-        },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "d",
-              "Entity": "Dim_Source",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "d"
-                          }
-                        },
-                        "Property": "SourceCode"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'S005'"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
-      }
-    ]
   }
 }
