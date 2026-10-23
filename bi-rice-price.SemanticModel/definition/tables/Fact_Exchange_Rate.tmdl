@@ -1,0 +1,58 @@
+table Fact_Exchange_Rate
+	lineageTag: 2d8da0b7-0858-4920-bb87-c3caab665e86
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b417996f-e0d6-4883-a237-666c894a3f2d
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Session
+		dataType: string
+		lineageTag: f94b8245-d05a-4501-9e4b-ee0886f7673a
+		summarizeBy: none
+		sourceColumn: Session
+
+		annotation SummarizationSetBy = Automatic
+
+	column Currency
+		dataType: string
+		lineageTag: 93d8e0c3-39d6-4117-b53a-7f36a6f3dd57
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sight Bill Buying Rates'
+		dataType: double
+		lineageTag: 7ed7519a-5333-49b0-9d0d-2113ce1d93b1
+		summarizeBy: sum
+		sourceColumn: Sight Bill Buying Rates
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fact_Exchange_Rate = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1SIDQthD7xonv3MU1yuzwlzCqHpJVKpW6viWvPmFCRxI"),
+				    Exchange_Rates_Table = Source{[name="Exchange_Rates",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Exchange_Rates_Table, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Session", type text}, {"Round", Int64.Type}, {"Time", type time}, {"Currency", type text}, {"Buying Rates", type number}, {"Selling Rates", type number}, {"Sight Bill Buying Rates", type number}, {"TT Buying Rates", type number}, {"Bill - DD - TT Selling Rates", type number}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type","USD50","USD",Replacer.ReplaceText,{"Currency"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Replaced Value", each ([Session] = "Morning")),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"Date", "Session", "Currency", "Sight Bill Buying Rates"})
+				in
+				    #"Removed Other Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,32 @@
+table Dim_Currency
+	lineageTag: dead4768-825a-4117-8044-161f653c89a4
+
+	column 'Currency Code'
+		dataType: string
+		lineageTag: cebe75c5-7a9e-4122-bfa1-843ab0a46e5c
+		summarizeBy: none
+		sourceColumn: Currency Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Currency Name'
+		dataType: string
+		lineageTag: cf370a1f-5c28-4a04-b8af-c60bd0e8f46c
+		summarizeBy: none
+		sourceColumn: Currency Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Currency = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("PcwxDsMgDIXhq1iec4qQKJ06hDBEKIOrWsUSNRWB+4cwdHzvk37vcXuMOOAWSGCkUPAYPDo7tc+pFH6DLVT4hCnFSLmzee6NTRDlk2GvpLCyfkVf0n12a/O55tSnXe6aFf3QL2X+l44L", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Currency Code" = _t, #"Currency Name" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Currency Code", type text}, {"Currency Name", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,722 @@
+table _Measures
+	lineageTag: a0000000-0000-0000-0000-000000000001
+
+	/// ราคาต่ำสุดเฉลี่ย (ตามสกุลเงินและหน่วยเดิมของแต่ละแหล่งข้อมูล)
+	measure 'Min Price (Avg)' = AVERAGE(Fact_Rice_Price[Min Price])
+		formatString: #,##0.00
+		displayFolder: 01 Base Price
+		lineageTag: 89510b1d-0d71-42ce-93a9-a8fbfd309790
+
+	/// ราคาสูงสุดเฉลี่ย (ตามสกุลเงินและหน่วยเดิมของแต่ละแหล่งข้อมูล)
+	measure 'Max Price (Avg)' = AVERAGE(Fact_Rice_Price[Max Price])
+		formatString: #,##0.00
+		displayFolder: 01 Base Price
+		lineageTag: b9af349a-039a-42df-bc15-aa2dd2630c6c
+
+	/// ราคาเฉลี่ยกึ่งกลาง (Mid Price เชื่อมโยงกับ Avg. Price เพื่อความแม่นยำในการคำนวณ)
+	measure 'Mid Price' = [Avg. Price]
+		formatString: #,##0.00
+		displayFolder: 01 Base Price
+		lineageTag: 11553849-1414-421a-8583-b799ce083801
+
+	/// ส่วนต่างราคาช่วงกว้าง (Max Price - Min Price)
+	measure 'Price Spread' = [Max Price (Avg)] - [Min Price (Avg)]
+		formatString: #,##0.00
+		displayFolder: 01 Base Price
+		lineageTag: 6a5514d9-b11d-4976-9226-060f98d38cc0
+
+	/// อัตราส่วนต่างราคาช่วงกว้างเทียบกับราคาต่ำสุด
+	measure 'Price Spread %' = DIVIDE([Price Spread], [Min Price (Avg)])
+		formatString: 0.00%
+		displayFolder: 01 Base Price
+		lineageTag: 5c7f463e-cef0-4cd5-906b-02c41b53af69
+
+	/// อัตราแลกเปลี่ยน USD/THB (Sight Bill Buying Rate) ณ วันที่เลือก หรือวันทำการล่าสุด
+	measure 'Exchange Rate USD/THB' =
+			VAR _MaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDateWithRate =
+			    CALCULATE(
+			        MAX(Fact_Exchange_Rate[Date]),
+			        Fact_Exchange_Rate[Date] <= _MaxDate,
+			        Fact_Exchange_Rate[Currency] = "USD",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			RETURN
+			    CALCULATE(
+			        AVERAGE(Fact_Exchange_Rate[Sight Bill Buying Rates]),
+			        Fact_Exchange_Rate[Date] = _LatestDateWithRate,
+			        Fact_Exchange_Rate[Currency] = "USD",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+		formatString: #,##0.0000
+		displayFolder: 02 Currency & Unit Conversion
+		lineageTag: 0a498d35-238d-4be7-a01a-bccb58ae98de
+
+	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น บาท/กิโลกรัม (THB/kg) ทุกแหล่งข้อมูล (Oryza USD/Ton -> THB/kg)
+	measure 'Price (THB/kg)' =
+			VAR _FX = [Exchange Rate USD/THB]
+			RETURN
+			    AVERAGEX(
+			        SUMMARIZE(
+			            Fact_Rice_Price,
+			            Dim_Date[Date],
+			            Fact_Rice_Price[SourceCode],
+			            Fact_Rice_Price[Product Code]
+			        ),
+			        VAR _RowMid = [Mid Price]
+			        VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
+			        RETURN
+			            IF(_IsOryza, DIVIDE(_RowMid * _FX, 1000), _RowMid)
+			    )
+		formatString: #,##0.00
+		displayFolder: 02 Currency & Unit Conversion
+		lineageTag: 3f543c20-9d53-4095-914a-5e4a6c9313cd
+
+	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น ดอลลาร์สหรัฐ/ตัน (USD/Ton) ทุกแหล่งข้อมูล (DIT, CPI THB/kg -> USD/Ton)
+	measure 'Price (USD/ton)' =
+			VAR _FX = [Exchange Rate USD/THB]
+			RETURN
+			    AVERAGEX(
+			        SUMMARIZE(
+			            Fact_Rice_Price,
+			            Dim_Date[Date],
+			            Fact_Rice_Price[SourceCode],
+			            Fact_Rice_Price[Product Code]
+			        ),
+			        VAR _RowMid = [Mid Price]
+			        VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
+			        RETURN
+			            IF(_IsOryza, _RowMid, DIVIDE(_RowMid * 1000, _FX))
+			    )
+		formatString: #,##0.00
+		displayFolder: 02 Currency & Unit Conversion
+		lineageTag: 8d94bcb2-5984-4f4a-84bd-cf966c791188
+
+	/// ราคาข้าวฝ่ายจัดซื้อ CPI (บาท/กิโลกรัม)
+	measure 'Price CPI (THB/kg)' = CALCULATE([Mid Price], Fact_Rice_Price[SourceCode] = "S001")
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources
+		lineageTag: b20675af-fa37-4093-813f-72a721fad2bf
+
+	/// ราคาข้าวกรมการค้าภายใน DIT (บาท/กิโลกรัม)
+	measure 'Price DIT (THB/kg)' = CALCULATE([Mid Price], Fact_Rice_Price[SourceCode] = "S003")
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources
+		lineageTag: a89ddbcc-ea7f-494e-8300-95f275cf077e
+
+	/// ราคาข้าว FOB ตลาดโลก Oryza (USD/ตัน)
+	measure 'Price Oryza (USD/ton)' = CALCULATE([Mid Price], Fact_Rice_Price[SourceCode] = "S005")
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources
+		lineageTag: a265f6a0-88f0-41a7-a736-a8689feca1bf
+
+	/// ราคาข้าว FOB Oryza แปลงเป็น บาท/กิโลกรัม (THB/kg)
+	measure 'Price Oryza (THB/kg)' = DIVIDE([Price Oryza (USD/ton)] * [Exchange Rate USD/THB], 1000)
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources
+		lineageTag: f41cd445-965a-4405-8992-0835565e0d2d
+
+	/// ส่วนต่างราคาจัดซื้อ CPI เทียบกับกรมการค้าภายใน DIT (ถ้าติดลบแสดงว่าซื้อถูกกว่าราคาตลาด DIT)
+	measure 'Spread CPI vs DIT (THB/kg)' = [Price CPI (THB/kg)] - [Price DIT (THB/kg)]
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 7a2a7129-5ee8-4bfc-8c49-37cfb2755459
+
+	/// เปอร์เซ็นต์ส่วนต่างราคาจัดซื้อ CPI เทียบกับ DIT
+	measure 'Spread % CPI vs DIT' = DIVIDE([Spread CPI vs DIT (THB/kg)], [Price DIT (THB/kg)])
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 0753a6a8-fcfc-4307-b3f1-acb589fe0f6f
+
+	/// ส่วนต่างราคา FOB ส่งออก Oryza เทียบกับราคาข้าวสารในประเทศ DIT (Export Parity Spread)
+	measure 'Spread Oryza vs DIT (THB/kg)' = [Price Oryza (THB/kg)] - [Price DIT (THB/kg)]
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 0827d3fc-24b6-49d0-9c7f-71821df48d3b
+
+	/// เปอร์เซ็นต์ส่วนต่างราคา FOB Oryza เทียบกับ DIT
+	measure 'Spread % Oryza vs DIT' = DIVIDE([Spread Oryza vs DIT (THB/kg)], [Price DIT (THB/kg)])
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 9104dd33-b61a-4da4-8900-690b98683fee
+
+	/// ส่วนต่างราคา FOB Oryza เทียบกับราคาจัดซื้อ CPI
+	measure 'Spread Oryza vs CPI (THB/kg)' = [Price Oryza (THB/kg)] - [Price CPI (THB/kg)]
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 9b7fda5c-3b3f-49c2-8125-7654681568ed
+
+	/// ค่าเบี่ยงเบนมาตรฐานของราคา (วัดความผันผวนของราคาข้าว)
+	measure 'Price Volatility (StdDev)' = STDEVX.S(Fact_Rice_Price, Fact_Rice_Price[Min Price])
+		formatString: #,##0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 10b3b56e-aca3-4c58-9e19-9454d0eb5c3f
+
+	/// อัตราความผันผวนของราคาข้าว (Coefficient of Variation = StdDev / Mean)
+	measure 'Price Volatility %' = DIVIDE([Price Volatility (StdDev)], [Mid Price])
+		formatString: 0.00%
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 955cc610-a768-47ad-9894-f76caec3b71c
+
+	/// ราคาสูงสุดในรอบ 52 สัปดาห์ (52-Week High)
+	measure 'Price 52W High' =
+			VAR _MaxDate = MAX(Dim_Date[Date])
+			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -52, WEEK)
+			RETURN
+			    CALCULATE(
+			        MAXX(Fact_Rice_Price, Fact_Rice_Price[Max Price]),
+			        _Dates52W
+			    )
+		formatString: #,##0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 55fa218c-11da-4bb1-a75c-88c71ca34d7b
+
+	/// ราคาต่ำสุดในรอบ 52 สัปดาห์ (52-Week Low)
+	measure 'Price 52W Low' =
+			VAR _MaxDate = MAX(Dim_Date[Date])
+			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -52, WEEK)
+			RETURN
+			    CALCULATE(
+			        MINX(Fact_Rice_Price, Fact_Rice_Price[Min Price]),
+			        _Dates52W
+			    )
+		formatString: #,##0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 3b44c36c-efbd-4680-9170-395733f83964
+
+	/// ส่วนต่างราคาปัจจุบันเทียบกับราคาสูงสุดรอบ 52 สัปดาห์
+	measure 'Price vs 52W High %' =
+			VAR _High = [Price 52W High]
+			VAR _Current = [Mid Price]
+			RETURN
+			    DIVIDE(_Current - _High, _High)
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 36d89b70-f17d-4fb1-8574-60727998ade9
+
+	/// เส้นค่าเฉลี่ยเคลื่อนที่ 7 วัน (7-Day Simple Moving Average THB/kg)
+	measure 'Price 7D Moving Avg' =
+			AVERAGEX(
+			    DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -7, DAY),
+			    [Price (THB/kg)]
+			)
+		formatString: #,##0.00
+		displayFolder: 05 Moving Averages & Trend
+		lineageTag: 07e040dc-9c68-4f79-9af5-964263d5d260
+
+	/// เส้นค่าเฉลี่ยเคลื่อนที่ 14 วัน (14-Day Simple Moving Average THB/kg)
+	measure 'Price 14D Moving Avg' =
+			AVERAGEX(
+			    DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -14, DAY),
+			    [Price (THB/kg)]
+			)
+		formatString: #,##0.00
+		displayFolder: 05 Moving Averages & Trend
+		lineageTag: 10ebc654-9253-4a8b-96a3-9d565b8e0f50
+
+	/// เส้นค่าเฉลี่ยเคลื่อนที่ 30 วัน (30-Day Simple Moving Average THB/kg)
+	measure 'Price 30D Moving Avg' =
+			AVERAGEX(
+			    DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -30, DAY),
+			    [Price (THB/kg)]
+			)
+		formatString: #,##0.00
+		displayFolder: 05 Moving Averages & Trend
+		lineageTag: 849f6543-2acc-45eb-b4df-faf559becc25
+
+	/// ราคา ณ วันทำการซื้อขายก่อนหน้า (รองรับการข้ามวันหยุดเสาร์-อาทิตย์และวันหยุดนักขัตฤกษ์)
+	measure 'Price Previous Trading Day' =
+			VAR _CurrentDate = MAX(Dim_Date[Date])
+			VAR _PrevDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] < _CurrentDate,
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			RETURN
+			    CALCULATE(
+			        [Price (THB/kg)],
+			        Dim_Date[Date] = _PrevDate,
+			        REMOVEFILTERS(Dim_Date)
+			    )
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: dccc727f-6bb0-4437-acb5-e09c56514676
+
+	/// การเปลี่ยนแปลงราคาเทียบวันทำการก่อนหน้า (Day-over-Day Change THB/kg)
+	measure 'Price DoD Change' =
+			VAR _Current = [Price (THB/kg)]
+			VAR _Prior = [Price Previous Trading Day]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
+			        _Current - _Prior,
+			        BLANK()
+			    )
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: b9040741-7b5f-4f7f-acb3-42cb4d09ca16
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาเทียบวันทำการก่อนหน้า (Day-over-Day %)
+	measure 'Price DoD %' =
+			VAR _Current = [Price (THB/kg)]
+			VAR _Prior = [Price Previous Trading Day]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: ba8020a8-0d93-4888-9083-7653ea14a9c4
+
+	/// ราคาเฉลี่ยสัปดาห์ก่อนหน้า (Previous Week)
+	measure 'Price Previous Week' = CALCULATE([Price (THB/kg)], DATEADD(Dim_Date[Date], -7, DAY))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: d5b9f58b-8e2d-4b07-a02d-6439bfacd154
+
+	/// การเปลี่ยนแปลงราคาเทียบสัปดาห์ก่อนหน้า (Week-over-Week Change)
+	measure 'Price WoW Change' =
+			VAR _Current = [Price (THB/kg)]
+			VAR _Prior = [Price Previous Week]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
+			        _Current - _Prior,
+			        BLANK()
+			    )
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 7015c4ae-45a5-4ba5-a7c7-875e5ee4d715
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาเทียบสัปดาห์ก่อนหน้า (Week-over-Week %)
+	measure 'Price WoW %' =
+			VAR _Current = [Price (THB/kg)]
+			VAR _Prior = [Price Previous Week]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: 2f387c5e-ff9b-4ec6-a496-b1c35907ea04
+
+	/// ราคาเฉลี่ยเดือนก่อนหน้า (Previous Month)
+	measure 'Price Previous Month' = CALCULATE([Price (THB/kg)], DATEADD(Dim_Date[Date], -1, MONTH))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: a0ed28ef-d493-453b-bf55-d35c2a053094
+
+	/// การเปลี่ยนแปลงราคาเทียบเดือนก่อนหน้า (Month-over-Month Change)
+	measure 'Price MoM Change' =
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
+			VAR _Current = IF(_IsOryza, [Price Oryza (USD/ton)], [Price (THB/kg)])
+			VAR _Prior =
+			    IF(
+			        _IsOryza,
+			        CALCULATE([Price Oryza (USD/ton)], DATEADD(Dim_Date[Date], -1, MONTH)),
+			        [Price Previous Month]
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
+			        _Current - _Prior,
+			        BLANK()
+			    )
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: f3a20575-1f95-4a2d-b3a6-f2d8c5fddefe
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาเทียบเดือนก่อนหน้า (Month-over-Month %)
+	measure 'Price MoM %' =
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
+			VAR _Current = IF(_IsOryza, [Price Oryza (USD/ton)], [Price (THB/kg)])
+			VAR _Prior =
+			    IF(
+			        _IsOryza,
+			        CALCULATE([Price Oryza (USD/ton)], DATEADD(Dim_Date[Date], -1, MONTH)),
+			        [Price Previous Month]
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: a9b90f9d-d4fa-4516-911b-4255c296a418
+
+	/// ราคาเฉลี่ยช่วงเดียวกันของปีก่อนหน้า (Same Period Last Year)
+	measure 'Price Previous Year' = CALCULATE([Price (THB/kg)], SAMEPERIODLASTYEAR(Dim_Date[Date]))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 094f5f1b-3fb8-458c-8a9c-fd0e96ac3417
+
+	/// การเปลี่ยนแปลงราคาเทียบปีก่อนหน้า (Year-over-Year Change)
+	measure 'Price YoY Change' =
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
+			VAR _Current = IF(_IsOryza, [Price Oryza (USD/ton)], [Price (THB/kg)])
+			VAR _Prior =
+			    IF(
+			        _IsOryza,
+			        CALCULATE([Price Oryza (USD/ton)], SAMEPERIODLASTYEAR(Dim_Date[Date])),
+			        [Price Previous Year]
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
+			        _Current - _Prior,
+			        BLANK()
+			    )
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 9fe73787-346c-4e6e-9a6e-aa6627f13e65
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาเทียบปีก่อนหน้า (Year-over-Year %)
+	measure 'Price YoY %' =
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
+			VAR _Current = IF(_IsOryza, [Price Oryza (USD/ton)], [Price (THB/kg)])
+			VAR _Prior =
+			    IF(
+			        _IsOryza,
+			        CALCULATE([Price Oryza (USD/ton)], SAMEPERIODLASTYEAR(Dim_Date[Date])),
+			        [Price Previous Year]
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: 4afe3e74-2f42-4624-9fe2-88296f976319
+
+	/// ราคาเฉลี่ยสะสมตั้งแต่ต้นเดือนจนถึงปัจจุบัน (Month-to-Date Average)
+	measure 'Price MTD (Avg)' = CALCULATE([Price (THB/kg)], DATESMTD(Dim_Date[Date]))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 31be49bd-8454-474a-b699-959a7dc48f0e
+
+	/// ราคาเฉลี่ยสะสมตั้งแต่ต้นปีจนถึงปัจจุบัน (Year-to-Date Average)
+	measure 'Price YTD (Avg)' = CALCULATE([Price (THB/kg)], DATESYTD(Dim_Date[Date]))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: cac3e9b5-5e4e-4ded-92fd-ce578793ca9e
+
+	/// วันที่ล่าสุดที่มีการบันทึกราคา
+	measure 'Latest Price Date' = MAX(Fact_Rice_Price[HeaderDate])
+		formatString: yyyy-mm-dd
+		displayFolder: 07 KPI & Summary
+		lineageTag: 5acabb13-5610-448b-b1b1-b0feb398d703
+
+	/// ราคา ณ วันที่ล่าสุดที่มีข้อมูล (Latest Available Price THB/kg)
+	measure 'Latest Price (THB/kg)' =
+			VAR _MaxDate = CALCULATE(MAX(Fact_Rice_Price[HeaderDate]), REMOVEFILTERS(Dim_Date))
+			RETURN
+			    CALCULATE(
+			        [Price (THB/kg)],
+			        Dim_Date[Date] = _MaxDate,
+			        REMOVEFILTERS(Dim_Date)
+			    )
+		formatString: #,##0.00
+		displayFolder: 07 KPI & Summary
+		lineageTag: e6a72e5f-fa27-41f7-bb3a-a3e13233adee
+
+	/// จำนวนสินค้าข้าวทั้งหมดที่มีข้อมูล
+	measure 'Total Rice Products Count' = DISTINCTCOUNT(Fact_Rice_Price[Product Code])
+		formatString: #,##0
+		displayFolder: 07 KPI & Summary
+		lineageTag: 99c9be37-a73a-4a2e-bbde-ea596079c987
+
+	/// ราคาเฉลี่ยข้าวเก่า (Old Crop - ข้อมูลเฉพาะแหล่งจัดซื้อ CPI)
+	measure 'Price Old Crop (THB/kg)' = CALCULATE([Price CPI (THB/kg)], Fact_Rice_Price[Crop Status] = "Old")
+		formatString: #,##0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 87d107fd-1bdf-4629-b3f1-63a1a622e74e
+
+	/// ราคาเฉลี่ยข้าวใหม่ (New Crop - ข้อมูลเฉพาะแหล่งจัดซื้อ CPI)
+	measure 'Price New Crop (THB/kg)' = CALCULATE([Price CPI (THB/kg)], Fact_Rice_Price[Crop Status] = "New")
+		formatString: #,##0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: bc839290-2a5f-4f32-8bb0-5b803d429830
+
+	/// ส่วนต่างราคาข้าวเก่าเทียบข้าวใหม่ (Old vs New Crop Spread THB/kg)
+	measure 'Old vs New Crop Spread (THB/kg)' = [Price Old Crop (THB/kg)] - [Price New Crop (THB/kg)]
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 07185598-aa24-418b-8f59-ee15025c2ed9
+
+	/// เปอร์เซ็นต์พรีเมียมราคาข้าวเก่าเทียบข้าวใหม่ (Old vs New Crop Spread %)
+	measure 'Old vs New Crop Spread %' = DIVIDE([Old vs New Crop Spread (THB/kg)], [Price New Crop (THB/kg)])
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 20362ab3-d2b2-42f8-8a00-3a4b46ffb4e4
+
+	/// ราคาส่งออก FOB ของไทย (FOB Thailand USD/ton)
+	measure 'FOB Thailand (USD/ton)' =
+			CALCULATE(
+			    [Price Oryza (USD/ton)],
+			    Dim_Country[CountryName] = "THAILAND"
+			)
+		formatString: #,##0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: d9ea92f6-5ff2-4792-afa0-c553c969805f
+
+	/// ราคาส่งออก FOB ของเวียดนาม (FOB Vietnam USD/ton)
+	measure 'FOB Vietnam (USD/ton)' =
+			CALCULATE(
+			    [Price Oryza (USD/ton)],
+			    Dim_Country[CountryName] = "VIETNAM"
+			)
+		formatString: #,##0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 0f07aafe-00a4-4799-8fa8-db7032196eb1
+
+	/// ราคาส่งออก FOB ของอินเดีย (FOB India USD/ton)
+	measure 'FOB India (USD/ton)' =
+			CALCULATE(
+			    [Price Oryza (USD/ton)],
+			    Dim_Country[CountryName] = "INDIA"
+			)
+		formatString: #,##0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: ea9020a8-781e-4e23-a4b9-042de246a75f
+
+	/// ราคาส่งออก FOB ของปากีสถาน (FOB Pakistan USD/ton)
+	measure 'FOB Pakistan (USD/ton)' =
+			CALCULATE(
+			    [Price Oryza (USD/ton)],
+			    Dim_Country[CountryName] = "PAKISTAN"
+			)
+		formatString: #,##0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: f0907276-faf2-41a1-b582-3d587fe4ae5c
+
+	/// ส่วนต่างราคาส่งออกไทยเทียบเวียดนาม (FOB Spread TH vs VN USD/ton)
+	measure 'FOB Spread TH vs VN (USD/ton)' = [FOB Thailand (USD/ton)] - [FOB Vietnam (USD/ton)]
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 721db2da-6eee-46ce-90ff-94b63e37332d
+
+	/// ส่วนต่างราคาส่งออกไทยเทียบอินเดีย (FOB Spread TH vs IN USD/ton)
+	measure 'FOB Spread TH vs IN (USD/ton)' = [FOB Thailand (USD/ton)] - [FOB India (USD/ton)]
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: ac41c3aa-0e20-43c0-95e0-ccce785a5803
+
+	/// สัดส่วนราคาปลายข้าวเทียบข้าวขาว 5% (Broken to White Rice Ratio %)
+	measure 'Broken to White Rice Ratio %' =
+			VAR _BrokenPrice =
+			    CALCULATE(
+			        [Price (THB/kg)],
+			        CONTAINSSTRING(Dim_Product[Product Name], "ปลายข้าว")
+			    )
+			VAR _WhiteRicePrice =
+			    CALCULATE(
+			        [Price (THB/kg)],
+			        CONTAINSSTRING(Dim_Product[Product Name], "ข้าวขาว 5%")
+			    )
+			RETURN
+			    DIVIDE(_BrokenPrice, _WhiteRicePrice)
+		formatString: 0.00%
+		displayFolder: 04 Marketing & Price Spreads
+		lineageTag: 87da8731-0788-4137-ac75-fcf299ec2080
+
+	/// ดัชนีระดับราคาในกรอบ 52 สัปดาห์ (52W Price Position % หรือ Stochastic Indicator)
+	measure '52W Price Position %' =
+			VAR _Current = [Price (THB/kg)]
+			VAR _Low52W =
+			    CALCULATE(
+			        MINX(VALUES(Dim_Date[Date]), [Price (THB/kg)]),
+			        DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -52, WEEK)
+			    )
+			VAR _High52W =
+			    CALCULATE(
+			        MAXX(VALUES(Dim_Date[Date]), [Price (THB/kg)]),
+			        DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -52, WEEK)
+			    )
+			RETURN
+			    DIVIDE(_Current - _Low52W, _High52W - _Low52W)
+		formatString: 0.00%
+		displayFolder: 05 Moving Averages & Trend
+		lineageTag: 30a1804c-3d14-4395-8b5a-86d166721d32
+
+	/// สัญญาณแนวโน้มราคา (Trend Signal 7D vs 30D Moving Average)
+	measure 'Trend Signal (7D vs 30D)' =
+			VAR _MA7 = [Price 7D Moving Avg]
+			VAR _MA30 = [Price 30D Moving Avg]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(_MA7) || ISBLANK(_MA30), BLANK(),
+			        _MA7 > _MA30 * 1.01, "▲ ขาขึ้น (Uptrend)",
+			        _MA7 < _MA30 * 0.99, "▼ ขาลง (Downtrend)",
+			        "► ทรงตัว (Sideways)"
+			    )
+		displayFolder: 05 Moving Averages & Trend
+		lineageTag: 08362ef7-d34c-433c-8dc0-f2966098743f
+
+	/// อัตราการเปลี่ยนแปลงค่าเงินบาทเทียบวันทำการก่อนหน้า (FX USD/THB DoD %)
+	measure 'FX DoD %' =
+			VAR _CurrentDate = MAX(Dim_Date[Date])
+			VAR _PrevDate =
+			    CALCULATE(
+			        MAX(Fact_Exchange_Rate[Date]),
+			        Fact_Exchange_Rate[Date] < _CurrentDate,
+			        Fact_Exchange_Rate[Currency] = "USD",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			VAR _CurrentFX = [Exchange Rate USD/THB]
+			VAR _PrevFX =
+			    CALCULATE(
+			        AVERAGE(Fact_Exchange_Rate[Sight Bill Buying Rates]),
+			        Fact_Exchange_Rate[Date] = _PrevDate,
+			        Fact_Exchange_Rate[Currency] = "USD",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			RETURN
+			    DIVIDE(_CurrentFX - _PrevFX, _PrevFX)
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 02 Currency & Unit Conversion
+		lineageTag: 8c2e0996-7d84-41f3-af65-a5e71eb98e03
+
+	/// การเปลี่ยนแปลงค่าเงินบาทรอบ 30 วัน (FX USD/THB 30D Change %)
+	measure 'FX 30D Change %' =
+			VAR _CurrentFX = [Exchange Rate USD/THB]
+			VAR _Prev30DFX = CALCULATE([Exchange Rate USD/THB], DATEADD(Dim_Date[Date], -30, DAY))
+			RETURN
+			    DIVIDE(_CurrentFX - _Prev30DFX, _Prev30DFX)
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 02 Currency & Unit Conversion
+		lineageTag: 1dde3ed0-3e7f-4c31-ab73-f5ee9f036ed5
+
+	/// ราคาเฉลี่ย (Avg. Price คำนวณจาก (Min + Max) / 2 ระดับแถว พร้อมป้องกันกรณีบันทึกเฉพาะราคา Max หรือ Min)
+	measure 'Avg. Price' =
+			AVERAGEX(
+			    Fact_Rice_Price,
+			    VAR _Min = Fact_Rice_Price[Min Price]
+			    VAR _Max = Fact_Rice_Price[Max Price]
+			    RETURN
+			        SWITCH(
+			            TRUE(),
+			            NOT ISBLANK(_Min) && NOT ISBLANK(_Max), (_Min + _Max) / 2,
+			            NOT ISBLANK(_Max), _Max,
+			            NOT ISBLANK(_Min), _Min,
+			            BLANK()
+			        )
+			)
+		formatString: #,##0.00
+		displayFolder: 01 Base Price
+		lineageTag: 24718092-28e4-4a25-829d-4876b6ef6d12
+
+	/// ชื่อพ้องของ Avg. Price เพื่อความสะดวกในการค้นหาและเรียกใช้
+	measure 'Avg Price' = [Avg. Price]
+		formatString: #,##0.00
+		displayFolder: 01 Base Price
+		lineageTag: 73e86c01-f2f9-4d6e-bb12-3f1917f54c23
+
+	/// ราคาข้าว Oryza เฉลี่ยเดือนก่อนหน้า (USD/ton)
+	measure 'Price Oryza Previous Month' = CALCULATE([Price Oryza (USD/ton)], DATEADD(Dim_Date[Date], -1, MONTH))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 6c3e721a-2891-49b8-a764-10294bce8111
+
+	/// การเปลี่ยนแปลงราคาข้าว Oryza เทียบเดือนก่อนหน้า (USD/ton)
+	measure 'Price Oryza MoM Change' =
+			VAR _Current = [Price Oryza (USD/ton)]
+			VAR _Prior = [Price Oryza Previous Month]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
+			        _Current - _Prior,
+			        BLANK()
+			    )
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 8e5f2910-381a-4d92-bb12-9182374619a1
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าว Oryza เทียบเดือนก่อนหน้า (MoM % USD)
+	measure 'Price Oryza MoM %' =
+			VAR _Current = [Price Oryza (USD/ton)]
+			VAR _Prior = [Price Oryza Previous Month]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: 4f108291-a832-4731-9c63-b82749102834
+
+	/// ราคาข้าว Oryza เฉลี่ยปีก่อนหน้า (USD/ton)
+	measure 'Price Oryza Previous Year' = CALCULATE([Price Oryza (USD/ton)], SAMEPERIODLASTYEAR(Dim_Date[Date]))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 5b293847-1902-4c28-98e2-892716482910
+
+	/// การเปลี่ยนแปลงราคาข้าว Oryza เทียบปีก่อนหน้า (USD/ton)
+	measure 'Price Oryza YoY Change' =
+			VAR _Current = [Price Oryza (USD/ton)]
+			VAR _Prior = [Price Oryza Previous Year]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
+			        _Current - _Prior,
+			        BLANK()
+			    )
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 92837461-8291-4e72-bb91-283746192834
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าว Oryza เทียบปีก่อนหน้า (YoY % USD)
+	measure 'Price Oryza YoY %' =
+			VAR _Current = [Price Oryza (USD/ton)]
+			VAR _Prior = [Price Oryza Previous Year]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: 38291047-5829-4c19-a928-392817462910
+
+	column Dummy
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2f1b6db8-f2a2-4103-9739-cf695eeba6e2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Dummy]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW("Dummy", 1)
+

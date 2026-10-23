@@ -1,0 +1,128 @@
+table Dim_Product
+	lineageTag: 8dbf4391-d29d-4470-9c9b-b8e8b36cf8d0
+
+	column SourceCode
+		dataType: string
+		lineageTag: 6076c469-1e2b-4404-849c-ced6f868e225
+		summarizeBy: none
+		sourceColumn: SourceCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Category Code'
+		dataType: string
+		lineageTag: bf63a450-1451-492a-8ab6-94e6620c508a
+		summarizeBy: none
+		sourceColumn: Category Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Category Name'
+		dataType: string
+		lineageTag: 78fe71f2-9f8e-4a5c-9308-b13d8011eb00
+		summarizeBy: none
+		sourceColumn: Category Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sub Category Code'
+		dataType: string
+		lineageTag: 681240a8-9c0a-409b-9324-b0205efcfb83
+		summarizeBy: none
+		sourceColumn: Sub Category Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sub Category Name'
+		dataType: string
+		lineageTag: 26215541-22ce-4450-bbb9-2479dd399460
+		summarizeBy: none
+		sourceColumn: Sub Category Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Code'
+		dataType: string
+		lineageTag: 94d97ca3-6d6f-4ea7-8b39-0d7e9cac988f
+		summarizeBy: none
+		sourceColumn: Product Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		lineageTag: fb7ee2b9-66f1-4923-86ad-62af0de7739c
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'New Sub Category Name'
+		dataType: string
+		lineageTag: c203ed4f-5486-4918-b825-a641278baefa
+		summarizeBy: none
+		sourceColumn: New Sub Category Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Product = m
+		mode: import
+		source =
+				let
+				    Source = Fact_Rice_Price,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"SourceCode", "Category Code", "Category Name", "Sub Category Code", "Sub Category Name", "Product Code", "Product Name"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Sorted Rows" = Table.Sort(#"Removed Duplicates",{{"Product Code", Order.Ascending}}),
+				    #"Add New Sub Cat Name for Oryza" = Table.AddColumn(
+				    #"Sorted Rows",
+				    "New Sub Category Name",
+				    each
+				        Record.FieldOrDefault(
+				            [
+				                P00000000238 = "White Rice-High",
+				                P00000000239 = "White Rice-High",
+				                P00000000240 = "White Rice-High",
+				                P00000000241 = "White Rice-High",
+				                P00000000242 = "White Rice-High",
+				                P00000000243 = "White Rice-High",
+				                P00000000245 = "White Rice-High",
+				                P00000000246 = "White Rice-High",
+				                P00000000247 = "White Rice-High",
+				                P00000000651 = "White Rice-High",
+				
+				                P00000000248 = "White Rice-Low",
+				                P00000000249 = "White Rice-Low",
+				                P00000000250 = "White Rice-Low",
+				                P00000000252 = "White Rice-Low",
+				                P00000000253 = "White Rice-Low",
+				
+				                P00000000254 = "Parboiled Rice",
+				                P00000000255 = "Parboiled Rice",
+				                P00000000256 = "Parboiled Rice",
+				                P00000000257 = "Parboiled Rice",
+				                P00000000258 = "Parboiled Rice",
+				                P00000000259 = "Parboiled Rice",
+				
+				                P00000000260 = "Fragrant Rice",
+				                P00000000261 = "Fragrant Rice",
+				
+				                P00000000265 = "Broken Rice",
+				                P00000000266 = "Broken Rice",
+				                P00000000267 = "Broken Rice",
+				                P00000000269 = "Broken Rice",
+				                P00000000271 = "Broken Rice",
+				
+				                P00000000273 = "Medium Grain",
+				                P00000000501 = "Medium Grain"
+				            ],
+				            [Product Code],
+				            [Sub Category Name]
+				        )
+				)
+				in
+				    #"Add New Sub Cat Name for Oryza"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

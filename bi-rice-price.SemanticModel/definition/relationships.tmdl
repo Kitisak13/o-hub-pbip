@@ -1,0 +1,33 @@
+relationship AutoDetected_7946bb47-7377-49de-b6d0-5c8a918ce607
+	fromColumn: Fact_Rice_Price.SourceCode
+	toColumn: Dim_Source.SourceCode
+
+relationship AutoDetected_087070a2-22ce-4220-bf08-86a06e942f34
+	fromColumn: Fact_Rice_Price.'Country Name'
+	toColumn: Dim_Country.CountryName
+
+relationship AutoDetected_ec0d5088-8ba6-4351-a664-e74b9c362488
+	fromColumn: Fact_Exchange_Rate.Currency
+	toColumn: Dim_Currency.'Currency Code'
+
+relationship c9a82b46-ce25-412c-5e10-e02892330ceb
+	fromColumn: Fact_Rice_Price.Currency
+	toColumn: Dim_Currency.'Currency Code'
+
+relationship 6f739d27-0550-63d7-3fd8-42ab18eadb0b
+	fromColumn: Fact_Exchange_Rate.Date
+	toColumn: Dim_Date.Date
+
+relationship d701ff89-d62b-b050-1458-81094e88d823
+	fromColumn: Fact_Rice_Price.HeaderDate
+	toColumn: Dim_Date.Date
+
+relationship AutoDetected_bb446cfc-e57a-4807-a199-91bad055b579
+	isActive: false
+	fromColumn: Dim_Product.SourceCode
+	toColumn: Dim_Source.SourceCode
+
+relationship AutoDetected_844226c0-2d49-4385-9c2c-7fcea2e373c3
+	fromColumn: Fact_Rice_Price.'Product Code'
+	toColumn: Dim_Product.'Product Code'
+

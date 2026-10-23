@@ -1,0 +1,398 @@
+table Dim_Date
+	lineageTag: f666216a-68d6-417c-b85c-16ff308b0fb7
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: dd/mm/yy
+		lineageTag: cd3bd287-95f5-4be2-b247-a892ab857d16
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column DateKey
+		formatString: 0
+		lineageTag: e28a488f-3a6c-4c53-b407-22859ccf9ddb
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [DateKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: f871f781-56f9-4709-8977-05f7996062cf
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 088d62a3-ca2c-4ed3-835b-6df8f1f10ba9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterNo
+		formatString: 0
+		lineageTag: fcc51660-0ae5-484d-a7c0-d34c2e0eb95d
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [QuarterNo]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNo
+		formatString: 0
+		lineageTag: 1b7d144b-5485-449a-a43d-cbb4a1e7c8f6
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [MonthNo]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthShort
+		lineageTag: 0b8be2df-8801-448a-a76f-d3a508ca9b5d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthShort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthLong
+		lineageTag: daa21223-2caa-43c1-9332-5438f33f1da7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthLong]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		lineageTag: 39dbe206-a9cd-4c7e-b51c-ecbf711d3940
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YearMonth]
+		sortByColumn: YearMonthSort
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonthSort
+		formatString: 0
+		lineageTag: 55e8a56f-3952-4213-a9c8-133dd3d0f7bb
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [YearMonthSort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekNo
+		formatString: 0
+		lineageTag: f14644aa-1cdd-492e-9de2-800d060f5f9e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [WeekNo]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfMonth
+		formatString: 0
+		lineageTag: 7ebb852f-0638-4a7c-8c72-e269d6e20326
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [DayOfMonth]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfWeekNo
+		formatString: 0
+		lineageTag: c0da55f9-a030-41b6-a9f8-8cbe90932b4d
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [DayOfWeekNo]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayShort
+		lineageTag: b7f8ab33-849d-4559-9079-d8bf1703ea7e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DayShort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayLong
+		lineageTag: 89499d3a-ab29-4b2e-89d6-7330cd4dbe5b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DayLong]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthStart
+		formatString: General Date
+		lineageTag: 0d65d5b1-19d3-4bab-abfd-77de277192ac
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthStart]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthEnd
+		formatString: General Date
+		lineageTag: 26de0613-5576-4e85-a511-c9ebb0b89f66
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MonthEnd]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearStart
+		formatString: General Date
+		lineageTag: 70ce06bc-2f30-45c0-aedf-9dffb82789d1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YearStart]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearEnd
+		formatString: General Date
+		lineageTag: dd73b565-b0ee-4890-a01b-152847d3bdf0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YearEnd]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearShort
+		lineageTag: 80c07eb4-edd5-413a-b80f-e0501a285665
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YearShort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrentYear
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ddcd32b0-ab95-479a-9926-0d63ff808f19
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsCurrentYear]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsPreviousYear
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: bbe4da73-0f4e-412b-a194-cf8afc289e1f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsPreviousYear]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrentMonth
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f58cfd32-80c8-480a-aff5-58946e36c540
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsCurrentMonth]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrentWeek
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1ac88c34-0e6a-4881-9518-b49f35f1fd71
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsCurrentWeek]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsToday
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e4fe242e-4137-491d-99ae-9c170cc45629
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsToday]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsYTD
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f6672d74-ed05-4c27-81fc-b358bf568e46
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [IsYTD]
+
+		annotation SummarizationSetBy = Automatic
+
+	column RelativeYear
+		formatString: 0
+		lineageTag: bc327984-5780-41ef-b671-4fc1252f6b5b
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [RelativeYear]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Date = calculated
+		mode: import
+		source =
+				
+				VAR MinDate =
+				    MINX (
+				        Fact_Rice_Price,
+				        Fact_Rice_Price[HeaderDate]
+				    )
+				VAR MaxDate =
+				    MAXX (
+				        Fact_Rice_Price,
+				        Fact_Rice_Price[HeaderDate]
+				    )
+				RETURN
+				ADDCOLUMNS (
+				    CALENDAR ( MinDate, MaxDate ),
+				
+				    //-----------------------------------
+				    // Keys
+				    //-----------------------------------
+				    "DateKey",
+				        YEAR ( [Date] ) * 10000
+				        + MONTH ( [Date] ) * 100
+				        + DAY ( [Date] ),
+				
+				    //-----------------------------------
+				    // Year
+				    //-----------------------------------
+				    "Year",
+				        YEAR ( [Date] ),
+				
+				    "YearShort",
+				        RIGHT ( YEAR ( [Date] ), 2 ),
+				
+				    //-----------------------------------
+				    // Quarter
+				    //-----------------------------------
+				    "QuarterNo",
+				        QUARTER ( [Date] ),
+				
+				    "Quarter",
+				        "Q" & QUARTER ( [Date] ),
+				
+				    //-----------------------------------
+				    // Month
+				    //-----------------------------------
+				    "MonthNo",
+				        MONTH ( [Date] ),
+				
+				    "MonthShort",
+				        FORMAT ( [Date], "[$-en-US]MMM" ),
+				
+				    "MonthLong",
+				        FORMAT ( [Date], "[$-en-US]MMMM" ),
+				
+				    //-----------------------------------
+				    // Year-Month
+				    //-----------------------------------
+				    "YearMonth",
+				        FORMAT ( [Date], "yyyy" )
+				            & "-"
+				            & FORMAT ( [Date], "[$-en-US]MMM" ),
+				
+				    "YearMonthSort",
+				        YEAR ( [Date] ) * 100
+				        + MONTH ( [Date] ),
+				
+				    //-----------------------------------
+				    // Week
+				    //-----------------------------------
+				    "WeekNo",
+				        WEEKNUM ( [Date], 2 ),
+				
+				    //-----------------------------------
+				    // Day
+				    //-----------------------------------
+				    "DayOfMonth",
+				        DAY ( [Date] ),
+				
+				    "DayOfWeekNo",
+				        WEEKDAY ( [Date], 2 ),
+				
+				    "DayShort",
+				        FORMAT ( [Date], "[$-en-US]ddd" ),
+				
+				    "DayLong",
+				        FORMAT ( [Date], "[$-en-US]dddd" ),
+				
+				    //-----------------------------------
+				    // Period Start/End
+				    //-----------------------------------
+				    "MonthStart",
+				        DATE (
+				            YEAR ( [Date] ),
+				            MONTH ( [Date] ),
+				            1
+				        ),
+				
+				    "MonthEnd",
+				        EOMONTH ( [Date], 0 ),
+				
+				    "YearStart",
+				        DATE (
+				            YEAR ( [Date] ),
+				            1,
+				            1
+				        ),
+				
+				    "YearEnd",
+				        DATE (
+				            YEAR ( [Date] ),
+				            12,
+				            31
+				        ),
+				
+				    //-----------------------------------
+				    // Current Flags
+				    //-----------------------------------
+				    "IsCurrentYear",
+				        YEAR ( [Date] ) = YEAR ( TODAY () ),
+				
+				    "IsPreviousYear",
+				        YEAR ( [Date] ) = YEAR ( TODAY () ) - 1,
+				
+				    "IsCurrentMonth",
+				        YEAR ( [Date] ) = YEAR ( TODAY () )
+				            && MONTH ( [Date] ) = MONTH ( TODAY () ),
+				
+				    "IsCurrentWeek",
+				        YEAR ( [Date] ) = YEAR ( TODAY () )
+				            && WEEKNUM ( [Date], 2 ) = WEEKNUM ( TODAY (), 2 ),
+				
+				    "IsToday",
+				        [Date] = TODAY (),
+				
+				    //-----------------------------------
+				    // YTD Flag
+				    //-----------------------------------
+				    "IsYTD",
+				        YEAR ( [Date] ) = YEAR ( TODAY () )
+				            && [Date] <= TODAY (),
+				
+				    //-----------------------------------
+				    // Relative Year
+				    //-----------------------------------
+				    "RelativeYear",
+				        YEAR ( [Date] ) - YEAR ( TODAY () )
+				)
+
+	annotation PBI_Id = 8d071299a50e4bdb8553accfab40b7de
+

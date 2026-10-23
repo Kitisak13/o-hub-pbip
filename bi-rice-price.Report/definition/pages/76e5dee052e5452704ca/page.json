@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "76e5dee052e5452704ca",
+  "displayName": "Oryza",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "visualInteractions": [
+    {
+      "source": "0ee705ebbfebbcb95762",
+      "target": "709af2582dd3db0418e5",
+      "type": "NoFilter"
+    },
+    {
+      "source": "0ee705ebbfebbcb95762",
+      "target": "84ab5684f08bedf70015",
+      "type": "NoFilter"
+    }
+  ]
+}

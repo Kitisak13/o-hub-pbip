@@ -1,0 +1,148 @@
+table Fact_Rice_Price
+	lineageTag: 0ab2cf9b-da4c-4de3-81d8-1517be1f9354
+
+	column HeaderDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0d8f62ed-a2a7-4331-904c-f63c55245578
+		summarizeBy: none
+		sourceColumn: HeaderDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column SourceCode
+		dataType: string
+		lineageTag: f60073cd-8796-4025-ad22-0a79a46bc17c
+		summarizeBy: none
+		sourceColumn: SourceCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country Name'
+		dataType: string
+		lineageTag: 8fe7be34-457d-498a-a1f4-54c3d26e493b
+		summarizeBy: none
+		sourceColumn: Country Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Category Code'
+		dataType: string
+		lineageTag: 69e1fdc4-2b1f-4f1a-9c84-8c01c6b4cd5f
+		summarizeBy: none
+		sourceColumn: Category Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Category Name'
+		dataType: string
+		isHidden
+		lineageTag: b6f57c75-111c-4bf9-8249-faceb50fae4b
+		summarizeBy: none
+		sourceColumn: Category Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sub Category Code'
+		dataType: string
+		lineageTag: 33f81abd-7e1f-424a-ab11-4c34ed196731
+		summarizeBy: none
+		sourceColumn: Sub Category Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sub Category Name'
+		dataType: string
+		isHidden
+		lineageTag: 2e4c792e-0c38-492b-91a2-49dcb2b5b619
+		summarizeBy: none
+		sourceColumn: Sub Category Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Code'
+		dataType: string
+		lineageTag: 104e314a-ef23-45b9-8606-bd7f755314dd
+		summarizeBy: none
+		sourceColumn: Product Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		isHidden
+		lineageTag: df6d3da2-8542-45d5-8aed-4d6a6777e9b1
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Min Price'
+		dataType: double
+		lineageTag: 0b5d3ea9-2e41-419b-b5ff-e1e5fb086962
+		summarizeBy: sum
+		sourceColumn: Min Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Max Price'
+		dataType: double
+		lineageTag: 5aff3a0d-11c6-4df5-ab1c-df7da42f4518
+		summarizeBy: sum
+		sourceColumn: Max Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Currency = ```
+			SWITCH(TRUE(), 
+			    Fact_Rice_Price[SourceCode] = "S001","THB",
+			    Fact_Rice_Price[SourceCode] = "S003","THB",
+			    Fact_Rice_Price[SourceCode] = "S005","USD")
+			```
+		lineageTag: 8c15c902-9192-458e-85af-54dbdca91e09
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Crop Status'
+		dataType: string
+		lineageTag: 3d2df221-eac3-4435-a1d1-2168807b8379
+		summarizeBy: none
+		sourceColumn: Crop Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Price Selection'
+		dataType: string
+		lineageTag: 617a2d21-bf6c-4d42-bb3d-38360b3807a2
+		summarizeBy: none
+		sourceColumn: Price Selection
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Rice_Price = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({milled_price_dit, milled_price_cpi, fob_prices_oryza}),
+				    #"Trimmed Text" = Table.TransformColumns(Source,{{"Category Code", Text.Trim, type text}, {"Category Name", Text.Trim, type text}, {"Sub Category Code", Text.Trim, type text}, {"Sub Category Name", Text.Trim, type text}, {"Product Code", Text.Trim, type text}, {"Product Name", Text.Trim, type text}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Trimmed Text",{{"Min Price", type number}, {"Max Price", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

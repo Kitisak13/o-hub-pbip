@@ -1,0 +1,104 @@
+table Dim_Country
+	lineageTag: e2223418-65c4-493b-82b8-ec2bd600a483
+
+	column CountryName
+		dataType: string
+		lineageTag: 0947b84b-890d-4bae-ae64-328ef4bcc87c
+		summarizeBy: none
+		sourceColumn: CountryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Alpha2
+		dataType: string
+		lineageTag: 21e4718f-e0a0-484b-8bc8-9bf1fb5972c6
+		summarizeBy: none
+		sourceColumn: Alpha2
+
+		annotation SummarizationSetBy = Automatic
+
+	column ALpha3
+		dataType: string
+		lineageTag: 8d830298-f2bd-4ce1-a042-abc1be38d1ab
+		summarizeBy: none
+		sourceColumn: ALpha3
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyCode
+		dataType: string
+		lineageTag: 10c059ec-a4a8-473b-9edb-708bcfe4cbb3
+		summarizeBy: none
+		sourceColumn: CurrencyCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrencyName
+		dataType: string
+		lineageTag: 36f13ec5-d990-4221-9b43-e42a31899184
+		summarizeBy: none
+		sourceColumn: CurrencyName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 3357ce12-d708-4d39-9aef-66d7931196ac
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column CountryGroup
+		dataType: string
+		lineageTag: 9385d88c-ac06-4c9f-a18c-aa8ef6a69ff2
+		summarizeBy: none
+		sourceColumn: CountryGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column SortOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: d6f286ff-5895-4a1b-b11d-bf7f17a3d098
+		summarizeBy: none
+		sourceColumn: SortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Country = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				        type table [
+				            CountryName = text,
+				            Alpha2 = text,
+				            ALpha3 = text,
+				            CurrencyCode = text,
+				            CurrencyName = text,
+				            Region = text,
+				            CountryGroup = text,
+				            SortOrder = Int64.Type
+				        ],
+				        {
+				            {"THAILAND",     "TH", "THA", "THB", "Thai Baht",             "Southeast Asia", "Asia",      1},
+				            {"VIETNAM",      "VN", "VNM", "VND", "Vietnamese Dong",       "Southeast Asia", "Asia",      2},
+				            {"INDIA",        "IN", "IND", "INR", "Indian Rupee",          "South Asia",     "Asia",      3},
+				            {"PAKISTAN",     "PK", "PAK", "PKR", "Pakistani Rupee",       "South Asia",     "Asia",      4},
+				            {"MYANMAR",      "MM", "MMR", "MMK", "Myanmar Kyat",          "Southeast Asia", "Asia",      5},
+				            {"UNITED STATE", "US", "USA", "USD", "United States Dollar",  "North America",  "Americas",  6},
+				            {"URUGUAY",      "UY", "URY", "UYU", "Uruguayan Peso",        "South America",  "Americas",  7},
+				            {"ARGENTINA",    "AR", "ARG", "ARS", "Argentine Peso",        "South America",  "Americas",  8},
+				            {"ITALY",        "IT", "ITA", "EUR", "Euro",                  "Europe",         "Europe",    9},
+				            {"BRAZIL",       "BR", "BRA", "BRL", "Brazilian Real",        "South America",  "Americas", 10},
+				            {"OTHER",        "OT", "OTH", null,  null,                    "Other",          "Other",    99}
+				        }
+				    )
+				in
+				    Source
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

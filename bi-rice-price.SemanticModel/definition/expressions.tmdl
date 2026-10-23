@@ -1,0 +1,291 @@
+/// อัพเดทหรือเปลี่ยน Product Code ของ DIT ที่ step สุดท้าย Filter_Product_Code
+expression milled_price_dit =
+		let
+		    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1sYdgKfMBsdiwZhbbP34Iy8wh2q23k_uDjyiui0DXMVY"),
+		    Sheet1_Table = Source{[name="millet_dit",ItemKind="Table"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Table, [PromoteAllScalars=true]),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Promoted Headers",{"HeaderDate", "SourceCode", "Country Name", "Category Code", "Category Name", "Sub Category Code", "Sub Category Name", "Product Code", "Product Name", "Min Price", "Max Price"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each [SourceCode] = "S003"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{{"HeaderDate", type date}}),
+		
+		    ProductCodeList = {
+		        "P00000000144","P00000000145","P00000000146","P00000000147",
+		        "P00000000150","P00000000151","P00000000158","P00000000159",
+		        "P00000000164","P00000000165","P00000000166","P00000000167",
+		        "P00000000168","P00000000169","P00000000175","P00000000176",
+		        "P00000000179","P00000000180","P00000000181","P00000000183"
+		    },
+		
+		    Filter_Product_Code = Table.SelectRows(#"Changed Type", each List.Contains(ProductCodeList, [Product Code])),
+		    #"Added Custom" = Table.AddColumn(Filter_Product_Code, "Crop Status", each "New"),
+		    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Price Selection", each "Keep")
+		in
+		    #"Added Custom1"
+	lineageTag: f0f3ca88-4181-471d-914f-542e32e5178d
+	queryGroup: raw_from_googlesheet
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+/// อัพเดทหรือเปลี่ยน Product Code ของ CPI ที่ step สุดท้าย Filter_Product_Code
+expression milled_price_cpi = ```
+		let
+		    // ==========================================
+		    // 1. CONFIGURATION & LOOKUP LISTS
+		    // ==========================================
+		    SheetUrl = "https://docs.google.com/spreadsheets/d/1zgEpVsAGeb-cahjNUbosLlDRL7uL4BBv9XCHK5xrIgM",
+		    CurrentMonthStart = Date.StartOfMonth(Date.From(DateTime.LocalNow())),
+		
+		    TextColsToTrim = {
+		        "Product Name", "Product Code", 
+		        "Sub Category Name", "Sub Category Code", 
+		        "Category Name", "Category Code"
+		    },
+		
+		    // รูปแบบ: {คำขึ้นต้น (Prefix), ชื่อกลุ่ม (Group Name)}
+		    ProductGroupMap = {
+		        {"ข้าวหอม 100%", "ข้าวหอม 100%"},
+		        {"ข้าวหอมปทุมธานี", "ข้าวหอมปทุมธานี"},
+		        {"ข้าวหอมพวง", "ข้าวหอมพวง"},
+		        {"ข้าวขาว 5% นาปรัง", "ข้าวขาว 5% นาปรัง"},
+		        {"ข้าวขาว 100% (นาปรัง)", "ข้าวขาว 100% (นาปรัง)"},
+		        {"ปลายข้าวหอมมะลิ", "ปลายข้าวหอมมะลิ"},
+		        {"ข้าวเหนียวนาปรัง", "ข้าวเหนียวนาปรัง"},
+		        {"ปลายข้าวขาว", "ปลายข้าวขาว"},
+		        {"ปลายข้าวเหนียว", "ปลายข้าวเหนียว"},
+		        {"ข้าวนึ่ง 100% ดีด สี (เกรด B)", "ข้าวนึ่ง 100% ดีด สี (เกรด B)"},
+		        {"ข้าวกข.43", "ข้าวกข.43"},
+		        {"ข้าวญี่ปุ่น กวก.2", "ข้าวญี่ปุ่น กวก.2"},
+		        {"ข้าวกข.79", "ข้าวกข.79"},
+		        {"ข้าวกล้องหอม 100%", "ข้าวกล้องหอม"}
+		    },
+		
+		    // เพียงเพิ่มคำที่ต้องการตัดออกลงใน List นี้
+		    ExcludedContains = {"(Chilled)", "Traceability", "TCL", "เอวัน"},
+		    ExcludedEndsWith = {")", "LC"},
+		
+		    // ==========================================
+		    // 2. HELPER FUNCTIONS
+		    // ==========================================
+		    // ฟังก์ชันแปลงวันที่และรองรับปี พ.ศ.
+		    fxParseThaiDate = (val as any) as nullable date =>
+		        if val <> null and val <> "" then
+		            try
+		                let
+		                    parsed = Date.From(val, "en-US"),
+		                    yr = Date.Year(parsed),
+		                    correctYear = if yr >= 2500 then yr - 543 else yr
+		                in
+		                    #date(correctYear, Date.Month(parsed), Date.Day(parsed))
+		            otherwise null
+		        else null,
+		
+		    // ฟังก์ชันสกัดวันที่ CropDate จาก CropCode
+		    fxExtractCropDate = (cropCode as nullable text) as date =>
+		        let
+		            crop = Text.Upper(Text.Trim(cropCode ?? "")),
+		            tokens = List.Select(Text.SplitAny(crop, " %-/"), each _ <> ""),
+		            tokensWithDigits = List.Select(tokens, each Text.Select(_, {"0".."9"}) <> ""),
+		            lastToken = List.Last(tokensWithDigits, ""),
+		            digits = Text.Select(lastToken, {"0".."9"}),
+		            len = Text.Length(digits),
+		            result = 
+		                if len = 4 then
+		                    #date(2000 + Number.From(Text.End(digits, 2)), Number.From(Text.Start(digits, 2)), 1)
+		                else if len = 2 then
+		                    let
+		                        yy = Number.From(digits),
+		                        cropYear = if yy >= 60 then 2000 + (yy - 43) else 2000 + yy
+		                    in
+		                        #date(cropYear, 12, 1)
+		                else
+		                    CurrentMonthStart
+		        in
+		            try result otherwise CurrentMonthStart,
+		
+		    // ==========================================
+		    // 3. DATA PIPELINE
+		    // ==========================================
+		    Source = GoogleSheets.Contents(SheetUrl),
+		    RawTable = Source{[name="milled_cpi_price", ItemKind="Table"]}[Data],
+		    PromotedHeaders = Table.PromoteHeaders(RawTable, [PromoteAllScalars=true]),
+		
+		    // Trim ข้อความและแปลงวันที่ในขั้นตอนเดียว
+		    TransformedColumns = Table.TransformColumns(
+		        PromotedHeaders,
+		        {{"HeaderDate", fxParseThaiDate, type date}} & 
+		        List.Transform(TextColsToTrim, each {_, Text.Trim, type text})
+		    ),
+		
+		    // จัดกลุ่มสินค้าจากตาราง Mapping
+		    AddedProductGroup = Table.AddColumn(
+		        TransformedColumns,
+		        "Product Group",
+		        each 
+		            let 
+		                p = [Product Name],
+		                match = List.First(List.Select(ProductGroupMap, (item) => Text.StartsWith(p, item{0})), null)
+		            in 
+		                if match <> null then match{1} else null,
+		        type text
+		    ),
+		
+		    // กรองเฉพาะสินค้าที่อยู่ในกลุ่ม และตัดรายการที่ไม่ต้องการออกตั้งแต่เนิ่นๆ
+		    FilteredProducts = Table.SelectRows(
+		        AddedProductGroup,
+		        each [Product Group] <> null 
+		            and [Product Name] <> "ข้าวหอม 100% D63"
+		            and not List.AnyTrue(List.Transform(ExcludedContains, (kw) => Text.Contains([Product Name], kw)))
+		            and not List.AnyTrue(List.Transform(ExcludedEndsWith, (kw) => Text.EndsWith(
+		                // จำลองการแทนที่วงเล็บของข้าวนึ่งเกรด B ก่อนเช็ค EndsWith(")")
+		                Text.Replace([Product Name], "ข้าวนึ่ง 100% ดีด สี (เกรด B)", "ข้าวนึ่ง 100% ดีด สี เกรด B"), kw
+		            )))
+		    ),
+		
+		    // ทำความสะอาดชื่อสินค้าในขั้นตอนเดียว
+		    CleanedProductName = Table.TransformColumns(
+		        FilteredProducts,
+		        {{"Product Name", each Text.Replace(Text.Replace(_, "ข้าวนึ่ง 100% ดีด สี (เกรด B)", "ข้าวนึ่ง 100% ดีด สี เกรด B"), " T", ""), type text}}
+		    ),
+		
+		    // แยก CropCode (แก้บั๊กข้าวกล้องหอมที่ชื่อกลุ่มสั้นกว่าคำขึ้นต้น)
+		    AddedCropCode = Table.AddColumn(
+		        CleanedProductName,
+		        "CropCode",
+		        each 
+		            let
+		                prefixToRemove = if [Product Group] = "ข้าวกล้องหอม" then "ข้าวกล้องหอม 100%" else [Product Group]
+		            in
+		                Text.Trim(Text.Replace([Product Name], prefixToRemove, "")),
+		        type text
+		    ),
+		
+		    // คำนวณ CropDate
+		    AddedCropDate = Table.AddColumn(
+		        AddedCropCode,
+		        "CropDate",
+		        each fxExtractCropDate([CropCode]),
+		        type date
+		    ),
+		
+		    // ==========================================
+		    // NEW / OLD CROP LOGIC
+		    // ใช้ "ปีของ CropDate ล่าสุด" เป็นเกณฑ์
+		    // ==========================================
+		
+		    GroupedLatestYear = Table.Group(
+		        AddedCropDate,
+		        {"Product Group"},
+		        {
+		            {
+		                "LatestCropYear",
+		                each List.Max(
+		                    List.Transform(
+		                        [CropDate],
+		                        Date.Year
+		                    )
+		                ),
+		                Int64.Type
+		            }
+		        }
+		    ),
+		
+		    // สร้าง Lookup Table
+		    LatestYearLookup =
+		        Record.FromList(
+		            GroupedLatestYear[LatestCropYear],
+		            GroupedLatestYear[#"Product Group"]
+		        ),
+		
+		    AddedCropStatus =
+		        Table.AddColumn(
+		            AddedCropDate,
+		            "Crop Status",
+		            each
+		                if Date.Year([CropDate]) =
+		                   Record.FieldOrDefault(
+		                       LatestYearLookup,
+		                       [Product Group],
+		                       null
+		                   )
+		                then "New"
+		                else "Old",
+		            type text
+		        ),
+		
+		    GroupedActiveCrop =
+		        Table.Group(
+		            AddedCropStatus,
+		            {"HeaderDate", "Product Group"},
+		            {
+		                {
+		                    "LatestCropInDate",
+		                    each List.Max([CropDate]),
+		                    type date
+		                }
+		            }
+		        ),
+		
+		    MergedActiveCrop =
+		        Table.NestedJoin(
+		            AddedCropStatus,
+		            {"HeaderDate", "Product Group"},
+		            GroupedActiveCrop,
+		            {"HeaderDate", "Product Group"},
+		            "ActiveLookup",
+		            JoinKind.LeftOuter
+		        ),
+		
+		    ExpandedActiveCrop =
+		        Table.ExpandTableColumn(
+		            MergedActiveCrop,
+		            "ActiveLookup",
+		            {"LatestCropInDate"}
+		        ),
+		
+		    AddedPriceSelection =
+		        Table.AddColumn(
+		            ExpandedActiveCrop,
+		            "Price Selection",
+		            each
+		                if [CropDate] = [LatestCropInDate]
+		                then "Keep"
+		                else "Exclude",
+		            type text
+		        ),
+		    #"Removed Other Columns" = Table.SelectColumns(AddedPriceSelection,{"HeaderDate", "SourceCode", "Country Name", "Category Code", "Category Name", "Sub Category Code", "Sub Category Name", "Product Code", "Product Name", "Min Price", "Max Price", "Crop Status", "Price Selection"})
+		in
+		    #"Removed Other Columns"
+		```
+	lineageTag: 8af84ead-f48c-46c5-8b37-ba1573dd8001
+	queryGroup: raw_from_googlesheet
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression fob_prices_oryza =
+		let
+		    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1f7v1pWc0b_P3OblwuNpgkCnaBfusipj5yctyAkf9RN4"),
+		    oryza_prices_Table = Source{[name="oryza_prices",ItemKind="Table"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(oryza_prices_Table, [PromoteAllScalars=true]),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Promoted Headers",{"HeaderDate", "SourceCode", "Country Name", "Category Code", "Category Name", "Sub Category Code", "Sub Category Name", "Product Code", "Product Name", "Min Price", "Max Price"}),
+		    #"Filtered Rows" = Table.SelectRows(
+		    #"Removed Other Columns",
+		    each [SourceCode] = "S005"
+		        and [HeaderDate] > #date(2020, 12, 31)
+		),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{{"HeaderDate", type date}}),
+		    #"Added Custom" = Table.AddColumn(#"Changed Type", "Crop Status", each "New"),
+		    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Price Selection", each "Keep"),
+		    #"Filtered Out CBOT and risotto" = Table.SelectRows(#"Added Custom1", each ([Product Name] <> "CBOT Wheat Cents-Bushel" and [Product Name] <> "Italy risotto"))
+		in
+		    #"Filtered Out CBOT and risotto"
+	lineageTag: 74657b33-4adb-4045-b1f6-624be8b19ae2
+	queryGroup: raw_from_googlesheet
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

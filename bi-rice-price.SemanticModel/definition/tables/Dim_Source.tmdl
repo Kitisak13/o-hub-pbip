@@ -1,0 +1,57 @@
+table Dim_Source
+	lineageTag: 3acb0be3-1db1-4a7b-9e7b-9b02fc558549
+
+	column SourceCode
+		dataType: string
+		lineageTag: a65df940-063a-45a4-9d26-1e3d419c274b
+		summarizeBy: none
+		sourceColumn: SourceCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceName
+		dataType: string
+		lineageTag: f64d8773-ec94-4b84-a6aa-d638c48f91d0
+		summarizeBy: none
+		sourceColumn: SourceName
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Currency Code'
+		dataType: string
+		lineageTag: 54e75828-4005-4379-ac8e-eceb14246cdb
+		summarizeBy: none
+		sourceColumn: Currency Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weight
+		dataType: int64
+		formatString: 0
+		lineageTag: d31a8fe2-c61e-4e93-a65f-2eab667ea957
+		summarizeBy: none
+		sourceColumn: Weight
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit Code'
+		dataType: string
+		lineageTag: 7da5bd77-a89f-4ada-884a-24b50793f069
+		summarizeBy: none
+		sourceColumn: Unit Code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Source = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCjYwMFbSUfLNzMlJTVEIKMpMTlVw8QwBCoV4OAFJQyD2dleK1QErNURX6hzgiUOpKZDn5u8EVedfVFmVCBQJDXaBqgzx91OKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [SourceCode = _t, SourceName = _t, #"Currency Code" = _t, Weight = _t, #"Unit Code" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"SourceCode", type text}, {"SourceName", type text}, {"Currency Code", type text}, {"Weight", Int64.Type}, {"Unit Code", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
