@@ -11,7 +11,7 @@ queryGroup raw_from_googlesheet
 
 	annotation PBI_QueryGroupOrder = 0
 
-annotation __PBI_TimeIntelligenceEnabled = 1
+annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_QueryOrder = ["milled_price_dit","milled_price_cpi","fob_prices_oryza","Fact_Rice_Price","Fact_Exchange_Rate","Dim_Source","Dim_Currency","Dim_Country","Dim_Product"]
 

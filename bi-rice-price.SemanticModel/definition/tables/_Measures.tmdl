@@ -1,14 +1,14 @@
 table _Measures
 	lineageTag: a0000000-0000-0000-0000-000000000001
 
-	/// ราคาต่ำสุดเฉลี่ย (ตามสกุลเงินและหน่วยเดิมของแต่ละแหล่งข้อมูล)
-	measure 'Min Price (Avg)' = AVERAGE(Fact_Rice_Price[Min Price])
+	/// ราคาต่ำสุดเฉลี่ย (ตามสกุลเงินและหน่วยเดิม พร้อมป้องกันกรณีบันทึกเฉพาะ Max Price)
+	measure 'Min Price (Avg)' = AVERAGEX(Fact_Rice_Price, COALESCE(Fact_Rice_Price[Min Price], Fact_Rice_Price[Max Price]))
 		formatString: #,##0.00
 		displayFolder: 01 Base Price
 		lineageTag: 89510b1d-0d71-42ce-93a9-a8fbfd309790
 
-	/// ราคาสูงสุดเฉลี่ย (ตามสกุลเงินและหน่วยเดิมของแต่ละแหล่งข้อมูล)
-	measure 'Max Price (Avg)' = AVERAGE(Fact_Rice_Price[Max Price])
+	/// ราคาสูงสุดเฉลี่ย (ตามสกุลเงินและหน่วยเดิม พร้อมป้องกันกรณีบันทึกเฉพาะ Min Price)
+	measure 'Max Price (Avg)' = AVERAGEX(Fact_Rice_Price, COALESCE(Fact_Rice_Price[Max Price], Fact_Rice_Price[Min Price]))
 		formatString: #,##0.00
 		displayFolder: 01 Base Price
 		lineageTag: b9af349a-039a-42df-bc15-aa2dd2630c6c
@@ -20,13 +20,29 @@ table _Measures
 		lineageTag: 11553849-1414-421a-8583-b799ce083801
 
 	/// ส่วนต่างราคาช่วงกว้าง (Max Price - Min Price)
-	measure 'Price Spread' = [Max Price (Avg)] - [Min Price (Avg)]
+	measure 'Price Spread' =
+			VAR _Min = [Min Price (Avg)]
+			VAR _Max = [Max Price (Avg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Min) && NOT ISBLANK(_Max),
+			        _Max - _Min,
+			        BLANK()
+			    )
 		formatString: #,##0.00
 		displayFolder: 01 Base Price
 		lineageTag: 6a5514d9-b11d-4976-9226-060f98d38cc0
 
 	/// อัตราส่วนต่างราคาช่วงกว้างเทียบกับราคาต่ำสุด
-	measure 'Price Spread %' = DIVIDE([Price Spread], [Min Price (Avg)])
+	measure 'Price Spread %' =
+			VAR _Spread = [Price Spread]
+			VAR _Min = [Min Price (Avg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Spread) && NOT ISBLANK(_Min) && _Min <> 0,
+			        DIVIDE(_Spread, _Min),
+			        BLANK()
+			    )
 		formatString: 0.00%
 		displayFolder: 01 Base Price
 		lineageTag: 5c7f463e-cef0-4cd5-906b-02c41b53af69
@@ -117,79 +133,144 @@ table _Measures
 		lineageTag: f41cd445-965a-4405-8992-0835565e0d2d
 
 	/// ส่วนต่างราคาจัดซื้อ CPI เทียบกับกรมการค้าภายใน DIT (ถ้าติดลบแสดงว่าซื้อถูกกว่าราคาตลาด DIT)
-	measure 'Spread CPI vs DIT (THB/kg)' = [Price CPI (THB/kg)] - [Price DIT (THB/kg)]
+	measure 'Spread CPI vs DIT (THB/kg)' =
+			VAR _CPI = [Price CPI (THB/kg)]
+			VAR _DIT = [Price DIT (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_CPI) && NOT ISBLANK(_DIT),
+			        _CPI - _DIT,
+			        BLANK()
+			    )
 		formatString: +#,##0.00;-#,##0.00;0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 7a2a7129-5ee8-4bfc-8c49-37cfb2755459
 
 	/// เปอร์เซ็นต์ส่วนต่างราคาจัดซื้อ CPI เทียบกับ DIT
-	measure 'Spread % CPI vs DIT' = DIVIDE([Spread CPI vs DIT (THB/kg)], [Price DIT (THB/kg)])
+	measure 'Spread % CPI vs DIT' =
+			VAR _Spread = [Spread CPI vs DIT (THB/kg)]
+			VAR _DIT = [Price DIT (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Spread) && NOT ISBLANK(_DIT) && _DIT <> 0,
+			        DIVIDE(_Spread, _DIT),
+			        BLANK()
+			    )
 		formatString: +0.00%;-0.00%;0.00%
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 0753a6a8-fcfc-4307-b3f1-acb589fe0f6f
 
 	/// ส่วนต่างราคา FOB ส่งออก Oryza เทียบกับราคาข้าวสารในประเทศ DIT (Export Parity Spread)
-	measure 'Spread Oryza vs DIT (THB/kg)' = [Price Oryza (THB/kg)] - [Price DIT (THB/kg)]
+	measure 'Spread Oryza vs DIT (THB/kg)' =
+			VAR _Oryza = [Price Oryza (THB/kg)]
+			VAR _DIT = [Price DIT (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Oryza) && NOT ISBLANK(_DIT),
+			        _Oryza - _DIT,
+			        BLANK()
+			    )
 		formatString: +#,##0.00;-#,##0.00;0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 0827d3fc-24b6-49d0-9c7f-71821df48d3b
 
 	/// เปอร์เซ็นต์ส่วนต่างราคา FOB Oryza เทียบกับ DIT
-	measure 'Spread % Oryza vs DIT' = DIVIDE([Spread Oryza vs DIT (THB/kg)], [Price DIT (THB/kg)])
+	measure 'Spread % Oryza vs DIT' =
+			VAR _Spread = [Spread Oryza vs DIT (THB/kg)]
+			VAR _DIT = [Price DIT (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Spread) && NOT ISBLANK(_DIT) && _DIT <> 0,
+			        DIVIDE(_Spread, _DIT),
+			        BLANK()
+			    )
 		formatString: +0.00%;-0.00%;0.00%
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 9104dd33-b61a-4da4-8900-690b98683fee
 
 	/// ส่วนต่างราคา FOB Oryza เทียบกับราคาจัดซื้อ CPI
-	measure 'Spread Oryza vs CPI (THB/kg)' = [Price Oryza (THB/kg)] - [Price CPI (THB/kg)]
+	measure 'Spread Oryza vs CPI (THB/kg)' =
+			VAR _Oryza = [Price Oryza (THB/kg)]
+			VAR _CPI = [Price CPI (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Oryza) && NOT ISBLANK(_CPI),
+			        _Oryza - _CPI,
+			        BLANK()
+			    )
 		formatString: +#,##0.00;-#,##0.00;0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 9b7fda5c-3b3f-49c2-8125-7654681568ed
 
-	/// ค่าเบี่ยงเบนมาตรฐานของราคา (วัดความผันผวนของราคาข้าว)
-	measure 'Price Volatility (StdDev)' = STDEVX.S(Fact_Rice_Price, Fact_Rice_Price[Min Price])
+	/// ค่าเบี่ยงเบนมาตรฐานของราคา (วัดความผันผวนจากราคาเฉลี่ยกึ่งกลางระดับแถว พร้อมป้องกันกรณีมีแต่ Max Price)
+	measure 'Price Volatility (StdDev)' =
+			STDEVX.S(
+			    Fact_Rice_Price,
+			    VAR _Min = Fact_Rice_Price[Min Price]
+			    VAR _Max = Fact_Rice_Price[Max Price]
+			    RETURN
+			        SWITCH(
+			            TRUE(),
+			            NOT ISBLANK(_Min) && NOT ISBLANK(_Max), (_Min + _Max) / 2,
+			            NOT ISBLANK(_Max), _Max,
+			            NOT ISBLANK(_Min), _Min,
+			            BLANK()
+			        )
+			)
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 10b3b56e-aca3-4c58-9e19-9454d0eb5c3f
 
 	/// อัตราความผันผวนของราคาข้าว (Coefficient of Variation = StdDev / Mean)
-	measure 'Price Volatility %' = DIVIDE([Price Volatility (StdDev)], [Mid Price])
+	measure 'Price Volatility %' =
+			VAR _StdDev = [Price Volatility (StdDev)]
+			VAR _Mean = [Avg. Price]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_StdDev) && NOT ISBLANK(_Mean) && _Mean <> 0,
+			        DIVIDE(_StdDev, _Mean),
+			        BLANK()
+			    )
 		formatString: 0.00%
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 955cc610-a768-47ad-9894-f76caec3b71c
 
-	/// ราคาสูงสุดในรอบ 52 สัปดาห์ (52-Week High)
+	/// ราคาสูงสุดในรอบ 52 สัปดาห์ (52-Week High พร้อมป้องกันกรณีบันทึกเฉพาะ Min Price)
 	measure 'Price 52W High' =
 			VAR _MaxDate = MAX(Dim_Date[Date])
 			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -52, WEEK)
 			RETURN
 			    CALCULATE(
-			        MAXX(Fact_Rice_Price, Fact_Rice_Price[Max Price]),
+			        MAXX(Fact_Rice_Price, COALESCE(Fact_Rice_Price[Max Price], Fact_Rice_Price[Min Price])),
 			        _Dates52W
 			    )
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 55fa218c-11da-4bb1-a75c-88c71ca34d7b
 
-	/// ราคาต่ำสุดในรอบ 52 สัปดาห์ (52-Week Low)
+	/// ราคาต่ำสุดในรอบ 52 สัปดาห์ (52-Week Low พร้อมป้องกันกรณีบันทึกเฉพาะ Max Price)
 	measure 'Price 52W Low' =
 			VAR _MaxDate = MAX(Dim_Date[Date])
 			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -52, WEEK)
 			RETURN
 			    CALCULATE(
-			        MINX(Fact_Rice_Price, Fact_Rice_Price[Min Price]),
+			        MINX(Fact_Rice_Price, COALESCE(Fact_Rice_Price[Min Price], Fact_Rice_Price[Max Price])),
 			        _Dates52W
 			    )
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 3b44c36c-efbd-4680-9170-395733f83964
 
-	/// ส่วนต่างราคาปัจจุบันเทียบกับราคาสูงสุดรอบ 52 สัปดาห์
+	/// ส่วนต่างราคาปัจจุบันเทียบกับราคาสูงสุดรอบ 52 สัปดาห์ (ป้องกันกรณีไม่มีราคาปัจจุบัน)
 	measure 'Price vs 52W High %' =
 			VAR _High = [Price 52W High]
-			VAR _Current = [Mid Price]
+			VAR _Current = [Avg. Price]
 			RETURN
-			    DIVIDE(_Current - _High, _High)
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_High) && _High <> 0,
+			        DIVIDE(_Current - _High, _High),
+			        BLANK()
+			    )
 		formatString: +0.00%;-0.00%;0.00%
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 36d89b70-f17d-4fb1-8574-60727998ade9
@@ -463,13 +544,29 @@ table _Measures
 		lineageTag: bc839290-2a5f-4f32-8bb0-5b803d429830
 
 	/// ส่วนต่างราคาข้าวเก่าเทียบข้าวใหม่ (Old vs New Crop Spread THB/kg)
-	measure 'Old vs New Crop Spread (THB/kg)' = [Price Old Crop (THB/kg)] - [Price New Crop (THB/kg)]
+	measure 'Old vs New Crop Spread (THB/kg)' =
+			VAR _Old = [Price Old Crop (THB/kg)]
+			VAR _New = [Price New Crop (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Old) && NOT ISBLANK(_New),
+			        _Old - _New,
+			        BLANK()
+			    )
 		formatString: +#,##0.00;-#,##0.00;0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 07185598-aa24-418b-8f59-ee15025c2ed9
 
 	/// เปอร์เซ็นต์พรีเมียมราคาข้าวเก่าเทียบข้าวใหม่ (Old vs New Crop Spread %)
-	measure 'Old vs New Crop Spread %' = DIVIDE([Old vs New Crop Spread (THB/kg)], [Price New Crop (THB/kg)])
+	measure 'Old vs New Crop Spread %' =
+			VAR _Spread = [Old vs New Crop Spread (THB/kg)]
+			VAR _New = [Price New Crop (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Spread) && NOT ISBLANK(_New) && _New <> 0,
+			        DIVIDE(_Spread, _New),
+			        BLANK()
+			    )
 		formatString: +0.00%;-0.00%;0.00%
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 20362ab3-d2b2-42f8-8a00-3a4b46ffb4e4
@@ -515,13 +612,29 @@ table _Measures
 		lineageTag: f0907276-faf2-41a1-b582-3d587fe4ae5c
 
 	/// ส่วนต่างราคาส่งออกไทยเทียบเวียดนาม (FOB Spread TH vs VN USD/ton)
-	measure 'FOB Spread TH vs VN (USD/ton)' = [FOB Thailand (USD/ton)] - [FOB Vietnam (USD/ton)]
+	measure 'FOB Spread TH vs VN (USD/ton)' =
+			VAR _TH = [FOB Thailand (USD/ton)]
+			VAR _VN = [FOB Vietnam (USD/ton)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_TH) && NOT ISBLANK(_VN),
+			        _TH - _VN,
+			        BLANK()
+			    )
 		formatString: +#,##0.00;-#,##0.00;0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 721db2da-6eee-46ce-90ff-94b63e37332d
 
 	/// ส่วนต่างราคาส่งออกไทยเทียบอินเดีย (FOB Spread TH vs IN USD/ton)
-	measure 'FOB Spread TH vs IN (USD/ton)' = [FOB Thailand (USD/ton)] - [FOB India (USD/ton)]
+	measure 'FOB Spread TH vs IN (USD/ton)' =
+			VAR _TH = [FOB Thailand (USD/ton)]
+			VAR _IN = [FOB India (USD/ton)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_TH) && NOT ISBLANK(_IN),
+			        _TH - _IN,
+			        BLANK()
+			    )
 		formatString: +#,##0.00;-#,##0.00;0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: ac41c3aa-0e20-43c0-95e0-ccce785a5803
@@ -539,26 +652,26 @@ table _Measures
 			        CONTAINSSTRING(Dim_Product[Product Name], "ข้าวขาว 5%")
 			    )
 			RETURN
-			    DIVIDE(_BrokenPrice, _WhiteRicePrice)
+			    IF(
+			        NOT ISBLANK(_BrokenPrice) && NOT ISBLANK(_WhiteRicePrice) && _WhiteRicePrice <> 0,
+			        DIVIDE(_BrokenPrice, _WhiteRicePrice),
+			        BLANK()
+			    )
 		formatString: 0.00%
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 87da8731-0788-4137-ac75-fcf299ec2080
 
 	/// ดัชนีระดับราคาในกรอบ 52 สัปดาห์ (52W Price Position % หรือ Stochastic Indicator)
 	measure '52W Price Position %' =
-			VAR _Current = [Price (THB/kg)]
-			VAR _Low52W =
-			    CALCULATE(
-			        MINX(VALUES(Dim_Date[Date]), [Price (THB/kg)]),
-			        DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -52, WEEK)
-			    )
-			VAR _High52W =
-			    CALCULATE(
-			        MAXX(VALUES(Dim_Date[Date]), [Price (THB/kg)]),
-			        DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -52, WEEK)
-			    )
+			VAR _Current = [Avg. Price]
+			VAR _Low52W = [Price 52W Low]
+			VAR _High52W = [Price 52W High]
 			RETURN
-			    DIVIDE(_Current - _Low52W, _High52W - _Low52W)
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Low52W) && NOT ISBLANK(_High52W) && _High52W <> _Low52W,
+			        DIVIDE(_Current - _Low52W, _High52W - _Low52W),
+			        BLANK()
+			    )
 		formatString: 0.00%
 		displayFolder: 05 Moving Averages & Trend
 		lineageTag: 30a1804c-3d14-4395-8b5a-86d166721d32
@@ -597,7 +710,11 @@ table _Measures
 			        REMOVEFILTERS(Dim_Date)
 			    )
 			RETURN
-			    DIVIDE(_CurrentFX - _PrevFX, _PrevFX)
+			    IF(
+			        NOT ISBLANK(_CurrentFX) && NOT ISBLANK(_PrevFX) && _PrevFX <> 0,
+			        DIVIDE(_CurrentFX - _PrevFX, _PrevFX),
+			        BLANK()
+			    )
 		formatString: +0.00%;-0.00%;0.00%
 		displayFolder: 02 Currency & Unit Conversion
 		lineageTag: 8c2e0996-7d84-41f3-af65-a5e71eb98e03
@@ -607,7 +724,11 @@ table _Measures
 			VAR _CurrentFX = [Exchange Rate USD/THB]
 			VAR _Prev30DFX = CALCULATE([Exchange Rate USD/THB], DATEADD(Dim_Date[Date], -30, DAY))
 			RETURN
-			    DIVIDE(_CurrentFX - _Prev30DFX, _Prev30DFX)
+			    IF(
+			        NOT ISBLANK(_CurrentFX) && NOT ISBLANK(_Prev30DFX) && _Prev30DFX <> 0,
+			        DIVIDE(_CurrentFX - _Prev30DFX, _Prev30DFX),
+			        BLANK()
+			    )
 		formatString: +0.00%;-0.00%;0.00%
 		displayFolder: 02 Currency & Unit Conversion
 		lineageTag: 1dde3ed0-3e7f-4c31-ab73-f5ee9f036ed5
