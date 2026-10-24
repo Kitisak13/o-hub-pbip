@@ -3,8 +3,8 @@
   "name": "76e5dee052e5452704ca",
   "displayName": "Oryza",
   "displayOption": "FitToPage",
-  "height": 1080,
-  "width": 1920,
+  "height": 720,
+  "width": 1280,
   "filterConfig": {
     "filters": [
       {
@@ -65,13 +65,18 @@
   },
   "visualInteractions": [
     {
-      "source": "0ee705ebbfebbcb95762",
-      "target": "709af2582dd3db0418e5",
+      "source": "29623d76c55d4353d2fd",
+      "target": "8df26fb6f110dfda390d",
       "type": "NoFilter"
     },
     {
-      "source": "0ee705ebbfebbcb95762",
-      "target": "84ab5684f08bedf70015",
+      "source": "29623d76c55d4353d2fd",
+      "target": "576a86dd7d1643c92916",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8df26fb6f110dfda390d",
+      "target": "576a86dd7d1643c92916",
       "type": "NoFilter"
     }
   ]

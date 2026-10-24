@@ -826,6 +826,142 @@ table _Measures
 		displayFolder: 06 Time Intelligence
 		lineageTag: 38291047-5829-4c19-a928-392817462910
 
+	/// ราคาข้าว Oryza เฉลี่ยสัปดาห์ก่อนหน้า (USD/ton)
+	measure 'Price Oryza Previous Week' = CALCULATE([Price Oryza (USD/ton)], DATEADD(Dim_Date[Date], -7, DAY))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 71239102-1928-4c12-9912-827361928101
+
+	/// การเปลี่ยนแปลงราคาข้าว Oryza เทียบสัปดาห์ก่อนหน้า (USD/ton)
+	measure 'Price Oryza WoW Change' =
+			VAR _Current = [Price Oryza (USD/ton)]
+			VAR _Prior = [Price Oryza Previous Week]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
+			        _Current - _Prior,
+			        BLANK()
+			    )
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: 82910394-8291-4e12-8812-736291029102
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าว Oryza เทียบสัปดาห์ก่อนหน้า (WoW % USD)
+	measure 'Price Oryza WoW %' =
+			VAR _Current = [Price Oryza (USD/ton)]
+			VAR _Prior = [Price Oryza Previous Week]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: 92830192-3847-4f12-7712-647382910203
+
+	/// สีประจำตัวของสินค้าข้าวแต่ละชนิด เพื่อความสอดคล้องระหว่างเส้นกราฟและปุ่ม Slicer
+	measure 'Product Line Color' =
+			VAR _Product = SELECTEDVALUE(Dim_Product[Product Name])
+			RETURN
+			    SWITCH(
+			        _Product,
+			        -- High Quality
+			        "Thailand 100% B grade", "#005F73",
+			        "Thailand 5% broken", "#0A9396",
+			        "Vietnam 5% broken", "#E63946",
+			        "India 5% broken", "#7209B7",
+			        "Pakistan 5% broken", "#FB8500",
+			        "Myanmar 5% broken", "#3A0CA3",
+			        "U.S. 4% broken", "#1D4ED8",
+			        "Brazil 5% broken", "#2A9D8F",
+			        "Uruguay 5% broken", "#4CC9F0",
+			        "Argentina 5% broken", "#F72585",
+
+			        -- Low Quality
+			        "Thailand 25% broken", "#0A9396",
+			        "Vietnam 25% broken", "#E63946",
+			        "Pakistan 25% broken", "#FB8500",
+			        "India 25% broken", "#7209B7",
+			        "U.S. 15% broken (sacked)", "#1D4ED8",
+
+			        -- Parboiled
+			        "Thai Parboiled 100% stxd", "#0A9396",
+			        "Pakistan parboiled 5% broken stxd", "#FB8500",
+			        "India parboiled 5% broken stxd", "#7209B7",
+			        "U.S. parboiled 4% broken", "#1D4ED8",
+			        "Brazil parboiled 5% broken", "#2A9D8F",
+			        "Uruguay parboiled 5% broken", "#4CC9F0",
+
+			        -- Fragrant
+			        "Thailand Hommali 92%", "#0A9396",
+			        "Vietnam Jasmine", "#E63946",
+
+			        -- Brokens
+			        "Thailand A1 Super", "#0A9396",
+			        "Vietnam 100% broken", "#E63946",
+			        "Pakistan 100% broken stxd", "#FB8500",
+			        "India 100% Broken stxd", "#7209B7",
+			        "Indian 100% broken stxd", "#7209B7",
+			        "U.S. pet food", "#1D4ED8",
+
+			        -- Medium Grain
+			        "U.S. Calrose 4% broken", "#1D4ED8",
+			        "Italy risotto", "#F72585",
+
+			        -- Fallback by Country
+			        IF(CONTAINSSTRING(_Product, "Thai"), "#0A9396",
+			        IF(CONTAINSSTRING(_Product, "Viet"), "#E63946",
+			        IF(CONTAINSSTRING(_Product, "India") || CONTAINSSTRING(_Product, "Indian"), "#7209B7",
+			        IF(CONTAINSSTRING(_Product, "Pakistan"), "#FB8500",
+			        IF(CONTAINSSTRING(_Product, "U.S.") || CONTAINSSTRING(_Product, "US"), "#1D4ED8", "#64748B")))))
+			    )
+		displayFolder: 07. UI & System Helpers
+		lineageTag: c1c43b92-4f81-49ea-bc91-23da567a3001
+
+	/// ชื่อหมวดหมู่ข้าว Oryza สำหรับ Header Card ด้านบน
+	measure 'Title Oryza Category' =
+			VAR _SelectedSubCat = SELECTEDVALUE(Dim_Product[New Sub Category Name])
+			RETURN
+			    IF(
+			        NOT ISBLANK(_SelectedSubCat),
+			        "Oryza Global Rice Price : " & _SelectedSubCat,
+			        "Oryza Global Rice Price : All Categories"
+			    )
+		displayFolder: 10. Text
+		lineageTag: a1c43b92-4f81-49ea-bc91-23da567a1001
+
+	/// ชื่อกราฟและสินค้าข้าวสำหรับหัวกราฟ Line Chart
+	measure 'Title Oryza Category & Product' =
+			VAR _SelectedSubCat = SELECTEDVALUE(Dim_Product[New Sub Category Name], "All Categories")
+			VAR _Product = SELECTEDVALUE(Dim_Product[Product Name])
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Product),
+			        "Oryza Global Rice Price : " & _SelectedSubCat & " > " & _Product,
+			        "Oryza Global Rice Price : " & _SelectedSubCat & " > Multiple Products"
+			    )
+		displayFolder: 10. Text
+		lineageTag: a1c43b92-4f81-49ea-bc91-23da567a1002
+
+	/// ข้อความสรุป Sentiment ตลาดข้าวสำหรับ Subtitle ของ Line Chart
+	measure 'Market Movement Summary Text' =
+			VAR _WoW = [Price Oryza WoW %]
+			VAR _MoM = [Price Oryza MoM %]
+			VAR _Status =
+			    SWITCH(
+			        TRUE(),
+			        _WoW > 0.02 && _MoM > 0.05, "Strong Bullish (Accelerating Upward)",
+			        _WoW > 0, "Mild Bullish (Upward Momentum)",
+			        _WoW < -0.02 && _MoM < -0.05, "Strong Bearish (Sharp Correction)",
+			        _WoW < 0, "Mild Bearish (Downward Pressure)",
+			        "Stable / Neutral"
+			    )
+			RETURN
+			    "Market Sentiment: " & _Status & " (WoW: " & FORMAT(_WoW, "+0.0%;-0.0%;0.0%") & " | MoM: " & FORMAT(_MoM, "+0.0%;-0.0%;0.0%") & ")"
+		displayFolder: 10. Text
+		lineageTag: a1c43b92-4f81-49ea-bc91-23da567a1004
+
 	column Dummy
 		dataType: int64
 		isHidden
