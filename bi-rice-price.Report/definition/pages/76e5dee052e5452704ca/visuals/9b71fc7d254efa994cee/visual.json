@@ -28,7 +28,7 @@
               },
               "queryRef": "_Measures.Price Oryza Latest (USD/ton)",
               "nativeQueryRef": "Spot Price",
-              "displayName": "(USD/t)"
+              "displayName": "Spot (USD/t)"
             },
             {
               "field": {
@@ -43,7 +43,7 @@
               },
               "queryRef": "_Measures.Price Oryza DoD %",
               "nativeQueryRef": "Day-over-Day",
-              "displayName": "DoD%"
+              "displayName": "DoD %"
             }
           ]
         },
@@ -147,14 +147,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
-                }
-              }
-            },
-            "bold": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
+                  "Value": "11.5D"
                 }
               }
             },
@@ -162,38 +155,10 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Measures"
-                        }
-                      },
-                      "Property": "Product Line Color"
+                    "Literal": {
+                      "Value": "'#0F172A'"
                     }
                   }
-                }
-              }
-            },
-            "backColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Measures"
-                        }
-                      },
-                      "Property": "Product Header Tint Color"
-                    }
-                  }
-                }
-              }
-            },
-            "backgroundShow": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
                 }
               }
             }
@@ -204,39 +169,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Measures"
-                        }
-                      },
-                      "Property": "Product Line Color"
-                    }
-                  }
-                }
-              }
-            },
-            "backColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Measures"
-                        }
-                      },
-                      "Property": "Product Header Tint Color"
-                    }
-                  }
+                  "Value": "11.5D"
                 }
               }
             }
@@ -296,13 +229,8 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Measures"
-                        }
-                      },
-                      "Property": "Product Line Color"
+                    "Literal": {
+                      "Value": "'#CBD5E1'"
                     }
                   }
                 }
@@ -311,7 +239,7 @@
             "gridlineWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "2D"
+                  "Value": "1D"
                 }
               }
             }
@@ -440,7 +368,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "15D"
+                  "Value": "14D"
                 }
               }
             },
@@ -455,13 +383,8 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Measures"
-                        }
-                      },
-                      "Property": "Price Oryza DoD Color"
+                    "Literal": {
+                      "Value": "'#475569'"
                     }
                   }
                 }
@@ -629,37 +552,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "position": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Top'"
-                }
-              }
-            },
-            "width": {
-              "expr": {
-                "Literal": {
-                  "Value": "4L"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Measures"
-                        }
-                      },
-                      "Property": "Product Line Color"
-                    }
-                  }
+                  "Value": "false"
                 }
               }
             }
@@ -707,14 +600,14 @@
             "bottomMargin": {
               "expr": {
                 "Literal": {
-                  "Value": "12L"
+                  "Value": "14L"
                 }
               }
             },
             "topMargin": {
               "expr": {
                 "Literal": {
-                  "Value": "10L"
+                  "Value": "12L"
                 }
               }
             },

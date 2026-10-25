@@ -147,3 +147,26 @@
   - ปรับปรุง Measure `[Product Country Flag SVG]` ให้ประเมินผลจาก `SELECTEDVALUE(Dim_Product[Product Name], "")` โดยตรง ไม่ต้องพึ่งพา `Fact_Rice_Price` ป้องกันปัญหา Context หายเมื่อกรองผ่าน Date Slicer
   - ธงชาติ Vector SVG แสดงผลคมชัดครบทุกประเทศ 100%
 
+---
+
+## 6. บทสรุปสุดท้ายและการแก้ปัญหาขั้นเด็ดขาด (DA-review3 Final Implementation)
+
+จากการทดสอบพฤติกรรมจริงของเอนจิน Power BI Desktop ใน [DA-review3.md](file:///d:/OneDrive%20-%20CPCRT/Job/Power%20BI%20Project/Project-Oryza-Hub/pbip/power-bi-visual/DA-review3.md):
+
+1. **ปัญหา Accent Bar ใน Small Multiples:**
+   - ใน `cardVisual` แอตทริบิวต์ `accentBar` ถูกผูกไว้กับ Callout Value แต่ละตัว ทำให้ปรากฏเป็นขีดเทา 2 ขีดคั่นกลางตัวเลข และสีไม่สามารถรับ Filter Context ของ Small Multiples ได้
+   - **การแก้ไข:** ปิด `accentBar` (`"show": false`) และปรับดีไซน์เป็นการ์ดคลีนสไตล์ Bloomberg / Executive Command:
+     - เส้นขอบการ์ดบางเฉียบ `#CBD5E1` (`1D`)
+     - หัวการ์ดชื่อสินค้าสีกรมท่า `#0F172A` (11.5pt)
+     - ตัวเลข Spot Price 16pt (Segoe UI Semibold)
+     - ตัวเลข DoD % 14pt สี `#475569`
+2. **การแก้ปัญหาสัญลักษณ์และการแสดงผล `DoD %` ด้วย Native Format String:**
+   - ปรับ Measure `Price Oryza DoD %` ใน `_Measures.tmdl` ให้มีรูปแบบ:
+     ```tmdl
+     formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+     ```
+   - วิธีนี้อาศัยความสามารถของ Analysis Services / DAX Engine โดยตรง ทำให้ตัวเลขมีสัญลักษณ์ **▲ (เมื่อราคาขึ้น)**, **▼ (เมื่อราคาลง)** และ **● 0.00% (เมื่อราคาทรงตัว)** โดยอัตโนมัติ โดยไม่ติดปัญหา Context หรือบั๊กสีของ Small Multiples
+3. **การตัด Visual Matrix (`c7a4b8d2e1f34906a5b1`) ออกอย่างสมบูรณ์:**
+   - ลบ Visual Matrix ทิ้ง เพื่อคืนพื้นที่และไม่ให้บดบัง Line Chart ด้านล่าง ทำให้ภาพรวมหน้าแดชบอร์ดสะอาด สวยงาม และอ่านง่ายระดับผู้บริหารสูงสุด
+
+

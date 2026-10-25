@@ -1072,7 +1072,7 @@ table _Measures
 			        DIVIDE(_Current - _Prior, _Prior),
 			        BLANK()
 			    )
-		formatString: +0.00%;-0.00%;0.00%
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
 		displayFolder: 03 Specific Sources\Oryza
 		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2013
 
