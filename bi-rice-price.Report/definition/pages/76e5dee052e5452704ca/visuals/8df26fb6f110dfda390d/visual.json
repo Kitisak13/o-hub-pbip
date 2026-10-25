@@ -72,6 +72,20 @@
                           [
                             {
                               "Literal": {
+                                "Value": "'Argentina 5% broken'"
+                              }
+                            }
+                          ],
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'India 5% broken'"
+                              }
+                            }
+                          ],
+                          [
+                            {
+                              "Literal": {
                                 "Value": "'India 25% broken'"
                               }
                             }
@@ -94,69 +108,6 @@
                             {
                               "Literal": {
                                 "Value": "'Vietnam 25% broken'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Argentina 5% broken'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Brazil 5% broken'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'India 5% broken'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Myanmar 5% broken'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Pakistan 5% broken'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Thailand 100% B grade'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Thailand 5% broken'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'U.S. 4% broken'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Vietnam 5% broken'"
                               }
                             }
                           ],
@@ -255,13 +206,6 @@
                             {
                               "Literal": {
                                 "Value": "'Pakistan parboiled 5% broken stxd'"
-                              }
-                            }
-                          ],
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Uruguay 5% broken'"
                               }
                             }
                           ],

@@ -307,32 +307,52 @@ table _Measures
 
 	/// ราคา ณ วันทำการซื้อขายก่อนหน้า (รองรับการข้ามวันหยุดเสาร์-อาทิตย์และวันหยุดนักขัตฤกษ์)
 	measure 'Price Previous Trading Day' =
-			VAR _CurrentDate = MAX(Dim_Date[Date])
-			VAR _PrevDate =
+			VAR _IsOryza =
 			    CALCULATE(
-			        MAX(Fact_Rice_Price[HeaderDate]),
-			        Fact_Rice_Price[HeaderDate] < _CurrentDate,
-			        REMOVEFILTERS(Dim_Date)
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
 			    )
 			RETURN
-			    CALCULATE(
-			        [Price (THB/kg)],
-			        Dim_Date[Date] = _PrevDate,
-			        REMOVEFILTERS(Dim_Date)
+			    IF(
+			        _IsOryza,
+			        [Price Oryza Previous Trading Day (USD/ton)],
+			        VAR _CurrentDate = MAX(Dim_Date[Date])
+			        VAR _PrevDate =
+			            CALCULATE(
+			                MAX(Fact_Rice_Price[HeaderDate]),
+			                Fact_Rice_Price[HeaderDate] < _CurrentDate,
+			                REMOVEFILTERS(Dim_Date)
+			            )
+			        RETURN
+			            CALCULATE(
+			                [Price (THB/kg)],
+			                Dim_Date[Date] = _PrevDate,
+			                REMOVEFILTERS(Dim_Date)
+			            )
 			    )
 		formatString: #,##0.00
 		displayFolder: 06 Time Intelligence
 		lineageTag: dccc727f-6bb0-4437-acb5-e09c56514676
 
-	/// การเปลี่ยนแปลงราคาเทียบวันทำการก่อนหน้า (Day-over-Day Change THB/kg)
+	/// การเปลี่ยนแปลงราคาเทียบวันทำการก่อนหน้า (Day-over-Day Change)
 	measure 'Price DoD Change' =
-			VAR _Current = [Price (THB/kg)]
-			VAR _Prior = [Price Previous Trading Day]
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
 			RETURN
 			    IF(
-			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
-			        _Current - _Prior,
-			        BLANK()
+			        _IsOryza,
+			        [Price Oryza DoD Change],
+			        VAR _Current = [Price (THB/kg)]
+			        VAR _Prior = [Price Previous Trading Day]
+			        RETURN
+			            IF(
+			                NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
+			                _Current - _Prior,
+			                BLANK()
+			            )
 			    )
 		formatString: +#,##0.00;-#,##0.00;0.00
 		displayFolder: 06 Time Intelligence
@@ -340,13 +360,23 @@ table _Measures
 
 	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาเทียบวันทำการก่อนหน้า (Day-over-Day %)
 	measure 'Price DoD %' =
-			VAR _Current = [Price (THB/kg)]
-			VAR _Prior = [Price Previous Trading Day]
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
 			RETURN
 			    IF(
-			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
-			        DIVIDE(_Current - _Prior, _Prior),
-			        BLANK()
+			        _IsOryza,
+			        [Price Oryza DoD %],
+			        VAR _Current = [Price (THB/kg)]
+			        VAR _Prior = [Price Previous Trading Day]
+			        RETURN
+			            IF(
+			                NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			                DIVIDE(_Current - _Prior, _Prior),
+			                BLANK()
+			            )
 			    )
 		formatString: +0.00%;-0.00%;0.00%
 		displayFolder: 06 Time Intelligence
@@ -961,6 +991,119 @@ table _Measures
 			    "Market Sentiment: " & _Status & " (WoW: " & FORMAT(_WoW, "+0.0%;-0.0%;0.0%") & " | MoM: " & FORMAT(_MoM, "+0.0%;-0.0%;0.0%") & ")"
 		displayFolder: 10. Text
 		lineageTag: a1c43b92-4f81-49ea-bc91-23da567a1004
+
+	/// ราคาข้าว Oryza ล่าสุด (USD/ton)
+	measure 'Price Oryza Latest (USD/ton)' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S005"
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_LatestDate),
+			        CALCULATE(
+			            [Price Oryza (USD/ton)],
+			            Fact_Rice_Price[HeaderDate] = _LatestDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources\Oryza
+		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2010
+
+	/// ราคาข้าว Oryza ณ วันทำการซื้อขายก่อนหน้า (USD/ton)
+	measure 'Price Oryza Previous Trading Day (USD/ton)' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S005"
+			    )
+			VAR _PrevDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] < _LatestDate,
+			        Fact_Rice_Price[SourceCode] = "S005",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_PrevDate),
+			        CALCULATE(
+			            [Price Oryza (USD/ton)],
+			            Fact_Rice_Price[HeaderDate] = _PrevDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources\Oryza
+		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2011
+
+	/// การเปลี่ยนแปลงราคาข้าว Oryza เทียบวันทำการก่อนหน้า (USD/ton)
+	measure 'Price Oryza DoD Change' =
+			VAR _Current = [Price Oryza Latest (USD/ton)]
+			VAR _Prior = [Price Oryza Previous Trading Day (USD/ton)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior),
+			        _Current - _Prior,
+			        BLANK()
+			    )
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 03 Specific Sources\Oryza
+		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2012
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าว Oryza เทียบวันทำการก่อนหน้า (DoD % USD)
+	measure 'Price Oryza DoD %' =
+			VAR _Current = [Price Oryza Latest (USD/ton)]
+			VAR _Prior = [Price Oryza Previous Trading Day (USD/ton)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 03 Specific Sources\Oryza
+		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2013
+
+	/// ข้อความแสดงการเปลี่ยนแปลงราคา DoD พร้อมสัญลักษณ์ลูกศรแนวโน้ม
+	measure 'Price Oryza DoD Display' =
+			VAR _Pct = [Price Oryza DoD %]
+			VAR _Diff = [Price Oryza DoD Change]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(_Pct), "-",
+			        _Pct > 0, "▲ +" & FORMAT(_Pct, "0.00%") & " (+$" & FORMAT(_Diff, "#,##0.00") & ")",
+			        _Pct < 0, "▼ " & FORMAT(_Pct, "0.00%") & " (-$" & FORMAT(ABS(_Diff), "#,##0.00") & ")",
+			        "● 0.00% ($0.00)"
+			    )
+		displayFolder: 10. Text
+		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2014
+
+	/// สี Dynamic สำหรับการเปลี่ยนแปลงราคา DoD (เขียว/แดง/เทา)
+	measure 'Price Oryza DoD Color' =
+			VAR _Pct = [Price Oryza DoD %]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(_Pct), "#64748B",
+			        _Pct > 0, "#10B981",
+			        _Pct < 0, "#EF4444",
+			        "#64748B"
+			    )
+		displayFolder: 10. Text
+		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2015
+
+	measure 'Latest Price (USD/Ton)' = [Price Oryza Latest (USD/ton)]
+		formatString: #,##0.00
+		displayFolder: 07 KPI & Summary
+		lineageTag: 04a70bb4-b8d3-4020-91e6-8dc9b501be2d
 
 	column Dummy
 		dataType: int64

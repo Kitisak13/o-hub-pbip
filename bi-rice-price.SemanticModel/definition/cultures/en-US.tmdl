@@ -8046,6 +8046,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.739
 			          }
+			        },
+			        {
+			          "% change": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -9662,26 +9672,1765 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "table_measures.price_oryza_mom_": {
+			    "entity__measure.price_oryza_MoM_": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "_Measures",
 			          "ConceptualProperty": "Price Oryza MoM %"
 			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza MoM %": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza mom percentage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.771
+			          }
+			        },
+			        {
+			          "price oryza mom pct": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.748
+			          }
+			        }
+			      ]
 			    },
-			    "table_measures.price_oryza_yoy_": {
+			    "entity__measure.price_oryza_YoY_": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "_Measures",
 			          "ConceptualProperty": "Price Oryza YoY %"
 			        }
 			      },
-			      "State": "Generated"
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza YoY %": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza yoy percentage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.771
+			          }
+			        },
+			        {
+			          "price oryza yoy pct": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.748
+			          }
+			        }
+			      ]
+			    },
+			    "dim_product.new_sub_category_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Dim_Product",
+			          "ConceptualProperty": "New Sub Category Name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "new sub category name": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "category": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "sub category": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "sub classification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "new sub category nickname": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.748
+			          }
+			        },
+			        {
+			          "new sub category title": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.748
+			          }
+			        },
+			        {
+			          "new sub category label": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.748
+			          }
+			        },
+			        {
+			          "new sub category tag": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.748
+			          }
+			        },
+			        {
+			          "classification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "sub class": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        },
+			        {
+			          "sub group": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        },
+			        {
+			          "sub type": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        },
+			        {
+			          "sub grouping": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_previous_month": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza Previous Month"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza previous month": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza previous mth": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.771
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_MoM_change": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza MoM Change"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza MoM change": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza mom alteration": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza mom modification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza mom variation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza mom transformation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza mom revolution": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza mom conversion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza mom adjustment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza mom amendment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza mom difference": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "price oryza mom cash": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.474
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_previous_year": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza Previous Year"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza previous year": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza previous yr": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.771
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_YoY_change": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza YoY Change"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza YoY change": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza yoy alteration": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza yoy modification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza yoy variation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza yoy transformation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza yoy revolution": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza yoy conversion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza yoy adjustment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza yoy amendment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza yoy difference": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "price oryza yoy cash": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.474
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_previous_week": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza Previous Week"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza previous week": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_WoW_change": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza WoW Change"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza WoW change": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza wow alteration": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza wow modification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza wow variation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza wow transformation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza wow revolution": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza wow conversion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza wow adjustment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza wow amendment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza wow difference": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "price oryza wow cash": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.474
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_WoW_": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza WoW %"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza WoW %": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza wow percentage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.771
+			          }
+			        },
+			        {
+			          "price oryza wow pct": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.748
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.product_line_color": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Product Line Color"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "product line color": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "color": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "line color": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "artifact line color": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "item line color": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "merchandise line color": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "produce line color": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "product line hue": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "line hue": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "product line tint": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "product line shade": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "product line dye": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "product line paint": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.title_oryza_category": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Title Oryza Category"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "title oryza category": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "title oryza classification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.762
+			          }
+			        },
+			        {
+			          "title oryza class": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "title oryza group": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "title oryza type": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "title oryza grouping": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "title oryza kind": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.739
+			          }
+			        },
+			        {
+			          "designation oryza category": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "name oryza category": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "award oryza category": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "call oryza category": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.title_oryza_category__product": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Title Oryza Category & Product"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "title oryza category & product": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "title oryza category & artifact": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.78
+			          }
+			        },
+			        {
+			          "title oryza category & item": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.757
+			          }
+			        },
+			        {
+			          "title oryza category & merchandise": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.757
+			          }
+			        },
+			        {
+			          "title oryza category & produce": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.757
+			          }
+			        },
+			        {
+			          "designation oryza category & product": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.624
+			          }
+			        },
+			        {
+			          "title oryza classification & product": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.624
+			          }
+			        },
+			        {
+			          "name oryza category & product": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.605
+			          }
+			        },
+			        {
+			          "award oryza category & product": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.605
+			          }
+			        },
+			        {
+			          "call oryza category & product": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.605
+			          }
+			        },
+			        {
+			          "heading oryza category & product": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.605
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.market_movement_summary_text": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Market Movement Summary Text"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "market movement summary text": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "text": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "summary text": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "movement summary text": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "market movement synopsis text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.617
+			          }
+			        },
+			        {
+			          "market movement explanation text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.617
+			          }
+			        },
+			        {
+			          "market movement extraction text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.617
+			          }
+			        },
+			        {
+			          "market movement summarisation text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.617
+			          }
+			        },
+			        {
+			          "movement synopsis text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "movement explanation text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "movement extraction text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "movement summarisation text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "synopsis text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.6
+			          }
+			        },
+			        {
+			          "explanation text": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.6
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.latest_price_USD_ton": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Latest Price (USD/Ton)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "latest price (USD/ton)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "latest price": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "latest price (USD": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "latest price ( USD ton )": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "ton)": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "(USD/Ton)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  },
 			  "Relationships": {
+			    "dim_product_has_entity__measure_title_oryza_category": {
+			      "Binding": {
+			        "ConceptualEntity": "Dim_Product"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_product": {
+			          "Target": {
+			            "Entity": "dim_product"
+			          }
+			        },
+			        "entity__measure.title_oryza_category": {
+			          "Target": {
+			            "Entity": "entity__measure.title_oryza_category"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_product"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.title_oryza_category"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_products_have_title_oryza_category"
+			        }
+			      ]
+			    },
+			    "dim_product_has_entity__measure_product_line_color": {
+			      "Binding": {
+			        "ConceptualEntity": "Dim_Product"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_product": {
+			          "Target": {
+			            "Entity": "dim_product"
+			          }
+			        },
+			        "entity__measure.product_line_color": {
+			          "Target": {
+			            "Entity": "entity__measure.product_line_color"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_product"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.product_line_color"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_products_have_product_line_color"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_WoW_": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_WoW_": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_WoW_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_WoW_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_WoW_"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_WoW_change": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_WoW_change": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_WoW_change"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_WoW_change"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_WoW_change"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_previous_week": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_previous_week": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_previous_week"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_previous_week"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_previous_week"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_YoY_change": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_YoY_change": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_YoY_change"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_YoY_change"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_YoY_change"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_previous_year": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_previous_year": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_previous_year"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_previous_year"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_previous_year"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_MoM_change": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_MoM_change": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_MoM_change"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_MoM_change"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_MoM_change"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_previous_month": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_previous_month": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_previous_month"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_previous_month"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_previous_month"
+			        }
+			      ]
+			    },
+			    "dim_product_has_new_sub_category_name": {
+			      "Binding": {
+			        "ConceptualEntity": "Dim_Product"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_product": {
+			          "Target": {
+			            "Entity": "dim_product"
+			          }
+			        },
+			        "dim_product.new_sub_category_name": {
+			          "Target": {
+			            "Entity": "dim_product.new_sub_category_name"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_product"
+			            },
+			            "Object": {
+			              "Role": "dim_product.new_sub_category_name"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_products_have_new_sub_category_names"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_YoY_": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_YoY_": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_YoY_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_YoY_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_YoY_"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_MoM_": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_MoM_": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_MoM_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_MoM_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_MoM_"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_avg_price": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.avg_price": {
+			          "Target": {
+			            "Entity": "entity__measure.avg_price"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.avg_price"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_avg_price"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_avg__price": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.avg__price": {
+			          "Target": {
+			            "Entity": "entity__measure.avg__price"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.avg__price"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_avg__price"
+			        }
+			      ]
+			    },
+			    "fact_exchange_rate_has_entity__measure_FX_30D_change_": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Exchange_Rate"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_exchange_rate": {
+			          "Target": {
+			            "Entity": "fact_exchange_rate"
+			          }
+			        },
+			        "entity__measure.FX_30D_change_": {
+			          "Target": {
+			            "Entity": "entity__measure.FX_30D_change_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_exchange_rate"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.FX_30D_change_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_exchange_rates_have_FX_30D_change_"
+			        }
+			      ]
+			    },
+			    "fact_exchange_rate_has_entity__measure_FX_DoD_": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Exchange_Rate"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_exchange_rate": {
+			          "Target": {
+			            "Entity": "fact_exchange_rate"
+			          }
+			        },
+			        "entity__measure.FX_DoD_": {
+			          "Target": {
+			            "Entity": "entity__measure.FX_DoD_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_exchange_rate"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.FX_DoD_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_exchange_rates_have_FX_DoD_"
+			        }
+			      ]
+			    },
+			    "entity__measure_has_trend_signal_7D_vs_30D": {
+			      "Binding": {
+			        "ConceptualEntity": "_Measures"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "entity__measure": {
+			          "Target": {
+			            "Entity": "entity__measure"
+			          }
+			        },
+			        "entity__measure.trend_signal_7D_vs_30D": {
+			          "Target": {
+			            "Entity": "entity__measure.trend_signal_7D_vs_30D"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "entity__measure"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.trend_signal_7D_vs_30D"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "Phrasing_measures_have_trend_signal_7D_vs_30D"
+			        }
+			      ]
+			    },
 			    "entity__measure_has_entity_52W_price_position_": {
 			      "Binding": {
 			        "ConceptualEntity": "_Measures"
@@ -15140,20 +16889,20 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "entity__measure_has_trend_signal_7D_vs_30D": {
+			    "dim_product_has_entity__measure_title_oryza_category__product": {
 			      "Binding": {
-			        "ConceptualEntity": "_Measures"
+			        "ConceptualEntity": "Dim_Product"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "entity__measure": {
+			        "dim_product": {
 			          "Target": {
-			            "Entity": "entity__measure"
+			            "Entity": "dim_product"
 			          }
 			        },
-			        "entity__measure.trend_signal_7D_vs_30D": {
+			        "entity__measure.title_oryza_category__product": {
 			          "Target": {
-			            "Entity": "entity__measure.trend_signal_7D_vs_30D"
+			            "Entity": "entity__measure.title_oryza_category__product"
 			          }
 			        }
 			      },
@@ -15161,85 +16910,19 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "entity__measure"
+			              "Role": "dim_product"
 			            },
 			            "Object": {
-			              "Role": "entity__measure.trend_signal_7D_vs_30D"
+			              "Role": "entity__measure.title_oryza_category__product"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "Phrasing_measures_have_trend_signal_7D_vs_30D"
+			          "ID": "dim_products_have_title_oryza_category__product"
 			        }
 			      ]
 			    },
-			    "fact_exchange_rate_has_entity__measure_FX_DoD_": {
-			      "Binding": {
-			        "ConceptualEntity": "Fact_Exchange_Rate"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_exchange_rate": {
-			          "Target": {
-			            "Entity": "fact_exchange_rate"
-			          }
-			        },
-			        "entity__measure.FX_DoD_": {
-			          "Target": {
-			            "Entity": "entity__measure.FX_DoD_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_exchange_rate"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.FX_DoD_"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_exchange_rates_have_FX_DoD_"
-			        }
-			      ]
-			    },
-			    "fact_exchange_rate_has_entity__measure_FX_30D_change_": {
-			      "Binding": {
-			        "ConceptualEntity": "Fact_Exchange_Rate"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_exchange_rate": {
-			          "Target": {
-			            "Entity": "fact_exchange_rate"
-			          }
-			        },
-			        "entity__measure.FX_30D_change_": {
-			          "Target": {
-			            "Entity": "entity__measure.FX_30D_change_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_exchange_rate"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.FX_30D_change_"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_exchange_rates_have_FX_30D_change_"
-			        }
-			      ]
-			    },
-			    "fact_rice_price_has_entity__measure_avg__price": {
+			    "fact_rice_price_has_entity__measure_market_movement_summary_text": {
 			      "Binding": {
 			        "ConceptualEntity": "Fact_Rice_Price"
 			      },
@@ -15250,9 +16933,9 @@ cultureInfo en-US
 			            "Entity": "fact_rice_price"
 			          }
 			        },
-			        "entity__measure.avg__price": {
+			        "entity__measure.market_movement_summary_text": {
 			          "Target": {
-			            "Entity": "entity__measure.avg__price"
+			            "Entity": "entity__measure.market_movement_summary_text"
 			          }
 			        }
 			      },
@@ -15263,16 +16946,82 @@ cultureInfo en-US
 			              "Role": "fact_rice_price"
 			            },
 			            "Object": {
-			              "Role": "entity__measure.avg__price"
+			              "Role": "entity__measure.market_movement_summary_text"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "fact_rice_prices_have_avg__price"
+			          "ID": "fact_rice_prices_have_market_movement_summary_text"
 			        }
 			      ]
 			    },
-			    "fact_rice_price_has_entity__measure_avg_price": {
+			    "dim_date_has_entity__measure_latest_price_USD_ton": {
+			      "Binding": {
+			        "ConceptualEntity": "Dim_Date"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_date": {
+			          "Target": {
+			            "Entity": "dim_date"
+			          }
+			        },
+			        "entity__measure.latest_price_USD_ton": {
+			          "Target": {
+			            "Entity": "entity__measure.latest_price_USD_ton"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_date"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.latest_price_USD_ton"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_dates_have_latest_price_USD_ton"
+			        }
+			      ]
+			    },
+			    "fact_exchange_rate_has_entity__measure_latest_price_USD_ton": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Exchange_Rate"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_exchange_rate": {
+			          "Target": {
+			            "Entity": "fact_exchange_rate"
+			          }
+			        },
+			        "entity__measure.latest_price_USD_ton": {
+			          "Target": {
+			            "Entity": "entity__measure.latest_price_USD_ton"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_exchange_rate"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.latest_price_USD_ton"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_exchange_rates_have_latest_price_USD_ton"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_latest_price_USD_ton": {
 			      "Binding": {
 			        "ConceptualEntity": "Fact_Rice_Price"
 			      },
@@ -15283,9 +17032,9 @@ cultureInfo en-US
 			            "Entity": "fact_rice_price"
 			          }
 			        },
-			        "entity__measure.avg_price": {
+			        "entity__measure.latest_price_USD_ton": {
 			          "Target": {
-			            "Entity": "entity__measure.avg_price"
+			            "Entity": "entity__measure.latest_price_USD_ton"
 			          }
 			        }
 			      },
@@ -15296,12 +17045,12 @@ cultureInfo en-US
 			              "Role": "fact_rice_price"
 			            },
 			            "Object": {
-			              "Role": "entity__measure.avg_price"
+			              "Role": "entity__measure.latest_price_USD_ton"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "fact_rice_prices_have_avg_price"
+			          "ID": "fact_rice_prices_have_latest_price_USD_ton"
 			        }
 			      ]
 			    },
