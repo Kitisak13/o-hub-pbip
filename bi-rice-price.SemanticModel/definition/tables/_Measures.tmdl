@@ -1105,6 +1105,50 @@ table _Measures
 		displayFolder: 10. Text
 		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2015
 
+	/// ธงชาติรูปแบบ Vector SVG ตามประเทศของสินค้าข้าว
+	measure 'Product Country Flag SVG' =
+			VAR _Prod = SELECTEDVALUE(Dim_Product[Product Name], "")
+			VAR _Country = UPPER(COALESCE(SELECTEDVALUE(Dim_Country[CountryName]), ""))
+			VAR _Prefix = "data:image/svg+xml;utf8,"
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        _Country = "ARGENTINA" || STARTSWITH(_Prod, "Argentina"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='36' height='8' fill='%2374ACDF'/><rect y='8' width='36' height='8' fill='white'/><rect y='16' width='36' height='8' fill='%2374ACDF'/><circle cx='18' cy='12' r='2.5' fill='%23F6B40E'/></svg>",
+			
+			        _Country = "BRAZIL" || STARTSWITH(_Prod, "Brazil"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='36' height='24' rx='2' fill='%23009739'/><polygon points='18,3 33,12 18,21 3,12' fill='%23FEDD00'/><circle cx='18' cy='12' r='5' fill='%23012169'/><path d='M13.5,13 Q18,9 22.5,12' stroke='white' stroke-width='0.8' fill='none'/></svg>",
+			
+			        _Country = "INDIA" || STARTSWITH(_Prod, "India"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='36' height='8' fill='%23FF9933'/><rect y='8' width='36' height='8' fill='white'/><rect y='16' width='36' height='8' fill='%23138808'/><circle cx='18' cy='12' r='2.6' stroke='%23000080' stroke-width='0.8' fill='none'/><circle cx='18' cy='12' r='0.8' fill='%23000080'/></svg>",
+			
+			        _Country = "MYANMAR" || STARTSWITH(_Prod, "Myanmar"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='36' height='8' fill='%23FECB00'/><rect y='8' width='36' height='8' fill='white'/><rect y='16' width='36' height='8' fill='%23EA2839'/><polygon points='18,6.5 19.8,11.5 25,11.5 20.8,14.5 22.5,19.5 18,16.5 13.5,19.5 15.2,14.5 11,11.5 16.2,11.5' fill='white'/></svg>",
+			
+			        _Country = "PAKISTAN" || STARTSWITH(_Prod, "Pakistan"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='9' height='24' fill='white'/><rect x='9' width='27' height='24' fill='%2301411C'/><circle cx='22.5' cy='12' r='5' fill='white'/><circle cx='24' cy='11' r='4.5' fill='%2301411C'/><polygon points='23.5,8 24.2,9.6 25.8,9.6 24.5,10.6 25,12.2 23.5,11.2 22,12.2 22.5,10.6 21.2,9.6 22.8,9.6' fill='white'/></svg>",
+			
+			        _Country = "THAILAND" || STARTSWITH(_Prod, "Thailand"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='36' height='4' fill='%23A51931'/><rect y='4' width='36' height='4' fill='white'/><rect y='8' width='36' height='8' fill='%232D2A4A'/><rect y='16' width='36' height='4' fill='white'/><rect y='20' width='36' height='4' fill='%23A51931'/></svg>",
+			
+			        _Country = "UNITED STATE" || _Country = "USA" || STARTSWITH(_Prod, "U.S.") || STARTSWITH(_Prod, "US"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='36' height='24' fill='white'/><path d='M0,0H36V2H0ZM0,4H36V6H0ZM0,8H36V10H0ZM0,12H36V14H0ZM0,16H36V18H0ZM0,20H36V22H0Z' fill='%23B22234'/><rect width='15' height='13' fill='%233C3B6E'/><circle cx='4' cy='3' r='0.9' fill='white'/><circle cx='8' cy='3' r='0.9' fill='white'/><circle cx='12' cy='3' r='0.9' fill='white'/><circle cx='6' cy='6.5' r='0.9' fill='white'/><circle cx='10' cy='6.5' r='0.9' fill='white'/><circle cx='4' cy='10' r='0.9' fill='white'/><circle cx='8' cy='10' r='0.9' fill='white'/><circle cx='12' cy='10' r='0.9' fill='white'/></svg>",
+			
+			        _Country = "URUGUAY" || STARTSWITH(_Prod, "Uruguay"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='36' height='24' fill='white'/><path d='M0,2.67H36V5.33H0ZM0,8H36V10.67H0ZM0,13.33H36V16H0ZM0,18.67H36V21.33H0Z' fill='%230038A8'/><rect width='12' height='12' fill='white'/><circle cx='6' cy='6' r='3' fill='%23FCD116'/><circle cx='6' cy='6' r='1.5' fill='%237B3F00'/></svg>",
+			
+			        _Country = "VIETNAM" || STARTSWITH(_Prod, "Vietnam"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='36' height='24' rx='2' fill='%23DA251D'/><polygon points='18,5 20.3,11 26.5,11 21.5,14.6 23.4,20.5 18,17 12.6,20.5 14.5,14.6 9.5,11 15.7,11' fill='%23FFFF00'/></svg>",
+			
+			        _Country = "ITALY" || STARTSWITH(_Prod, "Italy"),
+			        _Prefix & "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 24'><rect width='12' height='24' fill='%23009246'/><rect x='12' width='12' height='24' fill='white'/><rect x='24' width='12' height='24' fill='%23CE2B37'/></svg>",
+			
+			        BLANK()
+			    )
+		dataCategory: ImageUrl
+		displayFolder: 10. Text
+		lineageTag: d67c5210-91a3-4871-b0e2-7634f1ca9201
+
 	column Dummy
 		dataType: int64
 		isHidden
