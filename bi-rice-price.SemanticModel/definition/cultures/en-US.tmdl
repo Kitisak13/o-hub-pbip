@@ -7418,16 +7418,6 @@ cultureInfo en-US
 			            "State": "Generated",
 			            "Weight": 0.97
 			          }
-			        },
-			        {
-			          "(USD/ton)": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
 			        }
 			      ]
 			    },
@@ -9679,19 +9669,7 @@ cultureInfo en-US
 			          "ConceptualProperty": "Price Oryza MoM %"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "MoM %": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    },
 			    "table_measures.price_oryza_yoy_": {
 			      "Definition": {
@@ -9700,19 +9678,7 @@ cultureInfo en-US
 			          "ConceptualProperty": "Price Oryza YoY %"
 			        }
 			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "YoY %": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
+			      "State": "Generated"
 			    }
 			  },
 			  "Relationships": {

@@ -877,14 +877,14 @@ table _Measures
 			        "Brazil 5% broken", "#2A9D8F",
 			        "Uruguay 5% broken", "#4CC9F0",
 			        "Argentina 5% broken", "#F72585",
-
+			
 			        -- Low Quality
 			        "Thailand 25% broken", "#0A9396",
 			        "Vietnam 25% broken", "#E63946",
 			        "Pakistan 25% broken", "#FB8500",
 			        "India 25% broken", "#7209B7",
 			        "U.S. 15% broken (sacked)", "#1D4ED8",
-
+			
 			        -- Parboiled
 			        "Thai Parboiled 100% stxd", "#0A9396",
 			        "Pakistan parboiled 5% broken stxd", "#FB8500",
@@ -892,11 +892,11 @@ table _Measures
 			        "U.S. parboiled 4% broken", "#1D4ED8",
 			        "Brazil parboiled 5% broken", "#2A9D8F",
 			        "Uruguay parboiled 5% broken", "#4CC9F0",
-
+			
 			        -- Fragrant
 			        "Thailand Hommali 92%", "#0A9396",
 			        "Vietnam Jasmine", "#E63946",
-
+			
 			        -- Brokens
 			        "Thailand A1 Super", "#0A9396",
 			        "Vietnam 100% broken", "#E63946",
@@ -904,11 +904,11 @@ table _Measures
 			        "India 100% Broken stxd", "#7209B7",
 			        "Indian 100% broken stxd", "#7209B7",
 			        "U.S. pet food", "#1D4ED8",
-
+			
 			        -- Medium Grain
 			        "U.S. Calrose 4% broken", "#1D4ED8",
 			        "Italy risotto", "#F72585",
-
+			
 			        -- Fallback by Country
 			        IF(CONTAINSSTRING(_Product, "Thai"), "#0A9396",
 			        IF(CONTAINSSTRING(_Product, "Viet"), "#E63946",

@@ -65,6 +65,11 @@
       "type": "RegisteredResources",
       "items": [
         {
+          "name": "Green_theme_v19279818135943808.png",
+          "path": "Green_theme_v19279818135943808.png",
+          "type": "Image"
+        },
+        {
           "name": "Oryza_-_Warehouse_Utilization_9631934265294433.json",
           "path": "Oryza_-_Warehouse_Utilization_9631934265294433.json",
           "type": "CustomTheme"

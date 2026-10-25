@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "576a86dd7d1643c92916",
   "position": {
-    "x": 201.38925343339309,
-    "y": 89.338089868948813,
+    "x": 204.28571428571431,
+    "y": 88.571428571428584,
     "z": 1000,
-    "height": 66.625016173453346,
-    "width": 542.085358865825,
+    "height": 65.714285714285722,
+    "width": 950.00000000000011,
     "tabOrder": 2000
   },
   "visual": {
@@ -67,7 +67,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Broken White Rice'"
+                                "Value": "'Broken Rice'"
                               }
                             }
                           ]
@@ -95,6 +95,13 @@
                   "Value": "true"
                 }
               }
+            },
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
             }
           }
         }
@@ -112,7 +119,7 @@
             "maxTiles": {
               "expr": {
                 "Literal": {
-                  "Value": "5L"
+                  "Value": "6L"
                 }
               }
             },

@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "29623d76c55d4353d2fd",
   "position": {
-    "x": 227.13073695495461,
-    "y": 139.30685199903883,
+    "x": 226.57142857141946,
+    "y": 139.9173574476406,
     "z": 0,
-    "height": 430.03419530138075,
-    "width": 1025.1167261233618,
+    "height": 358,
+    "width": 1025,
     "tabOrder": 0
   },
   "visual": {
@@ -29,21 +29,6 @@
               "queryRef": "Dim_Date.Date",
               "nativeQueryRef": "Date",
               "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim_Date"
-                    }
-                  },
-                  "Property": "MonthYear"
-                }
-              },
-              "queryRef": "Dim_Date.MonthYear",
-              "nativeQueryRef": "MonthYear",
-              "active": false
             },
             {
               "field": {
@@ -98,6 +83,37 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Dim_Date"
+                  }
+                },
+                "Property": "Date"
+              }
+            },
+            "direction": "Ascending"
+          },
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Dim_Date"
+                  }
+                },
+                "Property": "Year"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
       },
       "options": {
         "allowBinnedLineSample": true
@@ -1813,7 +1829,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
