@@ -992,6 +992,11 @@ table _Measures
 		displayFolder: 10. Text
 		lineageTag: a1c43b92-4f81-49ea-bc91-23da567a1004
 
+	measure 'Latest Price (USD/Ton)' = [Price Oryza Latest (USD/ton)]
+		formatString: #,##0.00
+		displayFolder: 07 KPI & Summary
+		lineageTag: 04a70bb4-b8d3-4020-91e6-8dc9b501be2d
+
 	/// ราคาข้าว Oryza ล่าสุด (USD/ton)
 	measure 'Price Oryza Latest (USD/ton)' =
 			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
@@ -1099,11 +1104,6 @@ table _Measures
 			    )
 		displayFolder: 10. Text
 		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2015
-
-	measure 'Latest Price (USD/Ton)' = [Price Oryza Latest (USD/ton)]
-		formatString: #,##0.00
-		displayFolder: 07 KPI & Summary
-		lineageTag: 04a70bb4-b8d3-4020-91e6-8dc9b501be2d
 
 	column Dummy
 		dataType: int64
