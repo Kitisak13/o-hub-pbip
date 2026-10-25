@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "9b71fc7d254efa994cee",
   "position": {
-    "x": 218.04550747675643,
-    "y": 12.113639304264245,
+    "x": 215.01709765069037,
+    "y": 9.085229478198185,
     "z": 9000,
     "height": 127.19321269477457,
     "width": 1041.7729801667251,
@@ -461,11 +461,34 @@
                   "Value": "true"
                 }
               }
+            }
+          }
+        },
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
             },
             "imageType": {
               "expr": {
                 "Literal": {
                   "Value": "'imageUrl'"
+                }
+              }
+            },
+            "imageUrl": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Product Country Flag SVG"
                 }
               }
             },
@@ -504,6 +527,20 @@
         },
         {
           "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "imageType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'imageUrl'"
+                }
+              }
+            },
             "imageUrl": {
               "expr": {
                 "Measure": {
@@ -515,17 +552,52 @@
                   "Property": "Product Country Flag SVG"
                 }
               }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            },
+            "verticalAlignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'middle'"
+                }
+              }
+            },
+            "size": {
+              "expr": {
+                "Literal": {
+                  "Value": "28L"
+                }
+              }
+            },
+            "padding": {
+              "expr": {
+                "Literal": {
+                  "Value": "6L"
+                }
+              }
             }
           },
           "selector": {
-            "data": [
-              {
-                "dataViewWildcard": {
-                  "matchingOption": 0
+            "metadata": "_Measures.Price Oryza Latest (USD/ton)"
+          }
+        },
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
-            ],
-            "id": "default"
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Price Oryza DoD %"
           }
         }
       ],
