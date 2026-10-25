@@ -79,6 +79,13 @@
                           [
                             {
                               "Literal": {
+                                "Value": "'Brazil 5% broken'"
+                              }
+                            }
+                          ],
+                          [
+                            {
+                              "Literal": {
                                 "Value": "'India 5% broken'"
                               }
                             }
@@ -213,6 +220,13 @@
                             {
                               "Literal": {
                                 "Value": "'U.S. 15% broken'"
+                              }
+                            }
+                          ],
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'Myanmar 5% broken'"
                               }
                             }
                           ]

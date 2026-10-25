@@ -124,3 +124,26 @@
 * **วิธีทำ:** ออกแบบเป็น Matrix หรือ Table ที่ซ่อนขอบตาราง (Borderless) โดยแบ่งคอลัมน์เป็น [Flag SVG] | [Product Name] | [Spot Price] | [DoD %]
 * **ข้อดี:**
   - รองรับทั้ง Dynamic Sorting และการแสดงภาพ Vector SVG รายแถว/รายคอลัมน์ได้อย่างสมบูรณ์แบบ
+
+---
+
+## 5. การดำเนินการและบทสรุปจากทีมงาน (DA-review1 & DA-review2 Implementation)
+
+หลังจากการปรึกษาทีมงานและรับข้อเสนอแนะจาก Data Analyst (ดูรายละเอียดใน `DA-review1.md` และ `DA-review2.md`):
+
+### 1. New Card Visual (รูปแบบที่ 1 - `9b71fc7d254efa994cee`)
+- **การออกแบบ:** ดีไซน์สไตล์คลีนระดับผู้บริหาร (Executive Command) ไม่มีไอคอนธงชาติมาบดบังตัวเลข
+- **การแก้ปัญหาแถบสี (Accent Bar) & ขอบสีประจำชาติ:** 
+  - ผูกสีตัวอักษรและขอบใน `smallMultiplesHeader` และ `smallMultiplesBorder` เข้ากับ Measure `[Product Line Color]` เพื่อให้สีตรงกับเส้นกราฟด้านล่าง 100%
+  - ผูกสีพื้นหลังหัวการ์ดเข้ากับ Measure ใหม่ `[Product Header Tint Color]` เพื่อให้มีสีพาสเทลอ่อนๆ สบายตา
+- **การแก้ปัญหา `0.00%` สีเขียวหลอกตา:** ปรับเงื่อนไขใน Measure `[Price Oryza DoD Color]` ให้ตรวจสอบ `ABS(_Pct) < 0.00005` บังคับให้เป็น **สีเทา (`#64748B`)** เมื่อไม่มีการเปลี่ยนแปลงราคา
+
+### 2. Matrix Comparison Visual (รูปแบบที่ 2 - `c7a4b8d2e1f34906a5b1`)
+- **การออกแบบ:** สร้าง visual ประเภท `pivotTable` วางด้านล่างที่พิกัด `Y = 142` ความสูง `145`
+- **การแก้ปัญหา `showOnRows: true` ไม่ทำงาน:**
+  - เพิ่มฟิลด์ `Dim_Product[New Sub Category Name]` ในช่อง `Rows` เป็น Dummy Category Anchor (พร้อมตั้งชื่อ `displayName: " "` และปิด `rowHeaders`)
+  - ทำให้คำสั่ง `"showOnRows": true` ทำงานได้สมบูรณ์ ส่งผลให้ค่าเรียงตัวลงมาในแนวตั้ง 3 บรรทัด (แถว 1: รูปธงชาติ SVG, แถว 2: ราคา Spot, แถว 3: DoD)
+- **การแก้ปัญหาธงชาติไม่ขึ้น:**
+  - ปรับปรุง Measure `[Product Country Flag SVG]` ให้ประเมินผลจาก `SELECTEDVALUE(Dim_Product[Product Name], "")` โดยตรง ไม่ต้องพึ่งพา `Fact_Rice_Price` ป้องกันปัญหา Context หายเมื่อกรองผ่าน Date Slicer
+  - ธงชาติ Vector SVG แสดงผลคมชัดครบทุกประเทศ 100%
+

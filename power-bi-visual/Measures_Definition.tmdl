@@ -1091,13 +1091,13 @@ table _Measures
 		displayFolder: 10. Text
 		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2014
 
-	/// สี Dynamic สำหรับการเปลี่ยนแปลงราคา DoD (เขียว/แดง/เทา)
+	/// สี Dynamic สำหรับการเปลี่ยนแปลงราคา DoD (เขียว/แดง/เทา - ป้องกัน 0.00% เป็นสีเขียว)
 	measure 'Price Oryza DoD Color' =
 			VAR _Pct = [Price Oryza DoD %]
 			RETURN
 			    SWITCH(
 			        TRUE(),
-			        ISBLANK(_Pct), "#64748B",
+			        ISBLANK(_Pct) || ABS(_Pct) < 0.00005, "#64748B",
 			        _Pct > 0, "#10B981",
 			        _Pct < 0, "#EF4444",
 			        "#64748B"
@@ -1105,69 +1105,76 @@ table _Measures
 		displayFolder: 10. Text
 		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2015
 
-	/// ธงชาติรูปแบบ Vector SVG (Base64) ตามประเทศของสินค้าข้าว
+	/// สีพื้นหลังอ่อน (Soft Tint) ประจำประเทศสำหรับหัวการ์ด Small Multiples Header
+	measure 'Product Header Tint Color' =
+			VAR _Product = SELECTEDVALUE(Dim_Product[Product Name])
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        CONTAINSSTRING(_Product, "Thai"), "#E6F4F1",
+			        CONTAINSSTRING(_Product, "Viet"), "#FDE8EA",
+			        CONTAINSSTRING(_Product, "India"), "#F3E8FF",
+			        CONTAINSSTRING(_Product, "Pakistan"), "#FFF3E0",
+			        CONTAINSSTRING(_Product, "Myanmar"), "#EDE9FE",
+			        CONTAINSSTRING(_Product, "U.S.") || CONTAINSSTRING(_Product, "US"), "#DBEAFE",
+			        CONTAINSSTRING(_Product, "Brazil"), "#E0F2F1",
+			        CONTAINSSTRING(_Product, "Uruguay"), "#E0F7FA",
+			        CONTAINSSTRING(_Product, "Argentina"), "#FCE7F3",
+			        CONTAINSSTRING(_Product, "Italy"), "#FCE7F3",
+			        "#F1F5F9"
+			    )
+		displayFolder: 07. UI & System Helpers
+		lineageTag: c1c43b92-4f81-49ea-bc91-23da567a3002
+
+	/// ธงชาติรูปแบบ Vector SVG (Base64) ตามประเทศของสินค้าข้าว (ประเมินจาก Dim_Product โดยตรง 100%)
 	measure 'Product Country Flag SVG' =
-			VAR _Prod = 
-			    COALESCE(
-			        SELECTEDVALUE(Dim_Product[Product Name]),
-			        MAX(Dim_Product[Product Name]),
-			        SELECTEDVALUE(Fact_Rice_Price[Product Name]),
-			        MAX(Fact_Rice_Price[Product Name]),
-			        ""
-			    )
-			VAR _Country = 
-			    UPPER(
-			        COALESCE(
-			            CALCULATE(MAX(Fact_Rice_Price[Country Name])),
-			            SELECTEDVALUE(Dim_Country[CountryName]),
-			            MAX(Dim_Country[CountryName]),
-			            ""
-			        )
-			    )
+			VAR _Prod = SELECTEDVALUE(Dim_Product[Product Name], "")
 			VAR _Prefix = "data:image/svg+xml;base64,"
 			RETURN
 			    SWITCH(
 			        TRUE(),
+			        _Prod = "", BLANK(),
+
 			        -- Argentina
-			        CONTAINSSTRING(_Prod, "Argentina") || CONTAINSSTRING(_Country, "ARGENTINA"),
+			        CONTAINSSTRING(_Prod, "Argentina"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iOCIgZmlsbD0iIzc0QUNERiIvPjxyZWN0IHk9IjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjNzRBQ0RGIi8+PGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMi41IiBmaWxsPSIjRjZCNDBFIi8+PC9zdmc+",
-			
+
 			        -- Brazil
-			        CONTAINSSTRING(_Prod, "Brazil") || CONTAINSSTRING(_Country, "BRAZIL"),
+			        CONTAINSSTRING(_Prod, "Brazil"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjMDA5NzM5Ii8+PHBvbHlnb24gcG9pbnRzPSIxOCwzIDMzLDEyIDE4LDIxIDMsMTIiIGZpbGw9IiNGRUREMDAiLz48Y2lyY2xlIGN4PSIxOCIgY3k9IjEyIiByPSI1IiBmaWxsPSIjMDEyMTY5Ii8+PHBhdGggZD0iTTEzLjUsMTMgUTE4LDkgMjIuNSwxMiIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjAuOCIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==",
-			
-			        -- India
-			        CONTAINSSTRING(_Prod, "India") || CONTAINSSTRING(_Country, "INDIA"),
+
+			        -- India / Indian
+			        CONTAINSSTRING(_Prod, "India"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iOCIgZmlsbD0iI0ZGOTkzMyIvPjxyZWN0IHk9IjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjMTM4ODA4Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMi42IiBzdHJva2U9IiMwMDAwODAiIHN0cm9rZS13aWR0aD0iMC44IiBmaWxsPSJub25lIi8+PGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMC44IiBmaWxsPSIjMDAwMDgwIi8+PC9zdmc+",
-			
+
 			        -- Myanmar
-			        CONTAINSSTRING(_Prod, "Myanmar") || CONTAINSSTRING(_Country, "MYANMAR"),
+			        CONTAINSSTRING(_Prod, "Myanmar"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iOCIgZmlsbD0iI0ZFQ0IwMCIvPjxyZWN0IHk9IjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjMzRCMjMzIi8+PHJlY3QgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjRUEyODM5Ii8+PHBvbHlnb24gcG9pbnRzPSIxOCw2LjUgMTkuOCwxMS41IDI1LDExLjUgMjAuOCwxNC41IDIyLjUsMTkuNSAxOCwxNi41IDEzLjUsMTkuNSAxNS4yLDE0LjUgMTEsMTEuNSAxNi4yLDExLjUiIGZpbGw9IiNGRkZGRkYiLz48L3N2Zz4=",
-			
+
 			        -- Pakistan
-			        CONTAINSSTRING(_Prod, "Pakistan") || CONTAINSSTRING(_Country, "PAKISTAN"),
+			        CONTAINSSTRING(_Prod, "Pakistan"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iOSIgaGVpZ2h0PSIyNCIgZmlsbD0iI0ZGRkZGRiIvPjxyZWN0IHg9IjkiIHdpZHRoPSIyNyIgaGVpZ2h0PSIyNCIgZmlsbD0iIzAxNDExQyIvPjxjaXJjbGUgY3g9IjIyLjUiIGN5PSIxMiIgcj0iNSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjI0IiBjeT0iMTEiIHI9IjQuNSIgZmlsbD0iIzAxNDExQyIvPjxwb2x5Z29uIHBvaW50cz0iMjMuNSw4IDI0LjIsOS42IDI1LjgsOS42IDI0LjUsMTAuNiAyNSwxMi4yIDIzLjUsMTEuMiAyMiwxMi4yIDIyLjUsMTAuNiAyMS4yLDkuNiAyMi44LDkuNiIgZmlsbD0iI0ZGRkZGRiIvPjwvc3ZnPg==",
-			
-			        -- Thailand
-			        CONTAINSSTRING(_Prod, "Thai") || CONTAINSSTRING(_Country, "THAILAND"),
+
+			        -- Thailand / Thai
+			        CONTAINSSTRING(_Prod, "Thai"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iNCIgZmlsbD0iI0E1MTkzMSIvPjxyZWN0IHk9IjQiIHdpZHRoPSIzNiIgaGVpZ2h0PSI0IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeT0iOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjgiIGZpbGw9IiMyRDJBNEEiLz48cmVjdCB5PSIxNiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjQiIGZpbGw9IiNGRkZGRkYiLz48cmVjdCB5PSIyMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjQiIGZpbGw9IiNBNTE5MzEiLz48L3N2Zz4=",
-			
+
 			        -- United States / U.S.
-			        CONTAINSSTRING(_Prod, "U.S.") || CONTAINSSTRING(_Prod, "US") || CONTAINSSTRING(_Country, "UNITED STATE") || CONTAINSSTRING(_Country, "USA"),
+			        CONTAINSSTRING(_Prod, "U.S.") || CONTAINSSTRING(_Prod, "US"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMCwwSDM2VjJIMFpNMCw0SDM2VjZIMFpNMCw4SDM2VjEwSDBaTTAsMTJIMzZWMTRIMFpNMCwxNkgzNlYxOEgwWk0wLDIwSDM2VjIySDBaIiBmaWxsPSIjQjIyMjM0Ii8+PHJlY3Qgd2lkdGg9IjE1IiBoZWlnaHQ9IjEzIiBmaWxsPSIjM0MzQjZFIi8+PGNpcmNsZSBjeD0iNCIgY3k9IjMiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjgiIGN5PSIzIiByPSIwLjkiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjMiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjYiIGN5PSI2LjUiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjEwIiBjeT0iNi41IiByPSIwLjkiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSI0IiBjeT0iMTAiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjgiIGN5PSIxMCIgcj0iMC45IiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMCIgcj0iMC45IiBmaWxsPSIjRkZGRkZGIi8+PC9zdmc+",
-			
+
 			        -- Uruguay
-			        CONTAINSSTRING(_Prod, "Uruguay") || CONTAINSSTRING(_Country, "URUGUAY"),
+			        CONTAINSSTRING(_Prod, "Uruguay"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMCwyLjY3SDM2VjUuMzNIMFpNMCw4SDM2VjEwLjY3SDBaTTAsMTMuMzNIMzZWMTZIMFpNMCwxOC42N0gzNlYyMS4zM0gwWiIgZmlsbD0iIzAwMzhBOCIvPjxyZWN0IHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjYiIGN5PSI2IiByPSIzIiBmaWxsPSIjRkNEMTE2Ii8+PGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjEuNSIgZmlsbD0iIzdCM0YwMCIvPjwvc3ZnPg==",
-			
+
 			        -- Vietnam
-			        CONTAINSSTRING(_Prod, "Vietnam") || CONTAINSSTRING(_Country, "VIETNAM"),
+			        CONTAINSSTRING(_Prod, "Vietnam"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjREEyNTFEIi8+PHBvbHlnb24gcG9pbnRzPSIxOCw1IDIwLjMsMTEgMjYuNSwxMSAyMS41LDE0LjYgMjMuNCwyMC41IDE4LDE3IDEyLjYsMjAuNSAxNC41LDE0LjYgOS41LDExIDE1LjcsMTEiIGZpbGw9IiNGRkZGMDAiLz48L3N2Zz4=",
-			
+
 			        -- Italy
-			        CONTAINSSTRING(_Prod, "Italy") || CONTAINSSTRING(_Country, "ITALY"),
+			        CONTAINSSTRING(_Prod, "Italy"),
 			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMjQiIGZpbGw9IiMwMDkyNDYiLz48cmVjdCB4PSIxMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjI0IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeD0iMjQiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyNCIgZmlsbD0iI0NFMkIzNyIvPjwvc3ZnPg==",
-			
+
 			        BLANK()
 			    )
 		dataCategory: ImageUrl

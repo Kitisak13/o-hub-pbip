@@ -10848,7 +10848,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "table_measures.price_oryza_latest_usd_ton": {
+			    "entity__measure.price_oryza_latest_USD_ton": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "_Measures",
@@ -10858,7 +10858,46 @@ cultureInfo en-US
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Spot Price": {
+			          "price oryza latest (USD/ton)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza latest": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "price oryza latest (USD": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "price oryza latest ( USD ton )": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "ton)": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "(USD/t)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Spot (USD/t)": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -10869,7 +10908,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "table_measures.price_oryza_dod_": {
+			    "entity__measure.price_oryza_DoD_": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "_Measures",
@@ -10879,7 +10918,32 @@ cultureInfo en-US
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Day-over-Day": {
+			          "price oryza DoD %": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza dod percentage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.771
+			          }
+			        },
+			        {
+			          "price oryza dod pct": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.748
+			          }
+			        },
+			        {
+			          "DoD%": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -10889,9 +10953,702 @@ cultureInfo en-US
 			          }
 			        }
 			      ]
+			    },
+			    "entity__measure.product_country_flag_SVG": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Product Country Flag SVG"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "product country flag SVG": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "SVG": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "flag SVG": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "country flag SVG": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "artifact country flag svg": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.617
+			          }
+			        },
+			        {
+			          "product nation flag svg": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.617
+			          }
+			        },
+			        {
+			          "product location flag svg": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.617
+			          }
+			        },
+			        {
+			          "nation flag svg": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "location flag svg": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "item country flag svg": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.599
+			          }
+			        },
+			        {
+			          "merchandise country flag svg": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.599
+			          }
+			        },
+			        {
+			          "produce country flag svg": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.599
+			          }
+			        },
+			        {
+			          "Flag": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_DoD_display": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza DoD Display"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza DoD display": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza dod exhibition": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod presentation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod demonstration": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod spectacle": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod ceremony": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod pageant": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod show": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "price oryza dod parade": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "DoD": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_previous_trading_day_USD_ton": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza Previous Trading Day (USD/ton)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza previous trading day (USD/ton)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza previous trading day": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "price oryza previous trading day (USD": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "price oryza previous trading day ( USD ton )": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "ton)": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_DoD_change": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza DoD Change"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza DoD change": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza dod alteration": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod modification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod variation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod transformation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod revolution": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod conversion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod adjustment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod amendment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod difference": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "price oryza dod cash": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.474
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.price_oryza_DoD_color": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Price Oryza DoD Color"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "price oryza DoD color": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "price oryza dod hue": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.514
+			          }
+			        },
+			        {
+			          "price oryza dod tint": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "price oryza dod shade": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "price oryza dod dye": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "price oryza dod paint": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        },
+			        {
+			          "price oryza dod pigment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.499
+			          }
+			        }
+			      ]
 			    }
 			  },
 			  "Relationships": {
+			    "dim_product_has_entity__measure_product_country_flag_SVG": {
+			      "Binding": {
+			        "ConceptualEntity": "Dim_Product"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_product": {
+			          "Target": {
+			            "Entity": "dim_product"
+			          }
+			        },
+			        "entity__measure.product_country_flag_SVG": {
+			          "Target": {
+			            "Entity": "entity__measure.product_country_flag_SVG"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_product"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.product_country_flag_SVG"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_products_have_product_country_flag_SVG"
+			        }
+			      ]
+			    },
+			    "dim_country_has_entity__measure_product_country_flag_SVG": {
+			      "Binding": {
+			        "ConceptualEntity": "Dim_Country"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_country": {
+			          "Target": {
+			            "Entity": "dim_country"
+			          }
+			        },
+			        "entity__measure.product_country_flag_SVG": {
+			          "Target": {
+			            "Entity": "entity__measure.product_country_flag_SVG"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_country"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.product_country_flag_SVG"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_countries_have_product_country_flag_SVG"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_DoD_": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_DoD_": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_DoD_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_DoD_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_DoD_"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_latest_USD_ton": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_latest_USD_ton": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_latest_USD_ton"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_latest_USD_ton"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_latest_USD_ton"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_latest_price_USD_ton": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.latest_price_USD_ton": {
+			          "Target": {
+			            "Entity": "entity__measure.latest_price_USD_ton"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.latest_price_USD_ton"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_latest_price_USD_ton"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_market_movement_summary_text": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.market_movement_summary_text": {
+			          "Target": {
+			            "Entity": "entity__measure.market_movement_summary_text"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.market_movement_summary_text"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_market_movement_summary_text"
+			        }
+			      ]
+			    },
+			    "dim_product_has_entity__measure_title_oryza_category__product": {
+			      "Binding": {
+			        "ConceptualEntity": "Dim_Product"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_product": {
+			          "Target": {
+			            "Entity": "dim_product"
+			          }
+			        },
+			        "entity__measure.title_oryza_category__product": {
+			          "Target": {
+			            "Entity": "entity__measure.title_oryza_category__product"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_product"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.title_oryza_category__product"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_products_have_title_oryza_category__product"
+			        }
+			      ]
+			    },
 			    "dim_product_has_entity__measure_title_oryza_category": {
 			      "Binding": {
 			        "ConceptualEntity": "Dim_Product"
@@ -16779,6 +17536,141 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
+			    "fact_rice_price_in_entity__measure_product_country_flag_SVG": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.product_country_flag_SVG": {
+			          "Target": {
+			            "Entity": "entity__measure.product_country_flag_SVG"
+			          }
+			        }
+			      },
+			      "SemanticSlots": {
+			        "Where": {
+			          "Role": "entity__measure.product_country_flag_SVG"
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "entity__measure.product_country_flag_SVG"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_are_in_product_country_flag_SVG"
+			        }
+			      ]
+			    },
+			    "dim_product_in_entity__measure_product_country_flag_SVG": {
+			      "Binding": {
+			        "ConceptualEntity": "Dim_Product"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_product": {
+			          "Target": {
+			            "Entity": "dim_product"
+			          }
+			        },
+			        "entity__measure.product_country_flag_SVG": {
+			          "Target": {
+			            "Entity": "entity__measure.product_country_flag_SVG"
+			          }
+			        }
+			      },
+			      "SemanticSlots": {
+			        "Where": {
+			          "Role": "entity__measure.product_country_flag_SVG"
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "dim_product"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "entity__measure.product_country_flag_SVG"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_products_are_in_product_country_flag_SVG"
+			        }
+			      ]
+			    },
+			    "dim_country_in_entity__measure_product_country_flag_SVG": {
+			      "Binding": {
+			        "ConceptualEntity": "Dim_Country"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_country": {
+			          "Target": {
+			            "Entity": "dim_country"
+			          }
+			        },
+			        "entity__measure.product_country_flag_SVG": {
+			          "Target": {
+			            "Entity": "entity__measure.product_country_flag_SVG"
+			          }
+			        }
+			      },
+			      "SemanticSlots": {
+			        "Where": {
+			          "Role": "entity__measure.product_country_flag_SVG"
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "dim_country"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "entity__measure.product_country_flag_SVG"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_countries_are_in_product_country_flag_SVG"
+			        }
+			      ]
+			    },
 			    "dim_country_in_country_group": {
 			      "Binding": {
 			        "ConceptualEntity": "Dim_Country"
@@ -16911,40 +17803,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "dim_product_has_entity__measure_title_oryza_category__product": {
-			      "Binding": {
-			        "ConceptualEntity": "Dim_Product"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "dim_product": {
-			          "Target": {
-			            "Entity": "dim_product"
-			          }
-			        },
-			        "entity__measure.title_oryza_category__product": {
-			          "Target": {
-			            "Entity": "entity__measure.title_oryza_category__product"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "dim_product"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.title_oryza_category__product"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "dim_products_have_title_oryza_category__product"
-			        }
-			      ]
-			    },
-			    "fact_rice_price_has_entity__measure_market_movement_summary_text": {
+			    "fact_rice_price_has_entity__measure_product_country_flag_SVG": {
 			      "Binding": {
 			        "ConceptualEntity": "Fact_Rice_Price"
 			      },
@@ -16955,9 +17814,9 @@ cultureInfo en-US
 			            "Entity": "fact_rice_price"
 			          }
 			        },
-			        "entity__measure.market_movement_summary_text": {
+			        "entity__measure.product_country_flag_SVG": {
 			          "Target": {
-			            "Entity": "entity__measure.market_movement_summary_text"
+			            "Entity": "entity__measure.product_country_flag_SVG"
 			          }
 			        }
 			      },
@@ -16968,82 +17827,16 @@ cultureInfo en-US
 			              "Role": "fact_rice_price"
 			            },
 			            "Object": {
-			              "Role": "entity__measure.market_movement_summary_text"
+			              "Role": "entity__measure.product_country_flag_SVG"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "fact_rice_prices_have_market_movement_summary_text"
+			          "ID": "fact_rice_prices_have_product_country_flag_SVG"
 			        }
 			      ]
 			    },
-			    "dim_date_has_entity__measure_latest_price_USD_ton": {
-			      "Binding": {
-			        "ConceptualEntity": "Dim_Date"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "dim_date": {
-			          "Target": {
-			            "Entity": "dim_date"
-			          }
-			        },
-			        "entity__measure.latest_price_USD_ton": {
-			          "Target": {
-			            "Entity": "entity__measure.latest_price_USD_ton"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "dim_date"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.latest_price_USD_ton"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "dim_dates_have_latest_price_USD_ton"
-			        }
-			      ]
-			    },
-			    "fact_exchange_rate_has_entity__measure_latest_price_USD_ton": {
-			      "Binding": {
-			        "ConceptualEntity": "Fact_Exchange_Rate"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_exchange_rate": {
-			          "Target": {
-			            "Entity": "fact_exchange_rate"
-			          }
-			        },
-			        "entity__measure.latest_price_USD_ton": {
-			          "Target": {
-			            "Entity": "entity__measure.latest_price_USD_ton"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_exchange_rate"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.latest_price_USD_ton"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_exchange_rates_have_latest_price_USD_ton"
-			        }
-			      ]
-			    },
-			    "fact_rice_price_has_entity__measure_latest_price_USD_ton": {
+			    "fact_rice_price_has_entity__measure_price_oryza_DoD_display": {
 			      "Binding": {
 			        "ConceptualEntity": "Fact_Rice_Price"
 			      },
@@ -17054,9 +17847,9 @@ cultureInfo en-US
 			            "Entity": "fact_rice_price"
 			          }
 			        },
-			        "entity__measure.latest_price_USD_ton": {
+			        "entity__measure.price_oryza_DoD_display": {
 			          "Target": {
-			            "Entity": "entity__measure.latest_price_USD_ton"
+			            "Entity": "entity__measure.price_oryza_DoD_display"
 			          }
 			        }
 			      },
@@ -17067,12 +17860,111 @@ cultureInfo en-US
 			              "Role": "fact_rice_price"
 			            },
 			            "Object": {
-			              "Role": "entity__measure.latest_price_USD_ton"
+			              "Role": "entity__measure.price_oryza_DoD_display"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "fact_rice_prices_have_latest_price_USD_ton"
+			          "ID": "fact_rice_prices_have_price_oryza_DoD_display"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_previous_trading_day_USD_ton": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_previous_trading_day_USD_ton": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_previous_trading_day_USD_ton"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_previous_trading_day_USD_ton"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_previous_trading_day_USD_ton"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_DoD_change": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_DoD_change": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_DoD_change"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_DoD_change"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_DoD_change"
+			        }
+			      ]
+			    },
+			    "fact_rice_price_has_entity__measure_price_oryza_DoD_color": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact_Rice_Price"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_rice_price": {
+			          "Target": {
+			            "Entity": "fact_rice_price"
+			          }
+			        },
+			        "entity__measure.price_oryza_DoD_color": {
+			          "Target": {
+			            "Entity": "entity__measure.price_oryza_DoD_color"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_rice_price"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.price_oryza_DoD_color"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_rice_prices_have_price_oryza_DoD_color"
 			        }
 			      ]
 			    },

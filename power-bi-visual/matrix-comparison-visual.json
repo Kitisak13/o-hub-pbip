@@ -3,9 +3,9 @@
   "name": "c7a4b8d2e1f34906a5b1",
   "position": {
     "x": 215.01709765069037,
-    "y": 142.0,
+    "y": 142,
     "z": 9500,
-    "height": 130.0,
+    "height": 145,
     "width": 1041.7729801667251,
     "tabOrder": 9500
   },
@@ -13,6 +13,26 @@
     "visualType": "pivotTable",
     "query": {
       "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_Product"
+                    }
+                  },
+                  "Property": "New Sub Category Name"
+                }
+              },
+              "queryRef": "Dim_Product.New Sub Category Name",
+              "nativeQueryRef": "Category",
+              "displayName": " ",
+              "active": true
+            }
+          ]
+        },
         "Columns": {
           "projections": [
             {
@@ -46,8 +66,8 @@
                 }
               },
               "queryRef": "_Measures.Product Country Flag SVG",
-              "nativeQueryRef": "Flag",
-              "displayName": "Flag"
+              "nativeQueryRef": "Origin",
+              "displayName": "Origin"
             },
             {
               "field": {
@@ -121,7 +141,29 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "12D"
+                }
+              }
+            },
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F8FAFC'"
+                    }
+                  }
                 }
               }
             }
@@ -164,7 +206,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "11D"
                 }
               }
             },
@@ -191,7 +233,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#F1F5F9'"
+                      "Value": "'#E2E8F0'"
                     }
                   }
                 }
@@ -206,14 +248,14 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9D"
+                  "Value": "9.5D"
                 }
               }
             },
@@ -222,9 +264,16 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#64748B'"
+                      "Value": "'#475569'"
                     }
                   }
+                }
+              }
+            },
+            "steppedLayoutIndentation": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
@@ -257,7 +306,7 @@
             "imageHeight": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "22D"
                 }
               }
             },
@@ -266,7 +315,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#E2E8F0'"
+                      "Value": "'#CBD5E1'"
                     }
                   }
                 }
@@ -279,10 +328,24 @@
                 }
               }
             },
+            "gridVerticalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "2D"
+                }
+              }
+            },
             "gridHorizontal": {
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
                 }
               }
             }
@@ -341,14 +404,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'[Type 2 Comparison] Matrix Card with SVG Flags'"
+                  "Value": "false"
                 }
               }
             }
