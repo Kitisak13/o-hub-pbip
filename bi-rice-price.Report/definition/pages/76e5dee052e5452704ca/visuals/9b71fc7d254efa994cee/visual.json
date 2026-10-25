@@ -28,7 +28,7 @@
               },
               "queryRef": "_Measures.Price Oryza Latest (USD/ton)",
               "nativeQueryRef": "Spot Price",
-              "displayName": "Spot Price"
+              "displayName": "Spot Price (USD/t)"
             },
             {
               "field": {
@@ -156,7 +156,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#1E293B'"
+                      "Value": "'#0F172A'"
                     }
                   }
                 }
@@ -169,7 +169,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "12D"
+                  "Value": "11D"
                 }
               }
             }
@@ -230,7 +230,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#E2E8F0'"
+                      "Value": "'#CBD5E1'"
                     }
                   }
                 }
@@ -329,7 +329,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "15D"
+                  "Value": "17D"
                 }
               }
             },
@@ -337,6 +337,17 @@
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#0F172A'"
+                    }
+                  }
                 }
               }
             }
@@ -357,7 +368,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "14D"
+                  "Value": "15D"
                 }
               }
             },
@@ -394,7 +405,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "15D"
+                  "Value": "16D"
                 }
               }
             }
@@ -458,7 +469,7 @@
             "verticalSpacing": {
               "expr": {
                 "Literal": {
-                  "Value": "6L"
+                  "Value": "4L"
                 }
               }
             }
@@ -474,132 +485,10 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             }
-          }
-        },
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "imageType": {
-              "expr": {
-                "Literal": {
-                  "Value": "'imageUrl'"
-                }
-              }
-            },
-            "imageUrl": {
-              "expr": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Product Country Flag SVG"
-                }
-              }
-            },
-            "position": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Left'"
-                }
-              }
-            },
-            "verticalAlignment": {
-              "expr": {
-                "Literal": {
-                  "Value": "'middle'"
-                }
-              }
-            },
-            "size": {
-              "expr": {
-                "Literal": {
-                  "Value": "16L"
-                }
-              }
-            },
-            "padding": {
-              "expr": {
-                "Literal": {
-                  "Value": "4L"
-                }
-              }
-            }
-          },
-          "selector": {
-            "id": "default"
-          }
-        },
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "imageType": {
-              "expr": {
-                "Literal": {
-                  "Value": "'imageUrl'"
-                }
-              }
-            },
-            "imageUrl": {
-              "expr": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Product Country Flag SVG"
-                }
-              }
-            },
-            "position": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Left'"
-                }
-              }
-            },
-            "verticalAlignment": {
-              "expr": {
-                "Literal": {
-                  "Value": "'middle'"
-                }
-              }
-            },
-            "size": {
-              "expr": {
-                "Literal": {
-                  "Value": "16L"
-                }
-              }
-            },
-            "padding": {
-              "expr": {
-                "Literal": {
-                  "Value": "4L"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "_Measures.Price Oryza Latest (USD/ton)"
           }
         },
         {
@@ -613,7 +502,7 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Price Oryza DoD %"
+            "id": "default"
           }
         }
       ],
@@ -716,14 +605,14 @@
             "bottomMargin": {
               "expr": {
                 "Literal": {
-                  "Value": "16L"
+                  "Value": "12L"
                 }
               }
             },
             "topMargin": {
               "expr": {
                 "Literal": {
-                  "Value": "14L"
+                  "Value": "10L"
                 }
               }
             },
