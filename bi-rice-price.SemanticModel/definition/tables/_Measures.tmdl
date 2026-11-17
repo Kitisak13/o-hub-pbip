@@ -68,39 +68,43 @@ table _Measures
 		displayFolder: 02 Currency & Unit Conversion
 		lineageTag: 0a498d35-238d-4be7-a01a-bccb58ae98de
 
-	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น บาท/กิโลกรัม (THB/kg) ทุกแหล่งข้อมูล (Oryza USD/Ton -> THB/kg ตามอัตราแลกเปลี่ยนรายวัน)
+	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น บาท/กิโลกรัม (THB/kg) ทุกแหล่งข้อมูล (Oryza USD/Ton -> THB/kg ตามอัตราแลกเปลี่ยนรายวัน และกรองเฉพาะ Price Selection = Keep)
 	measure 'Price (THB/kg)' =
-			AVERAGEX(
-			    SUMMARIZE(
-			        Fact_Rice_Price,
-			        Dim_Date[Date],
-			        Fact_Rice_Price[SourceCode],
-			        Fact_Rice_Price[Product Code]
+			CALCULATE(
+			    AVERAGEX(
+			        SUMMARIZE(
+			            Fact_Rice_Price,
+			            Dim_Date[Date],
+			            Fact_Rice_Price[SourceCode],
+			            Fact_Rice_Price[Product Code]
+			        ),
+			        VAR _RowMid = [Mid Price]
+			        VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
+			        RETURN
+			            IF(_IsOryza, DIVIDE(_RowMid * [Exchange Rate USD/THB], 1000), _RowMid)
 			    ),
-			    VAR _RowMid = [Mid Price]
-			    VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
-			    VAR _DailyFX = [Exchange Rate USD/THB]
-			    RETURN
-			        IF(_IsOryza, DIVIDE(_RowMid * _DailyFX, 1000), _RowMid)
+			    Fact_Rice_Price[Price Selection] = "Keep"
 			)
 		formatString: #,##0.00
 		displayFolder: 02 Currency & Unit Conversion
 		lineageTag: 3f543c20-9d53-4095-914a-5e4a6c9313cd
 
-	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น ดอลลาร์สหรัฐ/ตัน (USD/Ton) ทุกแหล่งข้อมูล (DIT, CPI THB/kg -> USD/Ton ตามอัตราแลกเปลี่ยนรายวัน)
+	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น ดอลลาร์สหรัฐ/ตัน (USD/Ton) ทุกแหล่งข้อมูล (DIT, CPI THB/kg -> USD/Ton ตามอัตราแลกเปลี่ยนรายวัน และกรองเฉพาะ Price Selection = Keep)
 	measure 'Price (USD/ton)' =
-			AVERAGEX(
-			    SUMMARIZE(
-			        Fact_Rice_Price,
-			        Dim_Date[Date],
-			        Fact_Rice_Price[SourceCode],
-			        Fact_Rice_Price[Product Code]
+			CALCULATE(
+			    AVERAGEX(
+			        SUMMARIZE(
+			            Fact_Rice_Price,
+			            Dim_Date[Date],
+			            Fact_Rice_Price[SourceCode],
+			            Fact_Rice_Price[Product Code]
+			        ),
+			        VAR _RowMid = [Mid Price]
+			        VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
+			        RETURN
+			            IF(_IsOryza, _RowMid, DIVIDE(_RowMid * 1000, [Exchange Rate USD/THB]))
 			    ),
-			    VAR _RowMid = [Mid Price]
-			    VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
-			    VAR _DailyFX = [Exchange Rate USD/THB]
-			    RETURN
-			        IF(_IsOryza, _RowMid, DIVIDE(_RowMid * 1000, _DailyFX))
+			    Fact_Rice_Price[Price Selection] = "Keep"
 			)
 		formatString: #,##0.00
 		displayFolder: 02 Currency & Unit Conversion
@@ -641,42 +645,70 @@ table _Measures
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 20362ab3-d2b2-42f8-8a00-3a4b46ffb4e4
 
-	/// ราคาส่งออก FOB ของไทย (FOB Thailand USD/ton)
+	/// ราคาส่งออก FOB ของไทย (FOB Thailand USD/ton — หากไม่เลือกกลุ่มข้าวจะแสดง Benchmark มาตรฐาน Thailand 5% broken)
 	measure 'FOB Thailand (USD/ton)' =
-			CALCULATE(
-			    [Price Oryza (USD/ton)],
-			    Dim_Country[CountryName] = "THAILAND"
-			)
+			VAR _IsGradeFiltered =
+			    ISFILTERED(Dim_Product[Product Name])
+			        || ISFILTERED(Dim_Product[New Sub Category Name])
+			        || ISFILTERED(Dim_Product[Benchmark Group])
+			        || ISFILTERED(Dim_Product[Sub Category Name])
+			RETURN
+			    IF(
+			        _IsGradeFiltered,
+			        CALCULATE([Price Oryza (USD/ton)], Dim_Country[CountryName] = "THAILAND"),
+			        CALCULATE([Price Oryza (USD/ton)], Dim_Product[Product Name] = "Thailand 5% broken")
+			    )
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: d9ea92f6-5ff2-4792-afa0-c553c969805f
 
-	/// ราคาส่งออก FOB ของเวียดนาม (FOB Vietnam USD/ton)
+	/// ราคาส่งออก FOB ของเวียดนาม (FOB Vietnam USD/ton — หากไม่เลือกกลุ่มข้าวจะแสดง Benchmark มาตรฐาน Vietnam 5% broken)
 	measure 'FOB Vietnam (USD/ton)' =
-			CALCULATE(
-			    [Price Oryza (USD/ton)],
-			    Dim_Country[CountryName] = "VIETNAM"
-			)
+			VAR _IsGradeFiltered =
+			    ISFILTERED(Dim_Product[Product Name])
+			        || ISFILTERED(Dim_Product[New Sub Category Name])
+			        || ISFILTERED(Dim_Product[Benchmark Group])
+			        || ISFILTERED(Dim_Product[Sub Category Name])
+			RETURN
+			    IF(
+			        _IsGradeFiltered,
+			        CALCULATE([Price Oryza (USD/ton)], Dim_Country[CountryName] = "VIETNAM"),
+			        CALCULATE([Price Oryza (USD/ton)], Dim_Product[Product Name] = "Vietnam 5% broken")
+			    )
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 0f07aafe-00a4-4799-8fa8-db7032196eb1
 
-	/// ราคาส่งออก FOB ของอินเดีย (FOB India USD/ton)
+	/// ราคาส่งออก FOB ของอินเดีย (FOB India USD/ton — หากไม่เลือกกลุ่มข้าวจะแสดง Benchmark มาตรฐาน India 5% broken)
 	measure 'FOB India (USD/ton)' =
-			CALCULATE(
-			    [Price Oryza (USD/ton)],
-			    Dim_Country[CountryName] = "INDIA"
-			)
+			VAR _IsGradeFiltered =
+			    ISFILTERED(Dim_Product[Product Name])
+			        || ISFILTERED(Dim_Product[New Sub Category Name])
+			        || ISFILTERED(Dim_Product[Benchmark Group])
+			        || ISFILTERED(Dim_Product[Sub Category Name])
+			RETURN
+			    IF(
+			        _IsGradeFiltered,
+			        CALCULATE([Price Oryza (USD/ton)], Dim_Country[CountryName] = "INDIA"),
+			        CALCULATE([Price Oryza (USD/ton)], Dim_Product[Product Name] = "India 5% broken")
+			    )
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: ea9020a8-781e-4e23-a4b9-042de246a75f
 
-	/// ราคาส่งออก FOB ของปากีสถาน (FOB Pakistan USD/ton)
+	/// ราคาส่งออก FOB ของปากีสถาน (FOB Pakistan USD/ton — หากไม่เลือกกลุ่มข้าวจะแสดง Benchmark มาตรฐาน Pakistan 5% broken)
 	measure 'FOB Pakistan (USD/ton)' =
-			CALCULATE(
-			    [Price Oryza (USD/ton)],
-			    Dim_Country[CountryName] = "PAKISTAN"
-			)
+			VAR _IsGradeFiltered =
+			    ISFILTERED(Dim_Product[Product Name])
+			        || ISFILTERED(Dim_Product[New Sub Category Name])
+			        || ISFILTERED(Dim_Product[Benchmark Group])
+			        || ISFILTERED(Dim_Product[Sub Category Name])
+			RETURN
+			    IF(
+			        _IsGradeFiltered,
+			        CALCULATE([Price Oryza (USD/ton)], Dim_Country[CountryName] = "PAKISTAN"),
+			        CALCULATE([Price Oryza (USD/ton)], Dim_Product[Product Name] = "Pakistan 5% broken")
+			    )
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: f0907276-faf2-41a1-b582-3d587fe4ae5c
@@ -1387,42 +1419,70 @@ table _Measures
 		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
 		lineageTag: e1000001-0001-4000-8000-000000000008
 
-	/// ราคาส่งออก FOB ไทย (5% Broken) ล่าสุด (USD/ton)
+	/// ราคาส่งออก FOB ไทย (5% Broken หรือตามกลุ่มข้าวที่เลือก) ล่าสุด (USD/ton)
 	measure 'FOB Thailand 5% Latest (USD/ton)' =
-			CALCULATE(
-			    [Price Oryza Latest (USD/ton)],
-			    Dim_Product[Product Name] = "Thailand 5% broken"
-			)
+			VAR _IsGradeFiltered =
+			    ISFILTERED(Dim_Product[Product Name])
+			        || ISFILTERED(Dim_Product[New Sub Category Name])
+			        || ISFILTERED(Dim_Product[Benchmark Group])
+			        || ISFILTERED(Dim_Product[Sub Category Name])
+			RETURN
+			    IF(
+			        _IsGradeFiltered,
+			        CALCULATE([Price Oryza Latest (USD/ton)], Dim_Country[CountryName] = "THAILAND"),
+			        CALCULATE([Price Oryza Latest (USD/ton)], Dim_Product[Product Name] = "Thailand 5% broken")
+			    )
 		formatString: #,##0.00
 		displayFolder: 07 KPI & Summary
 		lineageTag: e1000001-0001-4000-8000-000000000009
 
-	/// ราคาส่งออก FOB เวียดนาม (5% Broken) ล่าสุด (USD/ton)
+	/// ราคาส่งออก FOB เวียดนาม (5% Broken หรือตามกลุ่มข้าวที่เลือก) ล่าสุด (USD/ton)
 	measure 'FOB Vietnam 5% Latest (USD/ton)' =
-			CALCULATE(
-			    [Price Oryza Latest (USD/ton)],
-			    Dim_Product[Product Name] = "Vietnam 5% broken"
-			)
+			VAR _IsGradeFiltered =
+			    ISFILTERED(Dim_Product[Product Name])
+			        || ISFILTERED(Dim_Product[New Sub Category Name])
+			        || ISFILTERED(Dim_Product[Benchmark Group])
+			        || ISFILTERED(Dim_Product[Sub Category Name])
+			RETURN
+			    IF(
+			        _IsGradeFiltered,
+			        CALCULATE([Price Oryza Latest (USD/ton)], Dim_Country[CountryName] = "VIETNAM"),
+			        CALCULATE([Price Oryza Latest (USD/ton)], Dim_Product[Product Name] = "Vietnam 5% broken")
+			    )
 		formatString: #,##0.00
 		displayFolder: 07 KPI & Summary
 		lineageTag: e1000001-0001-4000-8000-000000000010
 
-	/// ราคาส่งออก FOB อินเดีย (5% Broken) ล่าสุด (USD/ton)
+	/// ราคาส่งออก FOB อินเดีย (5% Broken หรือตามกลุ่มข้าวที่เลือก) ล่าสุด (USD/ton)
 	measure 'FOB India 5% Latest (USD/ton)' =
-			CALCULATE(
-			    [Price Oryza Latest (USD/ton)],
-			    Dim_Product[Product Name] = "India 5% broken"
-			)
+			VAR _IsGradeFiltered =
+			    ISFILTERED(Dim_Product[Product Name])
+			        || ISFILTERED(Dim_Product[New Sub Category Name])
+			        || ISFILTERED(Dim_Product[Benchmark Group])
+			        || ISFILTERED(Dim_Product[Sub Category Name])
+			RETURN
+			    IF(
+			        _IsGradeFiltered,
+			        CALCULATE([Price Oryza Latest (USD/ton)], Dim_Country[CountryName] = "INDIA"),
+			        CALCULATE([Price Oryza Latest (USD/ton)], Dim_Product[Product Name] = "India 5% broken")
+			    )
 		formatString: #,##0.00
 		displayFolder: 07 KPI & Summary
 		lineageTag: e1000001-0001-4000-8000-000000000011
 
-	/// ราคาส่งออก FOB ปากีสถาน (5% Broken) ล่าสุด (USD/ton)
+	/// ราคาส่งออก FOB ปากีสถาน (5% Broken หรือตามกลุ่มข้าวที่เลือก) ล่าสุด (USD/ton)
 	measure 'FOB Pakistan 5% Latest (USD/ton)' =
-			CALCULATE(
-			    [Price Oryza Latest (USD/ton)],
-			    Dim_Product[Product Name] = "Pakistan 5% broken"
-			)
+			VAR _IsGradeFiltered =
+			    ISFILTERED(Dim_Product[Product Name])
+			        || ISFILTERED(Dim_Product[New Sub Category Name])
+			        || ISFILTERED(Dim_Product[Benchmark Group])
+			        || ISFILTERED(Dim_Product[Sub Category Name])
+			RETURN
+			    IF(
+			        _IsGradeFiltered,
+			        CALCULATE([Price Oryza Latest (USD/ton)], Dim_Country[CountryName] = "PAKISTAN"),
+			        CALCULATE([Price Oryza Latest (USD/ton)], Dim_Product[Product Name] = "Pakistan 5% broken")
+			    )
 		formatString: #,##0.00
 		displayFolder: 07 KPI & Summary
 		lineageTag: e1000001-0001-4000-8000-000000000012

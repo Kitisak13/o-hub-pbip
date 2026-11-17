@@ -67,23 +67,30 @@ table Dim_Product
 		annotation SummarizationSetBy = Automatic
 
 	/// กลุ่มเปรียบเทียบมาตรฐานเชื่อมโยง 3 แหล่งข้อมูล (CPI, DIT, Oryza)
-	column 'Benchmark Group' = ```
+	column 'Benchmark Group' =
 			VAR _Name = Dim_Product[Product Name]
 			VAR _SubCat = Dim_Product[New Sub Category Name]
 			RETURN
 			    SWITCH(
 			        TRUE(),
-			        CONTAINSSTRING(_Name, "หอมมะลิ") || CONTAINSSTRING(_Name, "ข้าวหอม 100%") || CONTAINSSTRING(_Name, "Hommali") || CONTAINSSTRING(_Name, "Jasmine"), "Hom Mali / Fragrant",
-			        CONTAINSSTRING(_Name, "ปทุม") || CONTAINSSTRING(_Name, "หอมพวง"), "Fragrant (Pathumthani)",
-			        CONTAINSSTRING(_Name, "ข้าวนึ่ง") || CONTAINSSTRING(_Name, "parboiled") || CONTAINSSTRING(_Name, "Parboiled") || _SubCat = "Parboiled Rice", "Parboiled Rice",
+			        -- 1. Broken Rice must be checked BEFORE Hom Mali ("ปลายข้าวหอมมะลิ")
 			        CONTAINSSTRING(_Name, "ปลายข้าว") || CONTAINSSTRING(_Name, "A1") || CONTAINSSTRING(_Name, "100% broken") || CONTAINSSTRING(_Name, "100% Broken") || CONTAINSSTRING(_Name, "pet food") || _SubCat = "Broken Rice", "Broken Rice",
+			        -- 2. Parboiled Rice must be checked BEFORE "5% broken" ("India parboiled 5% broken")
+			        CONTAINSSTRING(_Name, "ข้าวนึ่ง") || CONTAINSSTRING(_Name, "parboiled") || CONTAINSSTRING(_Name, "Parboiled") || _SubCat = "Parboiled Rice", "Parboiled Rice",
+			        -- 3. Glutinous & Medium/Specialty Grain must be checked BEFORE "4% broken" ("U.S. Calrose 4% broken")
+			        CONTAINSSTRING(_Name, "เหนียว") || CONTAINSSTRING(_Name, "กข") || CONTAINSSTRING(_Name, "ญี่ปุ่น") || CONTAINSSTRING(_Name, "กล้อง") || CONTAINSSTRING(_Name, "Calrose") || CONTAINSSTRING(_Name, "risotto") || _SubCat = "Medium Grain", "Glutinous & Specialty",
+			        -- 4. Pathumthani / Fragrant
+			        CONTAINSSTRING(_Name, "ปทุม") || CONTAINSSTRING(_Name, "หอมพวง"), "Fragrant (Pathumthani)",
+			        -- 5. Hom Mali / Jasmine
+			        CONTAINSSTRING(_Name, "หอมมะลิ") || CONTAINSSTRING(_Name, "ข้าวหอม 100%") || CONTAINSSTRING(_Name, "Hommali") || CONTAINSSTRING(_Name, "Jasmine") || _SubCat = "Fragrant Rice", "Hom Mali / Fragrant",
+			        -- 6. White Rice 15-25% must be checked BEFORE "5% broken" (since "25% broken" and "15% broken" contain "5% broken")
+			        CONTAINSSTRING(_Name, "25% broken") || CONTAINSSTRING(_Name, "15% broken") || CONTAINSSTRING(_Name, "25%") || CONTAINSSTRING(_Name, "15%") || _SubCat = "White Rice-Low", "White Rice 15-25%",
+			        -- 7. White Rice 100%
 			        CONTAINSSTRING(_Name, "ขาว 100%") || CONTAINSSTRING(_Name, "100% B"), "White Rice 100%",
-			        CONTAINSSTRING(_Name, "ขาว 5%") || CONTAINSSTRING(_Name, "5% broken") || CONTAINSSTRING(_Name, "4% broken"), "White Rice 5%",
-			        CONTAINSSTRING(_Name, "25% broken") || CONTAINSSTRING(_Name, "15% broken") || _SubCat = "White Rice-Low", "White Rice 15-25%",
-			        CONTAINSSTRING(_Name, "เหนียว") || CONTAINSSTRING(_Name, "กข") || CONTAINSSTRING(_Name, "ญี่ปุ่น") || CONTAINSSTRING(_Name, "กล้อง") || _SubCat = "Medium Grain", "Glutinous & Specialty",
+			        -- 8. White Rice 5%
+			        CONTAINSSTRING(_Name, "ขาว 5%") || CONTAINSSTRING(_Name, "5% broken") || CONTAINSSTRING(_Name, "4% broken") || _SubCat = "White Rice-High", "White Rice 5%",
 			        "Other Rice"
 			    )
-			```
 		dataType: string
 		lineageTag: d8123456-7890-4abc-def0-123456789001
 		summarizeBy: none
@@ -91,7 +98,7 @@ table Dim_Product
 		annotation SummarizationSetBy = Automatic
 
 	/// ชื่อกลุ่มสินค้าข้าวในประเทศ (รวมรหัสฤดูกาลผลิตของ CPI เข้าด้วยกันเพื่อให้ง่ายต่อการเปรียบเทียบ)
-	column 'Domestic Product Group' = ```
+	column 'Domestic Product Group' =
 			VAR _Name = Dim_Product[Product Name]
 			RETURN
 			    SWITCH(
@@ -112,7 +119,6 @@ table Dim_Product
 			        LEFT(_Name, 12) = "ข้าวกล้องหอม", "ข้าวกล้องหอม 100%",
 			        _Name
 			    )
-			```
 		dataType: string
 		lineageTag: d8123456-7890-4abc-def0-123456789002
 		summarizeBy: none
@@ -125,7 +131,7 @@ table Dim_Product
 				let
 				    Source = Fact_Rice_Price,
 				    #"Removed Other Columns" = Table.SelectColumns(Source,{"SourceCode", "Category Code", "Category Name", "Sub Category Code", "Sub Category Name", "Product Code", "Product Name"}),
-				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"Product Code"}),
 				    #"Sorted Rows" = Table.Sort(#"Removed Duplicates",{{"Product Code", Order.Ascending}}),
 				    #"Add New Sub Cat Name for Oryza" = Table.AddColumn(
 				    #"Sorted Rows",

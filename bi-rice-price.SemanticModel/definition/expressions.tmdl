@@ -68,20 +68,20 @@ expression milled_price_cpi = ```
 		    // ==========================================
 		    // 2. HELPER FUNCTIONS
 		    // ==========================================
-		    // ฟังก์ชันแปลงวันที่และรองรับปี พ.ศ.
+		    // ฟังก์ชันแปลงวันที่และรองรับปี พ.ศ. (ใช้ Culture th-TH เป็นหลักเพื่อป้องกันการสลับวัน/เดือนของข้อมูลไทย)
 		    fxParseThaiDate = (val as any) as nullable date =>
 		        if val <> null and val <> "" then
 		            try
 		                let
-		                    parsed = Date.From(val, "en-US"),
+		                    parsed = if val is date then val else try Date.FromText(Text.From(val), [Format="yyyy-MM-dd", Culture="en-US"]) otherwise try Date.From(val, "th-TH") otherwise Date.From(val, "en-US"),
 		                    yr = Date.Year(parsed),
-		                    correctYear = if yr >= 2500 then yr - 543 else yr
+		                    correctYear = if yr >= 2400 then yr - 543 else yr
 		                in
 		                    #date(correctYear, Date.Month(parsed), Date.Day(parsed))
 		            otherwise null
 		        else null,
 		
-		    // ฟังก์ชันสกัดวันที่ CropDate จาก CropCode
+		    // ฟังก์ชันสกัดวันที่ CropDate จาก CropCode (ใช้ #date(1900, 1, 1) แทนวันที่ปัจจุบันเมื่อไม่มีรหัสปี เพื่อไม่ให้สถานะเปลี่ยนตามวัน Refresh)
 		    fxExtractCropDate = (cropCode as nullable text) as date =>
 		        let
 		            crop = Text.Upper(Text.Trim(cropCode ?? "")),
@@ -100,9 +100,9 @@ expression milled_price_cpi = ```
 		                    in
 		                        #date(cropYear, 12, 1)
 		                else
-		                    CurrentMonthStart
+		                    #date(1900, 1, 1)
 		        in
-		            try result otherwise CurrentMonthStart,
+		            try result otherwise #date(1900, 1, 1),
 		
 		    // ==========================================
 		    // 3. DATA PIPELINE

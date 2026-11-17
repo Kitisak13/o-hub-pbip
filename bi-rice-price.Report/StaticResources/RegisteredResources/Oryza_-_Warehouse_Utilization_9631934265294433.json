@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/powerbi-desktop-samples/main/Report%20Theme%20JSON%20Schema/reportThemeSchema.json",
-  "name": "Oryza - Warehouse Utilization Theme",
+  "name": "Oryza Hub - Executive Rice & FX Theme",
   "dataColors": [
     "#008080",
     "#004D40",
