@@ -300,7 +300,7 @@
                                       [
                                         {
                                           "Literal": {
-                                            "Value": "'Broken Rice'"
+                                            "Value": "'White Rice-High'"
                                           }
                                         }
                                       ]
@@ -700,56 +700,12 @@
                 "merge": {
                   "general": [
                     {
-                      "properties": {
-                        "filter": {
-                          "filter": {
-                            "Version": 2,
-                            "From": [
-                              {
-                                "Name": "d",
-                                "Entity": "Dim_Date",
-                                "Type": 0
-                              }
-                            ],
-                            "Where": [
-                              {
-                                "Condition": {
-                                  "Comparison": {
-                                    "ComparisonKind": 3,
-                                    "Left": {
-                                      "Column": {
-                                        "Expression": {
-                                          "SourceRef": {
-                                            "Source": "d"
-                                          }
-                                        },
-                                        "Property": "Date"
-                                      }
-                                    },
-                                    "Right": {
-                                      "Literal": {
-                                        "Value": "datetime'2026-10-23T00:00:00'"
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
+                      "properties": {}
                     }
                   ],
                   "data": [
                     {
                       "properties": {
-                        "endDate": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "datetime'2026-10-22T00:00:00'"
-                            }
-                          }
-                        },
                         "mode": {
                           "expr": {
                             "Literal": {

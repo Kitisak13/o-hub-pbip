@@ -10887,16 +10887,6 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "(USD/t)": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        },
-			        {
 			          "Spot (USD/t)": {
 			            "State": "Suggested",
 			            "Source": {
@@ -10943,7 +10933,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "DoD%": {
+			          "DoD %": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -11065,16 +11055,6 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.599
 			          }
-			        },
-			        {
-			          "Flag": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
 			        }
 			      ]
 			    },
@@ -11170,16 +11150,6 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.499
-			          }
-			        },
-			        {
-			          "DoD": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
 			          }
 			        }
 			      ]

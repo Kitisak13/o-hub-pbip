@@ -30,11 +30,14 @@ table Fact_Exchange_Rate
 
 	column 'Sight Bill Buying Rates'
 		dataType: double
+		isHidden
 		lineageTag: 7ed7519a-5333-49b0-9d0d-2113ce1d93b1
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: Sight Bill Buying Rates
 
-		annotation SummarizationSetBy = Automatic
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 

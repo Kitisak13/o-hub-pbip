@@ -87,21 +87,27 @@ table Fact_Rice_Price
 
 	column 'Min Price'
 		dataType: double
+		isHidden
 		lineageTag: 0b5d3ea9-2e41-419b-b5ff-e1e5fb086962
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: Min Price
 
-		annotation SummarizationSetBy = Automatic
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column 'Max Price'
 		dataType: double
+		isHidden
 		lineageTag: 5aff3a0d-11c6-4df5-ab1c-df7da42f4518
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: Max Price
 
-		annotation SummarizationSetBy = Automatic
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 

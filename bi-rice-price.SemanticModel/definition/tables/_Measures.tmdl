@@ -68,48 +68,51 @@ table _Measures
 		displayFolder: 02 Currency & Unit Conversion
 		lineageTag: 0a498d35-238d-4be7-a01a-bccb58ae98de
 
-	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น บาท/กิโลกรัม (THB/kg) ทุกแหล่งข้อมูล (Oryza USD/Ton -> THB/kg)
+	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น บาท/กิโลกรัม (THB/kg) ทุกแหล่งข้อมูล (Oryza USD/Ton -> THB/kg ตามอัตราแลกเปลี่ยนรายวัน)
 	measure 'Price (THB/kg)' =
-			VAR _FX = [Exchange Rate USD/THB]
-			RETURN
-			    AVERAGEX(
-			        SUMMARIZE(
-			            Fact_Rice_Price,
-			            Dim_Date[Date],
-			            Fact_Rice_Price[SourceCode],
-			            Fact_Rice_Price[Product Code]
-			        ),
-			        VAR _RowMid = [Mid Price]
-			        VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
-			        RETURN
-			            IF(_IsOryza, DIVIDE(_RowMid * _FX, 1000), _RowMid)
-			    )
+			AVERAGEX(
+			    SUMMARIZE(
+			        Fact_Rice_Price,
+			        Dim_Date[Date],
+			        Fact_Rice_Price[SourceCode],
+			        Fact_Rice_Price[Product Code]
+			    ),
+			    VAR _RowMid = [Mid Price]
+			    VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
+			    VAR _DailyFX = [Exchange Rate USD/THB]
+			    RETURN
+			        IF(_IsOryza, DIVIDE(_RowMid * _DailyFX, 1000), _RowMid)
+			)
 		formatString: #,##0.00
 		displayFolder: 02 Currency & Unit Conversion
 		lineageTag: 3f543c20-9d53-4095-914a-5e4a6c9313cd
 
-	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น ดอลลาร์สหรัฐ/ตัน (USD/Ton) ทุกแหล่งข้อมูล (DIT, CPI THB/kg -> USD/Ton)
+	/// ราคาเฉลี่ยมาตรฐาน แปลงเป็น ดอลลาร์สหรัฐ/ตัน (USD/Ton) ทุกแหล่งข้อมูล (DIT, CPI THB/kg -> USD/Ton ตามอัตราแลกเปลี่ยนรายวัน)
 	measure 'Price (USD/ton)' =
-			VAR _FX = [Exchange Rate USD/THB]
-			RETURN
-			    AVERAGEX(
-			        SUMMARIZE(
-			            Fact_Rice_Price,
-			            Dim_Date[Date],
-			            Fact_Rice_Price[SourceCode],
-			            Fact_Rice_Price[Product Code]
-			        ),
-			        VAR _RowMid = [Mid Price]
-			        VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
-			        RETURN
-			            IF(_IsOryza, _RowMid, DIVIDE(_RowMid * 1000, _FX))
-			    )
+			AVERAGEX(
+			    SUMMARIZE(
+			        Fact_Rice_Price,
+			        Dim_Date[Date],
+			        Fact_Rice_Price[SourceCode],
+			        Fact_Rice_Price[Product Code]
+			    ),
+			    VAR _RowMid = [Mid Price]
+			    VAR _IsOryza = Fact_Rice_Price[SourceCode] = "S005"
+			    VAR _DailyFX = [Exchange Rate USD/THB]
+			    RETURN
+			        IF(_IsOryza, _RowMid, DIVIDE(_RowMid * 1000, _DailyFX))
+			)
 		formatString: #,##0.00
 		displayFolder: 02 Currency & Unit Conversion
 		lineageTag: 8d94bcb2-5984-4f4a-84bd-cf966c791188
 
-	/// ราคาข้าวฝ่ายจัดซื้อ CPI (บาท/กิโลกรัม)
-	measure 'Price CPI (THB/kg)' = CALCULATE([Mid Price], Fact_Rice_Price[SourceCode] = "S001")
+	/// ราคาข้าวฝ่ายจัดซื้อ CPI (บาท/กิโลกรัม - เฉพาะฤดูกาลผลิตปัจจุบันที่เลือกใช้งาน Keep)
+	measure 'Price CPI (THB/kg)' =
+			CALCULATE(
+			    [Mid Price],
+			    Fact_Rice_Price[SourceCode] = "S001",
+			    Fact_Rice_Price[Price Selection] = "Keep"
+			)
 		formatString: #,##0.00
 		displayFolder: 03 Specific Sources
 		lineageTag: b20675af-fa37-4093-813f-72a721fad2bf
@@ -126,8 +129,12 @@ table _Measures
 		displayFolder: 03 Specific Sources
 		lineageTag: a265f6a0-88f0-41a7-a736-a8689feca1bf
 
-	/// ราคาข้าว FOB Oryza แปลงเป็น บาท/กิโลกรัม (THB/kg)
-	measure 'Price Oryza (THB/kg)' = DIVIDE([Price Oryza (USD/ton)] * [Exchange Rate USD/THB], 1000)
+	/// ราคาข้าว FOB Oryza แปลงเป็น บาท/กิโลกรัม (THB/kg ตามอัตราแลกเปลี่ยนรายวัน)
+	measure 'Price Oryza (THB/kg)' =
+			CALCULATE(
+			    [Price (THB/kg)],
+			    Fact_Rice_Price[SourceCode] = "S005"
+			)
 		formatString: #,##0.00
 		displayFolder: 03 Specific Sources
 		lineageTag: f41cd445-965a-4405-8992-0835565e0d2d
@@ -235,26 +242,42 @@ table _Measures
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 955cc610-a768-47ad-9894-f76caec3b71c
 
-	/// ราคาสูงสุดในรอบ 52 สัปดาห์ (52-Week High พร้อมป้องกันกรณีบันทึกเฉพาะ Min Price)
+	/// ราคาสูงสุดในรอบ 52 สัปดาห์ (52-Week High ตามหน่วยมาตรฐานของแหล่งข้อมูล)
 	measure 'Price 52W High' =
 			VAR _MaxDate = MAX(Dim_Date[Date])
 			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -52, WEEK)
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
 			RETURN
 			    CALCULATE(
-			        MAXX(Fact_Rice_Price, COALESCE(Fact_Rice_Price[Max Price], Fact_Rice_Price[Min Price])),
+			        MAXX(
+			            VALUES(Dim_Date[Date]),
+			            IF(_IsOryza, [Price Oryza (USD/ton)], [Price (THB/kg)])
+			        ),
 			        _Dates52W
 			    )
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 55fa218c-11da-4bb1-a75c-88c71ca34d7b
 
-	/// ราคาต่ำสุดในรอบ 52 สัปดาห์ (52-Week Low พร้อมป้องกันกรณีบันทึกเฉพาะ Max Price)
+	/// ราคาต่ำสุดในรอบ 52 สัปดาห์ (52-Week Low ตามหน่วยมาตรฐานของแหล่งข้อมูล)
 	measure 'Price 52W Low' =
 			VAR _MaxDate = MAX(Dim_Date[Date])
 			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -52, WEEK)
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
 			RETURN
 			    CALCULATE(
-			        MINX(Fact_Rice_Price, COALESCE(Fact_Rice_Price[Min Price], Fact_Rice_Price[Max Price])),
+			        MINX(
+			            VALUES(Dim_Date[Date]),
+			            IF(_IsOryza, [Price Oryza (USD/ton)], [Price (THB/kg)])
+			        ),
 			        _Dates52W
 			    )
 		formatString: #,##0.00
@@ -263,8 +286,13 @@ table _Measures
 
 	/// ส่วนต่างราคาปัจจุบันเทียบกับราคาสูงสุดรอบ 52 สัปดาห์ (ป้องกันกรณีไม่มีราคาปัจจุบัน)
 	measure 'Price vs 52W High %' =
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
 			VAR _High = [Price 52W High]
-			VAR _Current = [Avg. Price]
+			VAR _Current = IF(_IsOryza, [Price Oryza (USD/ton)], [Price (THB/kg)])
 			RETURN
 			    IF(
 			        NOT ISBLANK(_Current) && NOT ISBLANK(_High) && _High <> 0,
@@ -561,14 +589,26 @@ table _Measures
 		displayFolder: 07 KPI & Summary
 		lineageTag: 99c9be37-a73a-4a2e-bbde-ea596079c987
 
-	/// ราคาเฉลี่ยข้าวเก่า (Old Crop - ข้อมูลเฉพาะแหล่งจัดซื้อ CPI)
-	measure 'Price Old Crop (THB/kg)' = CALCULATE([Price CPI (THB/kg)], Fact_Rice_Price[Crop Status] = "Old")
+	/// ราคาเฉลี่ยข้าวเก่า (Old Crop - ข้อมูลเฉพาะแหล่งจัดซื้อ CPI รวมทุกฤดูกาลที่บันทึกเป็น Old)
+	measure 'Price Old Crop (THB/kg)' =
+			CALCULATE(
+			    [Mid Price],
+			    Fact_Rice_Price[SourceCode] = "S001",
+			    Fact_Rice_Price[Crop Status] = "Old",
+			    REMOVEFILTERS(Fact_Rice_Price[Price Selection])
+			)
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: 87d107fd-1bdf-4629-b3f1-63a1a622e74e
 
 	/// ราคาเฉลี่ยข้าวใหม่ (New Crop - ข้อมูลเฉพาะแหล่งจัดซื้อ CPI)
-	measure 'Price New Crop (THB/kg)' = CALCULATE([Price CPI (THB/kg)], Fact_Rice_Price[Crop Status] = "New")
+	measure 'Price New Crop (THB/kg)' =
+			CALCULATE(
+			    [Mid Price],
+			    Fact_Rice_Price[SourceCode] = "S001",
+			    Fact_Rice_Price[Crop Status] = "New",
+			    REMOVEFILTERS(Fact_Rice_Price[Price Selection])
+			)
 		formatString: #,##0.00
 		displayFolder: 04 Marketing & Price Spreads
 		lineageTag: bc839290-2a5f-4f32-8bb0-5b803d429830
@@ -693,7 +733,12 @@ table _Measures
 
 	/// ดัชนีระดับราคาในกรอบ 52 สัปดาห์ (52W Price Position % หรือ Stochastic Indicator)
 	measure '52W Price Position %' =
-			VAR _Current = [Avg. Price]
+			VAR _IsOryza =
+			    CALCULATE(
+			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
+			        ALLSELECTED(Dim_Date)
+			    )
+			VAR _Current = IF(_IsOryza, [Price Oryza (USD/ton)], [Price (THB/kg)])
 			VAR _Low52W = [Price 52W Low]
 			VAR _High52W = [Price 52W High]
 			RETURN
@@ -1105,6 +1150,61 @@ table _Measures
 		displayFolder: 10. Text
 		lineageTag: f2c43b92-4f81-49ea-bc91-23da567a2015
 
+	/// ธงชาติรูปแบบ Vector SVG (Base64) ตามประเทศของสินค้าข้าว (ประเมินจาก Dim_Product โดยตรง 100%)
+	measure 'Product Country Flag SVG' =
+			VAR _Prod = SELECTEDVALUE(Dim_Product[Product Name], "")
+			VAR _Prefix = "data:image/svg+xml;base64,"
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        _Prod = "", BLANK(),
+			
+			        -- Argentina
+			        CONTAINSSTRING(_Prod, "Argentina"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iOCIgZmlsbD0iIzc0QUNERiIvPjxyZWN0IHk9IjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjNzRBQ0RGIi8+PGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMi41IiBmaWxsPSIjRjZCNDBFIi8+PC9zdmc+",
+			
+			        -- Brazil
+			        CONTAINSSTRING(_Prod, "Brazil"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjMDA5NzM5Ii8+PHBvbHlnb24gcG9pbnRzPSIxOCwzIDMzLDEyIDE4LDIxIDMsMTIiIGZpbGw9IiNGRUREMDAiLz48Y2lyY2xlIGN4PSIxOCIgY3k9IjEyIiByPSI1IiBmaWxsPSIjMDEyMTY5Ii8+PHBhdGggZD0iTTEzLjUsMTMgUTE4LDkgMjIuNSwxMiIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjAuOCIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==",
+			
+			        -- India / Indian
+			        CONTAINSSTRING(_Prod, "India"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iOCIgZmlsbD0iI0ZGOTkzMyIvPjxyZWN0IHk9IjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjMTM4ODA4Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMi42IiBzdHJva2U9IiMwMDAwODAiIHN0cm9rZS13aWR0aD0iMC44IiBmaWxsPSJub25lIi8+PGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMC44IiBmaWxsPSIjMDAwMDgwIi8+PC9zdmc+",
+			
+			        -- Myanmar
+			        CONTAINSSTRING(_Prod, "Myanmar"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iOCIgZmlsbD0iI0ZFQ0IwMCIvPjxyZWN0IHk9IjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjMzRCMjMzIi8+PHJlY3QgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjRUEyODM5Ii8+PHBvbHlnb24gcG9pbnRzPSIxOCw2LjUgMTkuOCwxMS41IDI1LDExLjUgMjAuOCwxNC41IDIyLjUsMTkuNSAxOCwxNi41IDEzLjUsMTkuNSAxNS4yLDE0LjUgMTEsMTEuNSAxNi4yLDExLjUiIGZpbGw9IiNGRkZGRkYiLz48L3N2Zz4=",
+			
+			        -- Pakistan
+			        CONTAINSSTRING(_Prod, "Pakistan"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iOSIgaGVpZ2h0PSIyNCIgZmlsbD0iI0ZGRkZGRiIvPjxyZWN0IHg9IjkiIHdpZHRoPSIyNyIgaGVpZ2h0PSIyNCIgZmlsbD0iIzAxNDExQyIvPjxjaXJjbGUgY3g9IjIyLjUiIGN5PSIxMiIgcj0iNSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjI0IiBjeT0iMTEiIHI9IjQuNSIgZmlsbD0iIzAxNDExQyIvPjxwb2x5Z29uIHBvaW50cz0iMjMuNSw4IDI0LjIsOS42IDI1LjgsOS42IDI0LjUsMTAuNiAyNSwxMi4yIDIzLjUsMTEuMiAyMiwxMi4yIDIyLjUsMTAuNiAyMS4yLDkuNiAyMi44LDkuNiIgZmlsbD0iI0ZGRkZGRiIvPjwvc3ZnPg==",
+			
+			        -- Thailand / Thai
+			        CONTAINSSTRING(_Prod, "Thai"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iNCIgZmlsbD0iI0E1MTkzMSIvPjxyZWN0IHk9IjQiIHdpZHRoPSIzNiIgaGVpZ2h0PSI0IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeT0iOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjgiIGZpbGw9IiMyRDJBNEEiLz48cmVjdCB5PSIxNiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjQiIGZpbGw9IiNGRkZGRkYiLz48cmVjdCB5PSIyMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjQiIGZpbGw9IiNBNTE5MzEiLz48L3N2Zz4=",
+			
+			        -- United States / U.S.
+			        CONTAINSSTRING(_Prod, "U.S.") || CONTAINSSTRING(_Prod, "US"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMCwwSDM2VjJIMFpNMCw0SDM2VjZIMFpNMCw4SDM2VjEwSDBaTTAsMTJIMzZWMTRIMFpNMCwxNkgzNlYxOEgwWk0wLDIwSDM2VjIySDBaIiBmaWxsPSIjQjIyMjM0Ii8+PHJlY3Qgd2lkdGg9IjE1IiBoZWlnaHQ9IjEzIiBmaWxsPSIjM0MzQjZFIi8+PGNpcmNsZSBjeD0iNCIgY3k9IjMiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjgiIGN5PSIzIiByPSIwLjkiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjMiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjYiIGN5PSI2LjUiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjEwIiBjeT0iNi41IiByPSIwLjkiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSI0IiBjeT0iMTAiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjgiIGN5PSIxMCIgcj0iMC45IiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMCIgcj0iMC45IiBmaWxsPSIjRkZGRkZGIi8+PC9zdmc+",
+			
+			        -- Uruguay
+			        CONTAINSSTRING(_Prod, "Uruguay"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMCwyLjY3SDM2VjUuMzNIMFpNMCw4SDM2VjEwLjY3SDBaTTAsMTMuMzNIMzZWMTZIMFpNMCwxOC42N0gzNlYyMS4zM0gwWiIgZmlsbD0iIzAwMzhBOCIvPjxyZWN0IHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjYiIGN5PSI2IiByPSIzIiBmaWxsPSIjRkNEMTE2Ii8+PGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjEuNSIgZmlsbD0iIzdCM0YwMCIvPjwvc3ZnPg==",
+			
+			        -- Vietnam
+			        CONTAINSSTRING(_Prod, "Vietnam"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjREEyNTFEIi8+PHBvbHlnb24gcG9pbnRzPSIxOCw1IDIwLjMsMTEgMjYuNSwxMSAyMS41LDE0LjYgMjMuNCwyMC41IDE4LDE3IDEyLjYsMjAuNSAxNC41LDE0LjYgOS41LDExIDE1LjcsMTEiIGZpbGw9IiNGRkZGMDAiLz48L3N2Zz4=",
+			
+			        -- Italy
+			        CONTAINSSTRING(_Prod, "Italy"),
+			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMjQiIGZpbGw9IiMwMDkyNDYiLz48cmVjdCB4PSIxMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjI0IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeD0iMjQiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyNCIgZmlsbD0iI0NFMkIzNyIvPjwvc3ZnPg==",
+			
+			        BLANK()
+			    )
+		displayFolder: 10. Text
+		lineageTag: d67c5210-91a3-4871-b0e2-7634f1ca9201
+		dataCategory: ImageUrl
+
 	/// สีพื้นหลังอ่อน (Soft Tint) ประจำประเทศสำหรับหัวการ์ด Small Multiples Header
 	measure 'Product Header Tint Color' =
 			VAR _Product = SELECTEDVALUE(Dim_Product[Product Name])
@@ -1126,60 +1226,235 @@ table _Measures
 		displayFolder: 07. UI & System Helpers
 		lineageTag: c1c43b92-4f81-49ea-bc91-23da567a3002
 
-	/// ธงชาติรูปแบบ Vector SVG (Base64) ตามประเทศของสินค้าข้าว (ประเมินจาก Dim_Product โดยตรง 100%)
-	measure 'Product Country Flag SVG' =
-			VAR _Prod = SELECTEDVALUE(Dim_Product[Product Name], "")
-			VAR _Prefix = "data:image/svg+xml;base64,"
+	/// ราคาจัดซื้อ CPI ล่าสุด (THB/kg) ณ วันที่เลือกหรือวันทำการล่าสุด
+	measure 'Price CPI Latest (THB/kg)' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S001",
+			        Fact_Rice_Price[Price Selection] = "Keep"
+			    )
 			RETURN
-			    SWITCH(
-			        TRUE(),
-			        _Prod = "", BLANK(),
+			    IF(
+			        NOT ISBLANK(_LatestDate),
+			        CALCULATE(
+			            [Price CPI (THB/kg)],
+			            Fact_Rice_Price[HeaderDate] = _LatestDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e1000001-0001-4000-8000-000000000001
 
-			        -- Argentina
-			        CONTAINSSTRING(_Prod, "Argentina"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iOCIgZmlsbD0iIzc0QUNERiIvPjxyZWN0IHk9IjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjNzRBQ0RGIi8+PGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMi41IiBmaWxsPSIjRjZCNDBFIi8+PC9zdmc+",
+	/// ราคาจัดซื้อ CPI วันทำการก่อนหน้า (THB/kg)
+	measure 'Price CPI Previous Trading Day (THB/kg)' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S001",
+			        Fact_Rice_Price[Price Selection] = "Keep"
+			    )
+			VAR _PrevDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] < _LatestDate,
+			        Fact_Rice_Price[SourceCode] = "S001",
+			        Fact_Rice_Price[Price Selection] = "Keep",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_PrevDate),
+			        CALCULATE(
+			            [Price CPI (THB/kg)],
+			            Fact_Rice_Price[HeaderDate] = _PrevDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e1000001-0001-4000-8000-000000000002
 
-			        -- Brazil
-			        CONTAINSSTRING(_Prod, "Brazil"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjMDA5NzM5Ii8+PHBvbHlnb24gcG9pbnRzPSIxOCwzIDMzLDEyIDE4LDIxIDMsMTIiIGZpbGw9IiNGRUREMDAiLz48Y2lyY2xlIGN4PSIxOCIgY3k9IjEyIiByPSI1IiBmaWxsPSIjMDEyMTY5Ii8+PHBhdGggZD0iTTEzLjUsMTMgUTE4LDkgMjIuNSwxMiIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjAuOCIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==",
-
-			        -- India / Indian
-			        CONTAINSSTRING(_Prod, "India"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iOCIgZmlsbD0iI0ZGOTkzMyIvPjxyZWN0IHk9IjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjMTM4ODA4Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMi42IiBzdHJva2U9IiMwMDAwODAiIHN0cm9rZS13aWR0aD0iMC44IiBmaWxsPSJub25lIi8+PGNpcmNsZSBjeD0iMTgiIGN5PSIxMiIgcj0iMC44IiBmaWxsPSIjMDAwMDgwIi8+PC9zdmc+",
-
-			        -- Myanmar
-			        CONTAINSSTRING(_Prod, "Myanmar"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iOCIgZmlsbD0iI0ZFQ0IwMCIvPjxyZWN0IHk9IjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjMzRCMjMzIi8+PHJlY3QgeT0iMTYiIHdpZHRoPSIzNiIgaGVpZ2h0PSI4IiBmaWxsPSIjRUEyODM5Ii8+PHBvbHlnb24gcG9pbnRzPSIxOCw2LjUgMTkuOCwxMS41IDI1LDExLjUgMjAuOCwxNC41IDIyLjUsMTkuNSAxOCwxNi41IDEzLjUsMTkuNSAxNS4yLDE0LjUgMTEsMTEuNSAxNi4yLDExLjUiIGZpbGw9IiNGRkZGRkYiLz48L3N2Zz4=",
-
-			        -- Pakistan
-			        CONTAINSSTRING(_Prod, "Pakistan"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iOSIgaGVpZ2h0PSIyNCIgZmlsbD0iI0ZGRkZGRiIvPjxyZWN0IHg9IjkiIHdpZHRoPSIyNyIgaGVpZ2h0PSIyNCIgZmlsbD0iIzAxNDExQyIvPjxjaXJjbGUgY3g9IjIyLjUiIGN5PSIxMiIgcj0iNSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjI0IiBjeT0iMTEiIHI9IjQuNSIgZmlsbD0iIzAxNDExQyIvPjxwb2x5Z29uIHBvaW50cz0iMjMuNSw4IDI0LjIsOS42IDI1LjgsOS42IDI0LjUsMTAuNiAyNSwxMi4yIDIzLjUsMTEuMiAyMiwxMi4yIDIyLjUsMTAuNiAyMS4yLDkuNiAyMi44LDkuNiIgZmlsbD0iI0ZGRkZGRiIvPjwvc3ZnPg==",
-
-			        -- Thailand / Thai
-			        CONTAINSSTRING(_Prod, "Thai"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iNCIgZmlsbD0iI0E1MTkzMSIvPjxyZWN0IHk9IjQiIHdpZHRoPSIzNiIgaGVpZ2h0PSI0IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeT0iOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjgiIGZpbGw9IiMyRDJBNEEiLz48cmVjdCB5PSIxNiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjQiIGZpbGw9IiNGRkZGRkYiLz48cmVjdCB5PSIyMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjQiIGZpbGw9IiNBNTE5MzEiLz48L3N2Zz4=",
-
-			        -- United States / U.S.
-			        CONTAINSSTRING(_Prod, "U.S.") || CONTAINSSTRING(_Prod, "US"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMCwwSDM2VjJIMFpNMCw0SDM2VjZIMFpNMCw4SDM2VjEwSDBaTTAsMTJIMzZWMTRIMFpNMCwxNkgzNlYxOEgwWk0wLDIwSDM2VjIySDBaIiBmaWxsPSIjQjIyMjM0Ii8+PHJlY3Qgd2lkdGg9IjE1IiBoZWlnaHQ9IjEzIiBmaWxsPSIjM0MzQjZFIi8+PGNpcmNsZSBjeD0iNCIgY3k9IjMiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjgiIGN5PSIzIiByPSIwLjkiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjMiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjYiIGN5PSI2LjUiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjEwIiBjeT0iNi41IiByPSIwLjkiIGZpbGw9IiNGRkZGRkYiLz48Y2lyY2xlIGN4PSI0IiBjeT0iMTAiIHI9IjAuOSIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjgiIGN5PSIxMCIgcj0iMC45IiBmaWxsPSIjRkZGRkZGIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMCIgcj0iMC45IiBmaWxsPSIjRkZGRkZGIi8+PC9zdmc+",
-
-			        -- Uruguay
-			        CONTAINSSTRING(_Prod, "Uruguay"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIGZpbGw9IiNGRkZGRkYiLz48cGF0aCBkPSJNMCwyLjY3SDM2VjUuMzNIMFpNMCw4SDM2VjEwLjY3SDBaTTAsMTMuMzNIMzZWMTZIMFpNMCwxOC42N0gzNlYyMS4zM0gwWiIgZmlsbD0iIzAwMzhBOCIvPjxyZWN0IHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgZmlsbD0iI0ZGRkZGRiIvPjxjaXJjbGUgY3g9IjYiIGN5PSI2IiByPSIzIiBmaWxsPSIjRkNEMTE2Ii8+PGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjEuNSIgZmlsbD0iIzdCM0YwMCIvPjwvc3ZnPg==",
-
-			        -- Vietnam
-			        CONTAINSSTRING(_Prod, "Vietnam"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMzYiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSIjREEyNTFEIi8+PHBvbHlnb24gcG9pbnRzPSIxOCw1IDIwLjMsMTEgMjYuNSwxMSAyMS41LDE0LjYgMjMuNCwyMC41IDE4LDE3IDEyLjYsMjAuNSAxNC41LDE0LjYgOS41LDExIDE1LjcsMTEiIGZpbGw9IiNGRkZGMDAiLz48L3N2Zz4=",
-
-			        -- Italy
-			        CONTAINSSTRING(_Prod, "Italy"),
-			        _Prefix & "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDM2IDI0Ij48cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMjQiIGZpbGw9IiMwMDkyNDYiLz48cmVjdCB4PSIxMiIgd2lkdGg9IjEyIiBoZWlnaHQ9IjI0IiBmaWxsPSIjRkZGRkZGIi8+PHJlY3QgeD0iMjQiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyNCIgZmlsbD0iI0NFMkIzNyIvPjwvc3ZnPg==",
-
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาจัดซื้อ CPI รายวัน (DoD %)
+	measure 'Price CPI DoD %' =
+			VAR _Current = [Price CPI Latest (THB/kg)]
+			VAR _Prior = [Price CPI Previous Trading Day (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
 			        BLANK()
 			    )
-		dataCategory: ImageUrl
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e1000001-0001-4000-8000-000000000003
+
+	/// ราคาตลาดในประเทศ DIT ล่าสุด (THB/kg) ณ วันที่เลือกหรือวันทำการล่าสุด
+	measure 'Price DIT Latest (THB/kg)' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S003"
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_LatestDate),
+			        CALCULATE(
+			            [Price DIT (THB/kg)],
+			            Fact_Rice_Price[HeaderDate] = _LatestDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e1000001-0001-4000-8000-000000000004
+
+	/// ราคาตลาดในประเทศ DIT วันทำการก่อนหน้า (THB/kg)
+	measure 'Price DIT Previous Trading Day (THB/kg)' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S003"
+			    )
+			VAR _PrevDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] < _LatestDate,
+			        Fact_Rice_Price[SourceCode] = "S003",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_PrevDate),
+			        CALCULATE(
+			            [Price DIT (THB/kg)],
+			            Fact_Rice_Price[HeaderDate] = _PrevDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e1000001-0001-4000-8000-000000000005
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคา DIT รายวัน (DoD %)
+	measure 'Price DIT DoD %' =
+			VAR _Current = [Price DIT Latest (THB/kg)]
+			VAR _Prior = [Price DIT Previous Trading Day (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e1000001-0001-4000-8000-000000000006
+
+	/// ส่วนต่างราคาจัดซื้อ CPI ล่าสุดเทียบกับ DIT ล่าสุด (THB/kg)
+	measure 'Latest Spread CPI vs DIT (THB/kg)' =
+			VAR _CPI = [Price CPI Latest (THB/kg)]
+			VAR _DIT = [Price DIT Latest (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_CPI) && NOT ISBLANK(_DIT),
+			        _CPI - _DIT,
+			        BLANK()
+			    )
+		formatString: +#,##0.00;-#,##0.00;0.00
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e1000001-0001-4000-8000-000000000007
+
+	/// เปอร์เซ็นต์ส่วนต่างราคาจัดซื้อ CPI ล่าสุดเทียบกับ DIT ล่าสุด
+	measure 'Latest Spread % CPI vs DIT' =
+			VAR _Spread = [Latest Spread CPI vs DIT (THB/kg)]
+			VAR _DIT = [Price DIT Latest (THB/kg)]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Spread) && NOT ISBLANK(_DIT) && _DIT <> 0,
+			        DIVIDE(_Spread, _DIT),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e1000001-0001-4000-8000-000000000008
+
+	/// ราคาส่งออก FOB ไทย (5% Broken) ล่าสุด (USD/ton)
+	measure 'FOB Thailand 5% Latest (USD/ton)' =
+			CALCULATE(
+			    [Price Oryza Latest (USD/ton)],
+			    Dim_Product[Product Name] = "Thailand 5% broken"
+			)
+		formatString: #,##0.00
+		displayFolder: 07 KPI & Summary
+		lineageTag: e1000001-0001-4000-8000-000000000009
+
+	/// ราคาส่งออก FOB เวียดนาม (5% Broken) ล่าสุด (USD/ton)
+	measure 'FOB Vietnam 5% Latest (USD/ton)' =
+			CALCULATE(
+			    [Price Oryza Latest (USD/ton)],
+			    Dim_Product[Product Name] = "Vietnam 5% broken"
+			)
+		formatString: #,##0.00
+		displayFolder: 07 KPI & Summary
+		lineageTag: e1000001-0001-4000-8000-000000000010
+
+	/// ราคาส่งออก FOB อินเดีย (5% Broken) ล่าสุด (USD/ton)
+	measure 'FOB India 5% Latest (USD/ton)' =
+			CALCULATE(
+			    [Price Oryza Latest (USD/ton)],
+			    Dim_Product[Product Name] = "India 5% broken"
+			)
+		formatString: #,##0.00
+		displayFolder: 07 KPI & Summary
+		lineageTag: e1000001-0001-4000-8000-000000000011
+
+	/// ราคาส่งออก FOB ปากีสถาน (5% Broken) ล่าสุด (USD/ton)
+	measure 'FOB Pakistan 5% Latest (USD/ton)' =
+			CALCULATE(
+			    [Price Oryza Latest (USD/ton)],
+			    Dim_Product[Product Name] = "Pakistan 5% broken"
+			)
+		formatString: #,##0.00
+		displayFolder: 07 KPI & Summary
+		lineageTag: e1000001-0001-4000-8000-000000000012
+
+	/// หัวข้อหน้า Domestic (CPI / DIT)
+	measure 'Title Domestic Category' =
+			VAR _Bench = SELECTEDVALUE(Dim_Product[Benchmark Group], "All Rice Categories")
+			RETURN
+			    "Domestic Rice Market (CPI vs DIT) : " & _Bench
 		displayFolder: 10. Text
-		lineageTag: d67c5210-91a3-4871-b0e2-7634f1ca9201
+		lineageTag: e1000001-0001-4000-8000-000000000013
+
+	/// หัวข้อกราฟเส้นหน้า Domestic (CPI / DIT)
+	measure 'Title Domestic Trend Chart' =
+			VAR _Bench = SELECTEDVALUE(Dim_Product[Benchmark Group], "All Categories")
+			VAR _Prod = SELECTEDVALUE(Dim_Product[Domestic Product Group], "Average Across Products")
+			RETURN
+			    "Domestic Price Trajectory (THB/kg) : " & _Bench & " > " & _Prod
+		displayFolder: 10. Text
+		lineageTag: e1000001-0001-4000-8000-000000000014
+
+	/// ข้อความสรุปสถานะอัปเดตล่าสุดและค่าเงิน USD/THB
+	measure 'Status Bar Summary Text' =
+			VAR _Date = [Latest Price Date]
+			VAR _FX = [Exchange Rate USD/THB]
+			VAR _FXDoD = [FX DoD %]
+			RETURN
+			    "Data as of: " & FORMAT(_Date, "dd MMM yyyy") &
+			    "  |  BOT Sight Bill USD/THB: " & FORMAT(_FX, "#,##0.00") &
+			    " (" & FORMAT(_FXDoD, "+0.00%;-0.00%;0.00%") & ")"
+		displayFolder: 10. Text
+		lineageTag: e1000001-0001-4000-8000-000000000015
 
 	column Dummy
 		dataType: int64

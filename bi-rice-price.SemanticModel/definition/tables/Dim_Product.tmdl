@@ -43,6 +43,7 @@ table Dim_Product
 
 	column 'Product Code'
 		dataType: string
+		isKey
 		lineageTag: 94d97ca3-6d6f-4ea7-8b39-0d7e9cac988f
 		summarizeBy: none
 		sourceColumn: Product Code
@@ -62,6 +63,59 @@ table Dim_Product
 		lineageTag: c203ed4f-5486-4918-b825-a641278baefa
 		summarizeBy: none
 		sourceColumn: New Sub Category Name
+
+		annotation SummarizationSetBy = Automatic
+
+	/// กลุ่มเปรียบเทียบมาตรฐานเชื่อมโยง 3 แหล่งข้อมูล (CPI, DIT, Oryza)
+	column 'Benchmark Group' = ```
+			VAR _Name = Dim_Product[Product Name]
+			VAR _SubCat = Dim_Product[New Sub Category Name]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        CONTAINSSTRING(_Name, "หอมมะลิ") || CONTAINSSTRING(_Name, "ข้าวหอม 100%") || CONTAINSSTRING(_Name, "Hommali") || CONTAINSSTRING(_Name, "Jasmine"), "Hom Mali / Fragrant",
+			        CONTAINSSTRING(_Name, "ปทุม") || CONTAINSSTRING(_Name, "หอมพวง"), "Fragrant (Pathumthani)",
+			        CONTAINSSTRING(_Name, "ข้าวนึ่ง") || CONTAINSSTRING(_Name, "parboiled") || CONTAINSSTRING(_Name, "Parboiled") || _SubCat = "Parboiled Rice", "Parboiled Rice",
+			        CONTAINSSTRING(_Name, "ปลายข้าว") || CONTAINSSTRING(_Name, "A1") || CONTAINSSTRING(_Name, "100% broken") || CONTAINSSTRING(_Name, "100% Broken") || CONTAINSSTRING(_Name, "pet food") || _SubCat = "Broken Rice", "Broken Rice",
+			        CONTAINSSTRING(_Name, "ขาว 100%") || CONTAINSSTRING(_Name, "100% B"), "White Rice 100%",
+			        CONTAINSSTRING(_Name, "ขาว 5%") || CONTAINSSTRING(_Name, "5% broken") || CONTAINSSTRING(_Name, "4% broken"), "White Rice 5%",
+			        CONTAINSSTRING(_Name, "25% broken") || CONTAINSSTRING(_Name, "15% broken") || _SubCat = "White Rice-Low", "White Rice 15-25%",
+			        CONTAINSSTRING(_Name, "เหนียว") || CONTAINSSTRING(_Name, "กข") || CONTAINSSTRING(_Name, "ญี่ปุ่น") || CONTAINSSTRING(_Name, "กล้อง") || _SubCat = "Medium Grain", "Glutinous & Specialty",
+			        "Other Rice"
+			    )
+			```
+		dataType: string
+		lineageTag: d8123456-7890-4abc-def0-123456789001
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// ชื่อกลุ่มสินค้าข้าวในประเทศ (รวมรหัสฤดูกาลผลิตของ CPI เข้าด้วยกันเพื่อให้ง่ายต่อการเปรียบเทียบ)
+	column 'Domestic Product Group' = ```
+			VAR _Name = Dim_Product[Product Name]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        LEFT(_Name, 12) = "ข้าวหอม 100%", "ข้าวหอม 100%",
+			        LEFT(_Name, 15) = "ข้าวหอมปทุมธานี", "ข้าวหอมปทุมธานี",
+			        LEFT(_Name, 10) = "ข้าวหอมพวง", "ข้าวหอมพวง",
+			        LEFT(_Name, 17) = "ข้าวขาว 5% นาปรัง", "ข้าวขาว 5% นาปรัง",
+			        LEFT(_Name, 21) = "ข้าวขาว 100% (นาปรัง)", "ข้าวขาว 100% (นาปรัง)",
+			        LEFT(_Name, 15) = "ปลายข้าวหอมมะลิ", "ปลายข้าวหอมมะลิ",
+			        LEFT(_Name, 16) = "ข้าวเหนียวนาปรัง", "ข้าวเหนียวนาปรัง",
+			        LEFT(_Name, 11) = "ปลายข้าวขาว", "ปลายข้าวขาว",
+			        LEFT(_Name, 14) = "ปลายข้าวเหนียว", "ปลายข้าวเหนียว",
+			        CONTAINSSTRING(_Name, "ข้าวนึ่ง 100% ดีด สี"), "ข้าวนึ่ง 100% ดีด สี เกรด B",
+			        LEFT(_Name, 9) = "ข้าวกข.43", "ข้าวกข.43",
+			        LEFT(_Name, 17) = "ข้าวญี่ปุ่น กวก.2", "ข้าวญี่ปุ่น กวก.2",
+			        LEFT(_Name, 9) = "ข้าวกข.79", "ข้าวกข.79",
+			        LEFT(_Name, 12) = "ข้าวกล้องหอม", "ข้าวกล้องหอม 100%",
+			        _Name
+			    )
+			```
+		dataType: string
+		lineageTag: d8123456-7890-4abc-def0-123456789002
+		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 

@@ -6,6 +6,7 @@ table Dim_Country
 		lineageTag: 0947b84b-890d-4bae-ae64-328ef4bcc87c
 		summarizeBy: none
 		sourceColumn: CountryName
+		sortByColumn: SortOrder
 
 		annotation SummarizationSetBy = Automatic
 

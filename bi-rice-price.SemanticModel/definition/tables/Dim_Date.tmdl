@@ -19,20 +19,20 @@ table Dim_Date
 	column DateKey
 		formatString: 0
 		lineageTag: e28a488f-3a6c-4c53-b407-22859ccf9ddb
-		summarizeBy: count
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [DateKey]
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column Year
 		formatString: 0
 		lineageTag: f871f781-56f9-4709-8977-05f7996062cf
-		summarizeBy: sum
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [Year]
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column Quarter
 		lineageTag: 088d62a3-ca2c-4ed3-835b-6df8f1f10ba9
@@ -45,26 +45,27 @@ table Dim_Date
 	column QuarterNo
 		formatString: 0
 		lineageTag: fcc51660-0ae5-484d-a7c0-d34c2e0eb95d
-		summarizeBy: sum
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [QuarterNo]
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column MonthNo
 		formatString: 0
 		lineageTag: 1b7d144b-5485-449a-a43d-cbb4a1e7c8f6
-		summarizeBy: sum
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [MonthNo]
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column MonthShort
 		lineageTag: 0b8be2df-8801-448a-a76f-d3a508ca9b5d
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [MonthShort]
+		sortByColumn: MonthNo
 
 		annotation SummarizationSetBy = Automatic
 
@@ -73,6 +74,7 @@ table Dim_Date
 		summarizeBy: none
 		isNameInferred
 		sourceColumn: [MonthLong]
+		sortByColumn: MonthNo
 
 		annotation SummarizationSetBy = Automatic
 
@@ -88,38 +90,38 @@ table Dim_Date
 	column YearMonthSort
 		formatString: 0
 		lineageTag: 55e8a56f-3952-4213-a9c8-133dd3d0f7bb
-		summarizeBy: sum
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [YearMonthSort]
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column WeekNo
 		formatString: 0
 		lineageTag: f14644aa-1cdd-492e-9de2-800d060f5f9e
-		summarizeBy: sum
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [WeekNo]
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column DayOfMonth
 		formatString: 0
 		lineageTag: 7ebb852f-0638-4a7c-8c72-e269d6e20326
-		summarizeBy: sum
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [DayOfMonth]
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column DayOfWeekNo
 		formatString: 0
 		lineageTag: c0da55f9-a030-41b6-a9f8-8cbe90932b4d
-		summarizeBy: sum
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [DayOfWeekNo]
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column DayShort
 		lineageTag: b7f8ab33-849d-4559-9079-d8bf1703ea7e
@@ -238,11 +240,11 @@ table Dim_Date
 	column RelativeYear
 		formatString: 0
 		lineageTag: bc327984-5780-41ef-b671-4fc1252f6b5b
-		summarizeBy: sum
+		summarizeBy: none
 		isNameInferred
 		sourceColumn: [RelativeYear]
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	partition Dim_Date = calculated
 		mode: import

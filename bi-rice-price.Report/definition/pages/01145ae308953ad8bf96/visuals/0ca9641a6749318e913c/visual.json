@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "0ca9641a6749318e913c",
   "position": {
-    "x": 1290,
-    "y": 14,
+    "x": 992,
+    "y": 16,
     "z": 8000,
-    "height": 76,
-    "width": 220,
+    "height": 72,
+    "width": 264,
     "tabOrder": 4000
   },
   "visual": {
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Dim_Product"
+                      "Entity": "Dim_Date"
                     }
                   },
-                  "Property": "Sub Category Name"
+                  "Property": "Date"
                 }
               },
-              "queryRef": "Dim_Product.Sub Category Name",
-              "nativeQueryRef": "Sub Category Name",
+              "queryRef": "Dim_Date.Date",
+              "nativeQueryRef": "Date",
               "active": true
             }
           ]
@@ -41,7 +41,20 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dropdown'"
+                  "Value": "'Between'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "slider": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
@@ -54,7 +67,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Grade'"
+                  "Value": "'Date Range'"
                 }
               }
             }
@@ -69,28 +82,28 @@
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "2D"
                 }
               }
             },
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "2D"
                 }
               }
             },
             "left": {
               "expr": {
                 "Literal": {
-                  "Value": "4D"
+                  "Value": "6D"
                 }
               }
             },
             "right": {
               "expr": {
                 "Literal": {
-                  "Value": "4D"
+                  "Value": "6D"
                 }
               }
             }
@@ -136,7 +149,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#E2E8F0'"
+                      "Value": "'#CBD5E1'"
                     }
                   }
                 }
@@ -145,7 +158,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "6D"
+                  "Value": "8D"
                 }
               }
             }

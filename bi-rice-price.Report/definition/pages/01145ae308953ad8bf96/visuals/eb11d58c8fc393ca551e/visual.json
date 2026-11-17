@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "eb11d58c8fc393ca551e",
   "position": {
-    "x": 968,
-    "y": 96,
+    "x": 748,
+    "y": 104,
     "z": 7000,
-    "height": 155,
-    "width": 456,
+    "height": 96,
+    "width": 248,
     "tabOrder": 7000
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "FOB India (USD/ton)"
+                  "Property": "Price DIT Latest (THB/kg)"
                 }
               },
-              "queryRef": "_Measures.FOB India (USD/ton)",
-              "nativeQueryRef": "FOB India (USD/ton)"
+              "queryRef": "_Measures.Price DIT Latest (THB/kg)",
+              "nativeQueryRef": "Price DIT Latest (THB/kg)"
             }
           ]
         }
@@ -56,7 +56,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#D97706'"
+                      "Value": "'#005F73'"
                     }
                   }
                 }
@@ -81,7 +81,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'INDIA (INDIA 5%)'"
+                  "Value": "'DIT DOMESTIC BENCHMARK (THB/KG)'"
                 }
               }
             },
@@ -99,14 +99,14 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Inter'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "9.5D"
                 }
               }
             },
@@ -140,14 +140,14 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Inter'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "32D"
+                  "Value": "20D"
                 }
               }
             },
@@ -231,44 +231,6 @@
               "expr": {
                 "Literal": {
                   "Value": "8D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "dropShadow": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#0F2942'"
-                    }
-                  }
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "95D"
-                }
-              }
-            },
-            "preset": {
-              "expr": {
-                "Literal": {
-                  "Value": "'BottomRight'"
                 }
               }
             }

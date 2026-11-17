@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "98c08a0cb5f66997fe28",
   "position": {
-    "x": 24,
-    "y": 683,
+    "x": 228,
+    "y": 468,
     "z": 4000,
-    "height": 375,
-    "width": 1872,
+    "height": 230,
+    "width": 1028,
     "tabOrder": 10000
   },
   "visual": {
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Dim_Date"
+                      "Entity": "Dim_Product"
                     }
                   },
-                  "Property": "Year"
+                  "Property": "Benchmark Group"
                 }
               },
-              "queryRef": "Dim_Date.Year",
-              "nativeQueryRef": "Year",
+              "queryRef": "Dim_Product.Benchmark Group",
+              "nativeQueryRef": "Benchmark Group",
               "active": true
             },
             {
@@ -35,14 +35,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Dim_Date"
+                      "Entity": "Dim_Product"
                     }
                   },
-                  "Property": "MonthShort"
+                  "Property": "Domestic Product Group"
                 }
               },
-              "queryRef": "Dim_Date.MonthShort",
-              "nativeQueryRef": "MonthShort",
+              "queryRef": "Dim_Product.Domestic Product Group",
+              "nativeQueryRef": "Domestic Product Group",
               "active": false
             }
           ]
@@ -57,11 +57,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "FOB Thailand (USD/ton)"
+                  "Property": "Price CPI Latest (THB/kg)"
                 }
               },
-              "queryRef": "_Measures.FOB Thailand (USD/ton)",
-              "nativeQueryRef": "FOB Thailand (USD/ton)"
+              "queryRef": "_Measures.Price CPI Latest (THB/kg)",
+              "nativeQueryRef": "CPI (THB/kg)"
             },
             {
               "field": {
@@ -71,11 +71,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "FOB Vietnam (USD/ton)"
+                  "Property": "Price DIT Latest (THB/kg)"
                 }
               },
-              "queryRef": "_Measures.FOB Vietnam (USD/ton)",
-              "nativeQueryRef": "FOB Vietnam (USD/ton)"
+              "queryRef": "_Measures.Price DIT Latest (THB/kg)",
+              "nativeQueryRef": "DIT (THB/kg)"
             },
             {
               "field": {
@@ -85,11 +85,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "FOB India (USD/ton)"
+                  "Property": "Latest Spread CPI vs DIT (THB/kg)"
                 }
               },
-              "queryRef": "_Measures.FOB India (USD/ton)",
-              "nativeQueryRef": "FOB India (USD/ton)"
+              "queryRef": "_Measures.Latest Spread CPI vs DIT (THB/kg)",
+              "nativeQueryRef": "Spread CPI-DIT"
             },
             {
               "field": {
@@ -99,11 +99,39 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "FOB Pakistan (USD/ton)"
+                  "Property": "Price Oryza Latest (USD/ton)"
                 }
               },
-              "queryRef": "_Measures.FOB Pakistan (USD/ton)",
-              "nativeQueryRef": "FOB Pakistan (USD/ton)"
+              "queryRef": "_Measures.Price Oryza Latest (USD/ton)",
+              "nativeQueryRef": "Oryza FOB ($/t)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "52W Price Position %"
+                }
+              },
+              "queryRef": "_Measures.52W Price Position %",
+              "nativeQueryRef": "52W Pos %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Trend Signal (7D vs 30D)"
+                }
+              },
+              "queryRef": "_Measures.Trend Signal (7D vs 30D)",
+              "nativeQueryRef": "Trend Signal"
             }
           ]
         }
@@ -145,14 +173,14 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Historical Price Data — FOB Export Monthly Settlements'"
+                  "Value": "'Unified 3-Source Benchmark Matrix — CPI Procurement vs DIT Domestic vs Oryza FOB'"
                 }
               }
             },
-            "heading": {
+            "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'Heading3'"
+                  "Value": "12D"
                 }
               }
             }
@@ -198,7 +226,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#E2E8F0'"
+                      "Value": "'#CBD5E1'"
                     }
                   }
                 }

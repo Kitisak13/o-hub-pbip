@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "c57803a5b959bed1c108",
   "position": {
-    "x": 24,
-    "y": 16,
+    "x": 228,
+    "y": 14,
     "z": 6000,
-    "height": 64,
-    "width": 1000,
+    "height": 44,
+    "width": 520,
     "tabOrder": 1000
   },
   "visual": {
@@ -19,24 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "Global Rice Price Dashboard",
+                    "value": "Executive Rice & FX Market Hub",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontFamily": "Inter",
-                      "fontSize": "22pt",
-                      "color": "#0f2942"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "FOB EXPORT PRICES (USD/MT) • RICE MARKET MONITOR",
-                    "textStyle": {
-                      "fontFamily": "Inter",
-                      "fontSize": "9pt",
-                      "color": "#64748b"
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "18pt",
+                      "color": "#004D40"
                     }
                   }
                 ]
@@ -61,6 +49,19 @@
         }
       ],
       "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
         {
           "properties": {
             "show": {

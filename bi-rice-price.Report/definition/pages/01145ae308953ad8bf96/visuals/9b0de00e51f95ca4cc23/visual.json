@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "9b0de00e51f95ca4cc23",
   "position": {
-    "x": 496,
-    "y": 96,
+    "x": 488,
+    "y": 104,
     "z": 5000,
-    "height": 155,
-    "width": 456,
+    "height": 96,
+    "width": 248,
     "tabOrder": 6000
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "FOB Vietnam (USD/ton)"
+                  "Property": "FOB Vietnam 5% Latest (USD/ton)"
                 }
               },
-              "queryRef": "_Measures.FOB Vietnam (USD/ton)",
-              "nativeQueryRef": "FOB Vietnam (USD/ton)"
+              "queryRef": "_Measures.FOB Vietnam 5% Latest (USD/ton)",
+              "nativeQueryRef": "FOB Vietnam 5% Latest (USD/ton)"
             }
           ]
         }
@@ -56,7 +56,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#DC2626'"
+                      "Value": "'#E63946'"
                     }
                   }
                 }
@@ -81,7 +81,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'VIETNAM (VIET 5%)'"
+                  "Value": "'VIETNAM 5% FOB ($/MT)'"
                 }
               }
             },
@@ -99,14 +99,14 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Inter'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "9.5D"
                 }
               }
             },
@@ -140,14 +140,14 @@
             "fontFamily": {
               "expr": {
                 "Literal": {
-                  "Value": "'Inter'"
+                  "Value": "'Segoe UI Semibold'"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "32D"
+                  "Value": "20D"
                 }
               }
             },
@@ -231,44 +231,6 @@
               "expr": {
                 "Literal": {
                   "Value": "8D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "dropShadow": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#0F2942'"
-                    }
-                  }
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "95D"
-                }
-              }
-            },
-            "preset": {
-              "expr": {
-                "Literal": {
-                  "Value": "'BottomRight'"
                 }
               }
             }
