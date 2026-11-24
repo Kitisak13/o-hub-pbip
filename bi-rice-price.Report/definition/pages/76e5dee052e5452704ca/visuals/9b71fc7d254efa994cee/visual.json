@@ -5,7 +5,7 @@
     "x": 228.64494186798763,
     "y": 23.577721897531198,
     "z": 9000,
-    "height": 110.53695865141124,
+    "height": 84,
     "width": 1026.6309310363947,
     "tabOrder": 9000
   },
@@ -460,7 +460,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "13D"
+                  "Value": "10D"
                 }
               }
             },
@@ -506,7 +506,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "10D"
                 }
               }
             },
@@ -531,7 +531,7 @@
             "horizontalAlignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'left'"
+                  "Value": "'center'"
                 }
               }
             }
@@ -614,13 +614,41 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9D"
+                  "Value": "8D"
                 }
               }
             }
           },
           "selector": {
             "metadata": "_Measures.Price Oryza DoD %"
+          }
+        },
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'aboveValue'"
+                }
+              }
+            },
+            "heading": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Heading4'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Price Oryza Latest (USD/ton)"
           }
         }
       ],
@@ -637,6 +665,20 @@
           },
           "selector": {
             "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "verticalSpacing": {
+              "expr": {
+                "Literal": {
+                  "Value": "4L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Price Oryza Latest (USD/ton)"
           }
         }
       ],
@@ -816,6 +858,34 @@
           "selector": {
             "id": "default"
           }
+        },
+        {
+          "properties": {
+            "rightMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Price Oryza Latest (USD/ton)"
+          }
+        },
+        {
+          "properties": {
+            "leftMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "9L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Price Oryza DoD %"
+          }
         }
       ],
       "border": [
@@ -921,6 +991,13 @@
               "expr": {
                 "Literal": {
                   "Value": "''"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "15D"
                 }
               }
             }

@@ -734,31 +734,6 @@
               }
             }
           },
-          "e311c884842776072aa4": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "5d95bc05263ccc3e0f01",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "_Measures"
-                        }
-                      },
-                      "Property": "Title Oryza Category"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "cardVisual",
-              "objects": {}
-            }
-          },
           "8237954b6563a6a84ff3": {
             "singleVisual": {
               "visualType": "shape",

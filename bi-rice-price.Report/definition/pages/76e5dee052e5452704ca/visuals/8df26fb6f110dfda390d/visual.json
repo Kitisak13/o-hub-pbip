@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "8df26fb6f110dfda390d",
   "position": {
-    "x": 228,
-    "y": 520,
+    "x": 233.75,
+    "y": 431.25,
     "z": 9600,
-    "height": 102,
-    "width": 1028,
+    "height": 87.5,
+    "width": 1027.5,
     "tabOrder": 1000
   },
   "visual": {
@@ -133,21 +133,21 @@
             "rowPadding": {
               "expr": {
                 "Literal": {
-                  "Value": "7L"
+                  "Value": "3L"
                 }
               }
             },
             "fixedHeight": {
               "expr": {
                 "Literal": {
-                  "Value": "45L"
+                  "Value": "37L"
                 }
               }
             },
             "fixedWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "238L"
+                  "Value": "194L"
                 }
               }
             },
@@ -216,7 +216,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "8D"
                 }
               }
             },
@@ -476,6 +476,13 @@
                   "Value": "70D"
                 }
               }
+            },
+            "weight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
             }
           },
           "selector": {
@@ -556,6 +563,29 @@
           },
           "selector": {
             "id": "interaction:hover"
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "bottomMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "6L"
+                }
+              }
+            },
+            "topMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "6L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
           }
         }
       ]
