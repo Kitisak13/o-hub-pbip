@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "9b71fc7d254efa994cee",
   "position": {
-    "x": 228.44001173364623,
-    "y": 24.330888823701965,
+    "x": 228.57142857142858,
+    "y": 24.285714285714288,
     "z": 9000,
-    "height": 88,
-    "width": 1027.3041947785275,
+    "height": 88.571428571428584,
+    "width": 1011.4285714285714,
     "tabOrder": 9000
   },
   "visual": {
@@ -38,11 +38,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Price Oryza DoD %"
+                  "Property": "Price Oryza Period Change %"
                 }
               },
-              "queryRef": "_Measures.Price Oryza DoD %",
-              "nativeQueryRef": "Day-over-Day",
+              "queryRef": "_Measures.Price Oryza Period Change %",
+              "nativeQueryRef": "Period Change %",
               "displayName": "DoD %"
             }
           ]
@@ -544,7 +544,37 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Price Oryza DoD %"
+            "metadata": "_Measures.Price Oryza Period Change %"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Price Oryza Period Color"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "_Measures.Price Oryza Period Change %"
           }
         },
         {
@@ -611,6 +641,18 @@
         },
         {
           "properties": {
+            "text": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Price Oryza Period Label"
+                }
+              }
+            },
             "heading": {
               "expr": {
                 "Literal": {
@@ -627,7 +669,7 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Price Oryza DoD %"
+            "metadata": "_Measures.Price Oryza Period Change %"
           }
         },
         {
@@ -742,7 +784,7 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Price Oryza DoD %"
+            "metadata": "_Measures.Price Oryza Period Change %"
           }
         }
       ],
@@ -891,7 +933,7 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Price Oryza DoD %"
+            "metadata": "_Measures.Price Oryza Period Change %"
           }
         }
       ],

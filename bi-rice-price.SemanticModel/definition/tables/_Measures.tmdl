@@ -1516,6 +1516,189 @@ table _Measures
 		displayFolder: 10. Text
 		lineageTag: e1000001-0001-4000-8000-000000000015
 
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าว Oryza เทียบย้อนหลัง 1 วันทำการที่มีราคา (1 Day Ago / DoD %)
+	measure 'Price Oryza Change 1D %' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S005"
+			    )
+			VAR _CompareDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _LatestDate - 1,
+			        Fact_Rice_Price[SourceCode] = "S005",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			VAR _Current = [Price Oryza Latest (USD/ton)]
+			VAR _Prior =
+			    IF(
+			        NOT ISBLANK(_CompareDate),
+			        CALCULATE(
+			            [Price Oryza (USD/ton)],
+			            Fact_Rice_Price[HeaderDate] = _CompareDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Oryza
+		lineageTag: e2000001-0001-4000-8000-000000000001
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าว Oryza เทียบย้อนหลัง 7 วันที่มีราคา (7 Days Ago / WoW %)
+	measure 'Price Oryza Change 7D %' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S005"
+			    )
+			VAR _CompareDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _LatestDate - 7,
+			        Fact_Rice_Price[SourceCode] = "S005",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			VAR _Current = [Price Oryza Latest (USD/ton)]
+			VAR _Prior =
+			    IF(
+			        NOT ISBLANK(_CompareDate),
+			        CALCULATE(
+			            [Price Oryza (USD/ton)],
+			            Fact_Rice_Price[HeaderDate] = _CompareDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Oryza
+		lineageTag: e2000001-0001-4000-8000-000000000002
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าว Oryza เทียบย้อนหลัง 30 วันที่มีราคา (30 Days Ago / MoM %)
+	measure 'Price Oryza Change 30D %' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S005"
+			    )
+			VAR _CompareDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _LatestDate - 30,
+			        Fact_Rice_Price[SourceCode] = "S005",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			VAR _Current = [Price Oryza Latest (USD/ton)]
+			VAR _Prior =
+			    IF(
+			        NOT ISBLANK(_CompareDate),
+			        CALCULATE(
+			            [Price Oryza (USD/ton)],
+			            Fact_Rice_Price[HeaderDate] = _CompareDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Oryza
+		lineageTag: e2000001-0001-4000-8000-000000000003
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าว Oryza เทียบย้อนหลัง 365 วันที่มีราคา (365 Days Ago / YoY %)
+	measure 'Price Oryza Change 365D %' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] = "S005"
+			    )
+			VAR _CompareDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _LatestDate - 365,
+			        Fact_Rice_Price[SourceCode] = "S005",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			VAR _Current = [Price Oryza Latest (USD/ton)]
+			VAR _Prior =
+			    IF(
+			        NOT ISBLANK(_CompareDate),
+			        CALCULATE(
+			            [Price Oryza (USD/ton)],
+			            Fact_Rice_Price[HeaderDate] = _CompareDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Oryza
+		lineageTag: e2000001-0001-4000-8000-000000000004
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าว Oryza ตามปุ่มช่วงเวลาที่เลือก (DoD / WoW / MoM / YoY)
+	measure 'Price Oryza Period Change %' =
+			VAR _Period = SELECTEDVALUE(Dim_Period_Comparison[Period], "DoD")
+			RETURN
+			    SWITCH(
+			        _Period,
+			        "WoW", [Price Oryza Change 7D %],
+			        "MoM", [Price Oryza Change 30D %],
+			        "YoY", [Price Oryza Change 365D %],
+			        [Price Oryza Change 1D %]
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Oryza
+		lineageTag: e2000001-0001-4000-8000-000000000005
+
+	/// ชื่อหัวข้อ Label บนการ์ดตามปุ่มช่วงเวลาที่เลือก (DoD % / WoW % / MoM % / YoY %)
+	measure 'Price Oryza Period Label' = SELECTEDVALUE(Dim_Period_Comparison[Label], "DoD %")
+		displayFolder: 10. Text
+		lineageTag: e2000001-0001-4000-8000-000000000006
+
+	/// สี Dynamic สำหรับตัวเลข % บนการ์ดตามปุ่มที่เลือก (▲ สีเขียว #10B981 / ▼ สีแดง #EF4444 / ● 0.00% สีเทา #64748B)
+	measure 'Price Oryza Period Color' =
+			VAR _Pct = [Price Oryza Period Change %]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(_Pct) || ABS(_Pct) < 0.00005, "#64748B",
+			        _Pct > 0, "#10B981",
+			        _Pct < 0, "#EF4444",
+			        "#64748B"
+			    )
+		displayFolder: 10. Text
+		lineageTag: e2000001-0001-4000-8000-000000000007
+
+	/// ข้อความอธิบายปุ่มเปรียบเทียบช่วงเวลาเมื่อ Hover (1 Day Ago / 7 Days Ago / 30 Days Ago / 365 Days Ago)
+	measure 'Period Comparison Button Subtitle' = SELECTEDVALUE(Dim_Period_Comparison[TooltipText], "")
+		displayFolder: 10. Text
+		lineageTag: e2000001-0001-4000-8000-000000000008
+
 	column Dummy
 		dataType: int64
 		isHidden

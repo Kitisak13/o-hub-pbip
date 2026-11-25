@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "d0000000000000000001",
   "position": {
     "x": 28,
@@ -24,7 +24,7 @@
                       "fontWeight": "bold",
                       "fontFamily": "Segoe UI",
                       "fontSize": "16pt",
-                      "color": "#FFFFFF"
+                      "color": "#ffffff"
                     }
                   }
                 ],
@@ -37,7 +37,7 @@
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "8pt",
-                      "color": "#B2DFDB"
+                      "color": "#b2dfdb"
                     }
                   }
                 ],

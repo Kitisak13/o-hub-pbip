@@ -25,6 +25,7 @@ ref table Dim_Country
 ref table Dim_Date
 ref table Dim_Product
 ref table _Measures
+ref table Dim_Period_Comparison
 
 ref cultureInfo en-US
 
