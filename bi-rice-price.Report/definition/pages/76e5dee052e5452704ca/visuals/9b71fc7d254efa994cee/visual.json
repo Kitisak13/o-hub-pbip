@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "9b71fc7d254efa994cee",
   "position": {
-    "x": 228.64494186798763,
-    "y": 23.577721897531198,
+    "x": 228.44001173364623,
+    "y": 24.330888823701965,
     "z": 9000,
-    "height": 84,
-    "width": 1026.6309310363947,
+    "height": 88,
+    "width": 1027.3041947785275,
     "tabOrder": 9000
   },
   "visual": {
@@ -141,7 +141,14 @@
             "autoGrid": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
+                }
+              }
+            },
+            "maxSmallMultiples": {
+              "expr": {
+                "Literal": {
+                  "Value": "5L"
                 }
               }
             }
@@ -1043,7 +1050,7 @@
             "spaceAbovePlotArea": {
               "expr": {
                 "Literal": {
-                  "Value": "16D"
+                  "Value": "10D"
                 }
               }
             }

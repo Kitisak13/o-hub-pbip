@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "576a86dd7d1643c92916",
   "position": {
-    "x": 210.47448291159128,
-    "y": 107.50854882534519,
+    "x": 212.87265221421222,
+    "y": 114.81571960841073,
     "z": 9700,
-    "height": 48.45455721705698,
-    "width": 748.01722703831717,
+    "height": 35,
+    "width": 749,
     "tabOrder": 2000
   },
   "visual": {
@@ -67,7 +67,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'White Rice-High'"
+                                "Value": "'Parboiled Rice'"
                               }
                             }
                           ]
@@ -231,7 +231,7 @@
             "topMargin": {
               "expr": {
                 "Literal": {
-                  "Value": "4L"
+                  "Value": "0L"
                 }
               }
             },
@@ -920,14 +920,14 @@
             "bottom": {
               "expr": {
                 "Literal": {
-                  "Value": "9D"
+                  "Value": "2D"
                 }
               }
             },
             "top": {
               "expr": {
                 "Literal": {
-                  "Value": "5D"
+                  "Value": "6D"
                 }
               }
             }
