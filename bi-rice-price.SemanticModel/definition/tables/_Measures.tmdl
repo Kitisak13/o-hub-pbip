@@ -969,59 +969,84 @@ table _Measures
 
 	/// สีประจำตัวของสินค้าข้าวแต่ละชนิด เพื่อความสอดคล้องระหว่างเส้นกราฟและปุ่ม Slicer
 	measure 'Product Line Color' =
-			VAR _Product = SELECTEDVALUE(Dim_Product[Product Name])
+			VAR _Product = COALESCE(SELECTEDVALUE(Dim_Product[Product Name]), SELECTEDVALUE(Dim_Product[Domestic Product Group]))
+			VAR _DomGroup = SELECTEDVALUE(Dim_Product[Domestic Product Group])
 			RETURN
 			    SWITCH(
-			        _Product,
-			        -- High Quality
-			        "Thailand 100% B grade", "#005F73",
-			        "Thailand 5% broken", "#0A9396",
-			        "Vietnam 5% broken", "#E63946",
-			        "India 5% broken", "#7209B7",
-			        "Pakistan 5% broken", "#FB8500",
-			        "Myanmar 5% broken", "#3A0CA3",
-			        "U.S. 4% broken", "#1D4ED8",
-			        "Brazil 5% broken", "#2A9D8F",
-			        "Uruguay 5% broken", "#4CC9F0",
-			        "Argentina 5% broken", "#F72585",
+			        TRUE(),
+			        -- High Quality (Oryza)
+			        _Product = "Thailand 100% B grade", "#005F73",
+			        _Product = "Thailand 5% broken", "#0A9396",
+			        _Product = "Vietnam 5% broken", "#E63946",
+			        _Product = "India 5% broken", "#7209B7",
+			        _Product = "Pakistan 5% broken", "#FB8500",
+			        _Product = "Myanmar 5% broken", "#3A0CA3",
+			        _Product = "U.S. 4% broken", "#1D4ED8",
+			        _Product = "Brazil 5% broken", "#2A9D8F",
+			        _Product = "Uruguay 5% broken", "#4CC9F0",
+			        _Product = "Argentina 5% broken", "#F72585",
 			
-			        -- Low Quality
-			        "Thailand 25% broken", "#0A9396",
-			        "Vietnam 25% broken", "#E63946",
-			        "Pakistan 25% broken", "#FB8500",
-			        "India 25% broken", "#7209B7",
-			        "U.S. 15% broken (sacked)", "#1D4ED8",
+			        -- Low Quality (Oryza)
+			        _Product = "Thailand 25% broken", "#0A9396",
+			        _Product = "Vietnam 25% broken", "#E63946",
+			        _Product = "Pakistan 25% broken", "#FB8500",
+			        _Product = "India 25% broken", "#7209B7",
+			        _Product = "U.S. 15% broken (sacked)", "#1D4ED8",
 			
-			        -- Parboiled
-			        "Thai Parboiled 100% stxd", "#0A9396",
-			        "Pakistan parboiled 5% broken stxd", "#FB8500",
-			        "India parboiled 5% broken stxd", "#7209B7",
-			        "U.S. parboiled 4% broken", "#1D4ED8",
-			        "Brazil parboiled 5% broken", "#2A9D8F",
-			        "Uruguay parboiled 5% broken", "#4CC9F0",
+			        -- Parboiled (Oryza)
+			        _Product = "Thai Parboiled 100% stxd", "#0A9396",
+			        _Product = "Pakistan parboiled 5% broken stxd", "#FB8500",
+			        _Product = "India parboiled 5% broken stxd", "#7209B7",
+			        _Product = "U.S. parboiled 4% broken", "#1D4ED8",
+			        _Product = "Brazil parboiled 5% broken", "#2A9D8F",
+			        _Product = "Uruguay parboiled 5% broken", "#4CC9F0",
 			
-			        -- Fragrant
-			        "Thailand Hommali 92%", "#0A9396",
-			        "Vietnam Jasmine", "#E63946",
+			        -- Fragrant (Oryza)
+			        _Product = "Thailand Hommali 92%", "#0A9396",
+			        _Product = "Vietnam Jasmine", "#E63946",
 			
-			        -- Brokens
-			        "Thailand A1 Super", "#0A9396",
-			        "Vietnam 100% broken", "#E63946",
-			        "Pakistan 100% broken stxd", "#FB8500",
-			        "India 100% Broken stxd", "#7209B7",
-			        "Indian 100% broken stxd", "#7209B7",
-			        "U.S. pet food", "#1D4ED8",
+			        -- Brokens (Oryza)
+			        _Product = "Thailand A1 Super", "#0A9396",
+			        _Product = "Vietnam 100% broken", "#E63946",
+			        _Product = "Pakistan 100% broken stxd", "#FB8500",
+			        _Product = "India 100% Broken stxd", "#7209B7",
+			        _Product = "Indian 100% broken stxd", "#7209B7",
+			        _Product = "U.S. pet food", "#1D4ED8",
 			
-			        -- Medium Grain
-			        "U.S. Calrose 4% broken", "#1D4ED8",
-			        "Italy risotto", "#F72585",
+			        -- Medium Grain (Oryza)
+			        _Product = "U.S. Calrose 4% broken", "#1D4ED8",
+			        _Product = "Italy risotto", "#F72585",
+			
+			        -- Domestic Varieties (CPI & DIT)
+			        _DomGroup = "ข้าวหอม 100%", "#0A9396",
+			        _DomGroup = "ข้าวหอมปทุมธานี", "#2A9D8F",
+			        _DomGroup = "ข้าวหอมพวง", "#4CC9F0",
+			        _DomGroup = "ข้าวขาว 100% (นาปรัง)", "#1D4ED8",
+			        _DomGroup = "ข้าวขาว 5% นาปรัง", "#E63946",
+			        _DomGroup = "ข้าวนึ่ง 100% ดีด สี เกรด B", "#FB8500",
+			        _DomGroup = "ข้าวเหนียวนาปรัง", "#7209B7",
+			        _DomGroup = "ข้าวกข.43", "#10B981",
+			        _DomGroup = "ข้าวกข.79", "#3A0CA3",
+			        _DomGroup = "ข้าวญี่ปุ่น กวก.2", "#F72585",
+			        _DomGroup = "ข้าวกล้องหอม 100%", "#8B5CF6",
+			        _DomGroup = "ปลายข้าวหอมมะลิ", "#0EA5E9",
+			        _DomGroup = "ปลายข้าวขาว", "#F59E0B",
+			        _DomGroup = "ปลายข้าวเหนียว", "#EC4899",
+			        CONTAINSSTRING(_DomGroup, "หอมมะลิ"), "#005F73",
+			        CONTAINSSTRING(_DomGroup, "ปทุม"), "#2A9D8F",
+			        CONTAINSSTRING(_DomGroup, "ขาว 100%"), "#1D4ED8",
+			        CONTAINSSTRING(_DomGroup, "ขาว 5%"), "#E63946",
+			        CONTAINSSTRING(_DomGroup, "ปลายข้าว"), "#F59E0B",
+			        CONTAINSSTRING(_DomGroup, "เหนียว"), "#7209B7",
+			        CONTAINSSTRING(_DomGroup, "นึ่ง"), "#FB8500",
 			
 			        -- Fallback by Country
-			        IF(CONTAINSSTRING(_Product, "Thai"), "#0A9396",
-			        IF(CONTAINSSTRING(_Product, "Viet"), "#E63946",
-			        IF(CONTAINSSTRING(_Product, "India") || CONTAINSSTRING(_Product, "Indian"), "#7209B7",
-			        IF(CONTAINSSTRING(_Product, "Pakistan"), "#FB8500",
-			        IF(CONTAINSSTRING(_Product, "U.S.") || CONTAINSSTRING(_Product, "US"), "#1D4ED8", "#64748B")))))
+			        CONTAINSSTRING(_Product, "Thai"), "#0A9396",
+			        CONTAINSSTRING(_Product, "Viet"), "#E63946",
+			        CONTAINSSTRING(_Product, "India") || CONTAINSSTRING(_Product, "Indian"), "#7209B7",
+			        CONTAINSSTRING(_Product, "Pakistan"), "#FB8500",
+			        CONTAINSSTRING(_Product, "U.S.") || CONTAINSSTRING(_Product, "US"), "#1D4ED8",
+			        "#0A9396"
 			    )
 		displayFolder: 07. UI & System Helpers
 		lineageTag: c1c43b92-4f81-49ea-bc91-23da567a3001
@@ -1698,6 +1723,355 @@ table _Measures
 	measure 'Period Comparison Button Subtitle' = SELECTEDVALUE(Dim_Period_Comparison[TooltipText], "")
 		displayFolder: 10. Text
 		lineageTag: e2000001-0001-4000-8000-000000000008
+
+	/// ราคาข้าวในประเทศตามแหล่งข้อมูลที่เลือก (CPI Price หรือ DIT Price - บาท/กิโลกรัม เฉพาะ Price Selection = Keep)
+	measure 'Price Domestic (THB/kg)' =
+			CALCULATE(
+			    [Mid Price],
+			    Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			    Fact_Rice_Price[Price Selection] = "Keep"
+			)
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000001
+
+	/// ราคาข้าวในประเทศล่าสุดตามแหล่งข้อมูลที่เลือก (CPI Price หรือ DIT Price - บาท/กิโลกรัม)
+	measure 'Price Domestic Latest (THB/kg)' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			        Fact_Rice_Price[Price Selection] = "Keep"
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_LatestDate),
+			        CALCULATE(
+			            [Price Domestic (THB/kg)],
+			            Fact_Rice_Price[HeaderDate] = _LatestDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+		formatString: #,##0.00
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000002
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าวในประเทศ (CPI / DIT) เทียบย้อนหลัง 1 วันที่มีราคา (1 Day Ago / DoD %)
+	measure 'Price Domestic Change 1D %' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			        Fact_Rice_Price[Price Selection] = "Keep"
+			    )
+			VAR _CompareDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _LatestDate - 1,
+			        Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			        Fact_Rice_Price[Price Selection] = "Keep",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			VAR _Current = [Price Domestic Latest (THB/kg)]
+			VAR _Prior =
+			    IF(
+			        NOT ISBLANK(_CompareDate),
+			        CALCULATE(
+			            [Price Domestic (THB/kg)],
+			            Fact_Rice_Price[HeaderDate] = _CompareDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000003
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าวในประเทศ (CPI / DIT) เทียบย้อนหลัง 7 วันที่มีราคา (7 Days Ago / WoW %)
+	measure 'Price Domestic Change 7D %' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			        Fact_Rice_Price[Price Selection] = "Keep"
+			    )
+			VAR _CompareDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _LatestDate - 7,
+			        Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			        Fact_Rice_Price[Price Selection] = "Keep",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			VAR _Current = [Price Domestic Latest (THB/kg)]
+			VAR _Prior =
+			    IF(
+			        NOT ISBLANK(_CompareDate),
+			        CALCULATE(
+			            [Price Domestic (THB/kg)],
+			            Fact_Rice_Price[HeaderDate] = _CompareDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000004
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าวในประเทศ (CPI / DIT) เทียบย้อนหลัง 30 วันที่มีราคา (30 Days Ago / MoM %)
+	measure 'Price Domestic Change 30D %' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			        Fact_Rice_Price[Price Selection] = "Keep"
+			    )
+			VAR _CompareDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _LatestDate - 30,
+			        Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			        Fact_Rice_Price[Price Selection] = "Keep",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			VAR _Current = [Price Domestic Latest (THB/kg)]
+			VAR _Prior =
+			    IF(
+			        NOT ISBLANK(_CompareDate),
+			        CALCULATE(
+			            [Price Domestic (THB/kg)],
+			            Fact_Rice_Price[HeaderDate] = _CompareDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000005
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าวในประเทศ (CPI / DIT) เทียบย้อนหลัง 365 วันที่มีราคา (365 Days Ago / YoY %)
+	measure 'Price Domestic Change 365D %' =
+			VAR _SelectedMaxDate = MAX(Dim_Date[Date])
+			VAR _LatestDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _SelectedMaxDate,
+			        Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			        Fact_Rice_Price[Price Selection] = "Keep"
+			    )
+			VAR _CompareDate =
+			    CALCULATE(
+			        MAX(Fact_Rice_Price[HeaderDate]),
+			        Fact_Rice_Price[HeaderDate] <= _LatestDate - 365,
+			        Fact_Rice_Price[SourceCode] IN {"S001", "S003"},
+			        Fact_Rice_Price[Price Selection] = "Keep",
+			        REMOVEFILTERS(Dim_Date)
+			    )
+			VAR _Current = [Price Domestic Latest (THB/kg)]
+			VAR _Prior =
+			    IF(
+			        NOT ISBLANK(_CompareDate),
+			        CALCULATE(
+			            [Price Domestic (THB/kg)],
+			            Fact_Rice_Price[HeaderDate] = _CompareDate,
+			            REMOVEFILTERS(Dim_Date)
+			        )
+			    )
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000006
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าวในประเทศ (CPI / DIT) ตามปุ่มช่วงเวลาที่เลือก (DoD / WoW / MoM / YoY)
+	measure 'Price Domestic Period Change %' =
+			VAR _Period = SELECTEDVALUE(Dim_Period_Comparison[Period], "DoD")
+			RETURN
+			    SWITCH(
+			        _Period,
+			        "WoW", [Price Domestic Change 7D %],
+			        "MoM", [Price Domestic Change 30D %],
+			        "YoY", [Price Domestic Change 365D %],
+			        [Price Domestic Change 1D %]
+			    )
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000007
+
+	/// สี Dynamic สำหรับตัวเลข % บนการ์ดหน้า CPI / DIT ตามปุ่มที่เลือก (▲ สีเขียว #10B981 / ▼ สีแดง #EF4444 / ● 0.00% สีเทา #64748B)
+	measure 'Price Domestic Period Color' =
+			VAR _Pct = [Price Domestic Period Change %]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(_Pct) || ABS(_Pct) < 0.00005, "#64748B",
+			        _Pct > 0, "#10B981",
+			        _Pct < 0, "#EF4444",
+			        "#64748B"
+			    )
+		displayFolder: 10. Text
+		lineageTag: e3000001-0001-4000-8000-000000000008
+
+	/// ราคาข้าวในประเทศ (CPI / DIT) เฉลี่ยเดือนก่อนหน้า (THB/kg)
+	measure 'Price Domestic Previous Month' = CALCULATE([Price Domestic (THB/kg)], DATEADD(Dim_Date[Date], -1, MONTH))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: e3000001-0001-4000-8000-000000000009
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าวในประเทศ (CPI / DIT) เทียบเดือนก่อนหน้า (MoM % THB/kg)
+	measure 'Price Domestic MoM %' =
+			VAR _Current = [Price Domestic (THB/kg)]
+			VAR _Prior = [Price Domestic Previous Month]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: e3000001-0001-4000-8000-000000000010
+
+	/// ราคาข้าวในประเทศ (CPI / DIT) เฉลี่ยปีก่อนหน้า (THB/kg)
+	measure 'Price Domestic Previous Year' = CALCULATE([Price Domestic (THB/kg)], SAMEPERIODLASTYEAR(Dim_Date[Date]))
+		formatString: #,##0.00
+		displayFolder: 06 Time Intelligence
+		lineageTag: e3000001-0001-4000-8000-000000000011
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าวในประเทศ (CPI / DIT) เทียบปีก่อนหน้า (YoY % THB/kg)
+	measure 'Price Domestic YoY %' =
+			VAR _Current = [Price Domestic (THB/kg)]
+			VAR _Prior = [Price Domestic Previous Year]
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: e3000001-0001-4000-8000-000000000012
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาข้าวในประเทศ (CPI / DIT) เทียบสัปดาห์ก่อนหน้า (WoW % THB/kg)
+	measure 'Price Domestic WoW %' =
+			VAR _Current = [Price Domestic (THB/kg)]
+			VAR _Prior = CALCULATE([Price Domestic (THB/kg)], DATEADD(Dim_Date[Date], -7, DAY))
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Current) && NOT ISBLANK(_Prior) && _Prior <> 0,
+			        DIVIDE(_Current - _Prior, _Prior),
+			        BLANK()
+			    )
+		formatString: +0.00%;-0.00%;0.00%
+		displayFolder: 06 Time Intelligence
+		lineageTag: e3000001-0001-4000-8000-000000000013
+
+	/// ชื่อกราฟและสินค้าข้าวสำหรับหัวกราฟ Line Chart หน้า CPI / DIT
+	measure 'Title Domestic Category & Product' =
+			VAR _Source = SELECTEDVALUE(Dim_Product[Price Source], "CPI / DIT Price")
+			VAR _SelectedSubCat = SELECTEDVALUE(Dim_Product[New Sub Category Name], "All Categories")
+			VAR _Product = SELECTEDVALUE(Dim_Product[Domestic Product Group])
+			RETURN
+			    IF(
+			        NOT ISBLANK(_Product),
+			        _Source & " (THB/kg) : " & _SelectedSubCat & " > " & _Product,
+			        _Source & " (THB/kg) : " & _SelectedSubCat & " > Multiple Products"
+			    )
+		displayFolder: 10. Text
+		lineageTag: e3000001-0001-4000-8000-000000000014
+
+	/// ข้อความสรุป Sentiment ตลาดข้าวในประเทศสำหรับ Subtitle ของ Line Chart หน้า CPI / DIT
+	measure 'Domestic Market Movement Summary Text' =
+			VAR _WoW = [Price Domestic WoW %]
+			VAR _MoM = [Price Domestic MoM %]
+			VAR _Status =
+			    SWITCH(
+			        TRUE(),
+			        _WoW > 0.02 && _MoM > 0.05, "Strong Bullish (Accelerating Upward)",
+			        _WoW > 0, "Mild Bullish (Upward Momentum)",
+			        _WoW < -0.02 && _MoM < -0.05, "Strong Bearish (Sharp Correction)",
+			        _WoW < 0, "Mild Bearish (Downward Pressure)",
+			        "Stable / Neutral"
+			    )
+			RETURN
+			    "Market Sentiment: " & _Status & " (WoW: " & FORMAT(_WoW, "+0.0%;-0.0%;0.0%") & " | MoM: " & FORMAT(_MoM, "+0.0%;-0.0%;0.0%") & ")"
+		displayFolder: 10. Text
+		lineageTag: e3000001-0001-4000-8000-000000000015
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาจัดซื้อ CPI เทียบย้อนหลัง 1 วันที่มีราคา (1 Day Ago / DoD %)
+	measure 'Price CPI Change 1D %' = CALCULATE([Price Domestic Change 1D %], Fact_Rice_Price[SourceCode] = "S001")
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000016
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาจัดซื้อ CPI เทียบย้อนหลัง 7 วันที่มีราคา (7 Days Ago / WoW %)
+	measure 'Price CPI Change 7D %' = CALCULATE([Price Domestic Change 7D %], Fact_Rice_Price[SourceCode] = "S001")
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000017
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาจัดซื้อ CPI เทียบย้อนหลัง 30 วันที่มีราคา (30 Days Ago / MoM %)
+	measure 'Price CPI Change 30D %' = CALCULATE([Price Domestic Change 30D %], Fact_Rice_Price[SourceCode] = "S001")
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000018
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคาจัดซื้อ CPI เทียบย้อนหลัง 365 วันที่มีราคา (365 Days Ago / YoY %)
+	measure 'Price CPI Change 365D %' = CALCULATE([Price Domestic Change 365D %], Fact_Rice_Price[SourceCode] = "S001")
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000019
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคา DIT เทียบย้อนหลัง 1 วันที่มีราคา (1 Day Ago / DoD %)
+	measure 'Price DIT Change 1D %' = CALCULATE([Price Domestic Change 1D %], Fact_Rice_Price[SourceCode] = "S003")
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000020
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคา DIT เทียบย้อนหลัง 7 วันที่มีราคา (7 Days Ago / WoW %)
+	measure 'Price DIT Change 7D %' = CALCULATE([Price Domestic Change 7D %], Fact_Rice_Price[SourceCode] = "S003")
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000021
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคา DIT เทียบย้อนหลัง 30 วันที่มีราคา (30 Days Ago / MoM %)
+	measure 'Price DIT Change 30D %' = CALCULATE([Price Domestic Change 30D %], Fact_Rice_Price[SourceCode] = "S003")
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000022
+
+	/// เปอร์เซ็นต์การเปลี่ยนแปลงราคา DIT เทียบย้อนหลัง 365 วันที่มีราคา (365 Days Ago / YoY %)
+	measure 'Price DIT Change 365D %' = CALCULATE([Price Domestic Change 365D %], Fact_Rice_Price[SourceCode] = "S003")
+		formatString: ▲ 0.00%;▼ 0.00%;● 0.00%
+		displayFolder: 03 Specific Sources\Domestic (CPI & DIT)
+		lineageTag: e3000001-0001-4000-8000-000000000023
 
 	column Dummy
 		dataType: int64

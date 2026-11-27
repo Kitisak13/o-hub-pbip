@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "8237954b6563a6a84ff3",
   "position": {
-    "x": 36.8,
-    "y": 158,
-    "z": 3000,
-    "height": 56,
-    "width": 160.9,
-    "tabOrder": 300
+    "x": 39.3693277388588,
+    "y": 93.8807046080479,
+    "z": 7000,
+    "height": 75.710245651651533,
+    "width": 162.01992569453429,
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "shape",
@@ -153,7 +153,7 @@
             "tooltip": {
               "expr": {
                 "Literal": {
-                  "Value": "'Go to Oryza Global FOB Monitor'"
+                  "Value": "'Go to Oryza Global FOB Dashboard'"
                 }
               }
             }

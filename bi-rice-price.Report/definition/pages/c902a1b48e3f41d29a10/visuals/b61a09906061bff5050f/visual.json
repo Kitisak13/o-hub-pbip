@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "c9020000000000000006",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
+  "name": "b61a09906061bff5050f",
   "position": {
-    "x": 916,
-    "y": 96,
-    "z": 13000,
-    "height": 54,
-    "width": 340,
-    "tabOrder": 6000
+    "x": 975.14796399327179,
+    "y": 113.56536847747731,
+    "z": 9800,
+    "height": 54.511376869189107,
+    "width": 251.35801556348309,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "slicer",
@@ -32,6 +32,9 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
       }
     },
     "objects": {
@@ -48,6 +51,11 @@
           }
         }
       ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ],
       "header": [
         {
           "properties": {
@@ -55,6 +63,13 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "20D"
                 }
               }
             }
@@ -70,6 +85,18 @@
                   "Value": "false"
                 }
               }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 2,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -80,7 +107,19 @@
             "textSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "10D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 2,
+                      "Percent": 0
+                    }
+                  }
                 }
               }
             },
@@ -97,10 +136,36 @@
             }
           }
         }
+      ],
+      "pendingChangesIcon": [
+        {
+          "properties": {
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'right'"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "visualContainerObjects": {
       "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
         {
           "properties": {
             "show": {
@@ -148,10 +213,18 @@
                   "Value": "4D"
                 }
               }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
             }
           }
         }
       ]
-    }
+    },
+    "drillFilterOtherVisuals": true
   }
 }

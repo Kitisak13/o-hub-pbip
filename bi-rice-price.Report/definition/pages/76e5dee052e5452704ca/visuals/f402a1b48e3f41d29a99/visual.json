@@ -3,10 +3,10 @@
   "name": "f402a1b48e3f41d29a99",
   "position": {
     "x": 1131.3863303021415,
-    "y": 20.275740686418306,
+    "y": 17.572308594895865,
     "z": 2500,
     "height": 78.39953065415078,
-    "width": 144.63361689645058,
+    "width": 143.28190085068937,
     "tabOrder": 9500
   },
   "visual": {
@@ -92,7 +92,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'DoD'"
+                                "Value": "'WoW'"
                               }
                             }
                           ]
@@ -214,6 +214,31 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "items": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 2,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
                 }
               }
             }
