@@ -110,7 +110,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'CPI / DIT'"
+                  "Value": "'CPI PRICE'"
                 }
               }
             },

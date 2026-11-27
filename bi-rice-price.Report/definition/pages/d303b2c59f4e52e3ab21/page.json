@@ -1,0 +1,173 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "d303b2c59f4e52e3ab21",
+  "displayName": "DIT",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "f3000000000000000001",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim_Product"
+              }
+            },
+            "Property": "SourceCode"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "Dim_Product",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "d"
+                          }
+                        },
+                        "Property": "SourceCode"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'S003'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "image": {
+            "image": {
+              "name": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'Green_theme_v1.png'"
+                  }
+                }
+              },
+              "url": {
+                "expr": {
+                  "ResourcePackageItem": {
+                    "PackageName": "RegisteredResources",
+                    "PackageType": 1,
+                    "ItemName": "Green_theme_v19279818135943808.png"
+                  }
+                }
+              },
+              "scaling": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'Fit'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "29623d76c55d4353d2fd",
+      "target": "8df26fb6f110dfda390d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "29623d76c55d4353d2fd",
+      "target": "576a86dd7d1643c92916",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8df26fb6f110dfda390d",
+      "target": "576a86dd7d1643c92916",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8df26fb6f110dfda390d",
+      "target": "9b71fc7d254efa994cee",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9b71fc7d254efa994cee",
+      "target": "8df26fb6f110dfda390d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9b71fc7d254efa994cee",
+      "target": "576a86dd7d1643c92916",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9b71fc7d254efa994cee",
+      "target": "1e1a67f4dd9eab4cf47e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8df26fb6f110dfda390d",
+      "target": "84ab5684f08bedf70015",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9b71fc7d254efa994cee",
+      "target": "84ab5684f08bedf70015",
+      "type": "NoFilter"
+    },
+    {
+      "source": "29623d76c55d4353d2fd",
+      "target": "f402a1b48e3f41d29a99",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8df26fb6f110dfda390d",
+      "target": "f402a1b48e3f41d29a99",
+      "type": "NoFilter"
+    },
+    {
+      "source": "576a86dd7d1643c92916",
+      "target": "f402a1b48e3f41d29a99",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9b71fc7d254efa994cee",
+      "target": "f402a1b48e3f41d29a99",
+      "type": "NoFilter"
+    },
+    {
+      "source": "84ab5684f08bedf70015",
+      "target": "f402a1b48e3f41d29a99",
+      "type": "NoFilter"
+    }
+  ]
+}

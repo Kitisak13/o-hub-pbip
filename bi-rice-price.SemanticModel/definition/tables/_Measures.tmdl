@@ -1996,13 +1996,13 @@ table _Measures
 	/// ชื่อกราฟและสินค้าข้าวสำหรับหัวกราฟ Line Chart หน้า CPI / DIT
 	measure 'Title Domestic Category & Product' =
 			VAR _Source = SELECTEDVALUE(Dim_Product[Price Source], "CPI / DIT Price")
-			VAR _SelectedSubCat = SELECTEDVALUE(Dim_Product[New Sub Category Name], "All Categories")
+			VAR _SelectedCat = COALESCE(SELECTEDVALUE(Dim_Product[Benchmark Group]), SELECTEDVALUE(Dim_Product[New Sub Category Name]), "All Categories")
 			VAR _Product = SELECTEDVALUE(Dim_Product[Domestic Product Group])
 			RETURN
 			    IF(
 			        NOT ISBLANK(_Product),
-			        _Source & " (THB/kg) : " & _SelectedSubCat & " > " & _Product,
-			        _Source & " (THB/kg) : " & _SelectedSubCat & " > Multiple Products"
+			        _Source & " (THB/kg) : " & _SelectedCat & " > " & _Product,
+			        _Source & " (THB/kg) : " & _SelectedCat & " > Multiple Products"
 			    )
 		displayFolder: 10. Text
 		lineageTag: e3000001-0001-4000-8000-000000000014

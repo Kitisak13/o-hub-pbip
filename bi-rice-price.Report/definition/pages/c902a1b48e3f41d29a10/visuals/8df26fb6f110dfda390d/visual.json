@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "8df26fb6f110dfda390d",
   "position": {
-    "x": 233.18755660708672,
-    "y": 473.94613777933859,
+    "x": 223.03314755060134,
+    "y": 187.88853036080963,
     "z": 9600,
-    "height": 43.911942477957894,
-    "width": 1026.6309310363947,
+    "height": 59.475506013493693,
+    "width": 1057.0419477852743,
     "tabOrder": 1000
   },
   "visual": {
@@ -133,28 +133,28 @@
             "rowPadding": {
               "expr": {
                 "Literal": {
-                  "Value": "3L"
+                  "Value": "2L"
                 }
               }
             },
             "fixedHeight": {
               "expr": {
                 "Literal": {
-                  "Value": "37L"
+                  "Value": "26L"
                 }
               }
             },
             "fixedWidth": {
               "expr": {
                 "Literal": {
-                  "Value": "194L"
+                  "Value": "178L"
                 }
               }
             },
             "columnPadding": {
               "expr": {
                 "Literal": {
-                  "Value": "13L"
+                  "Value": "5L"
                 }
               }
             }
@@ -167,14 +167,14 @@
             "overFlowDirection": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
+                  "Value": "1D"
                 }
               }
             },
             "overFlowStyle": {
               "expr": {
                 "Literal": {
-                  "Value": "1D"
+                  "Value": "0D"
                 }
               }
             }
@@ -281,6 +281,20 @@
           "selector": {
             "id": "default"
           }
+        },
+        {
+          "properties": {
+            "rectangleRoundedCurveCustomStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "selection:selected"
+          }
         }
       ],
       "fillCustom": [
@@ -295,6 +309,13 @@
                       "Percent": 0
                     }
                   }
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -319,7 +340,14 @@
             "transparency": {
               "expr": {
                 "Literal": {
-                  "Value": "80D"
+                  "Value": "89D"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -358,6 +386,20 @@
             ],
             "id": "selection:selected",
             "hierarchyMatching": 1
+          }
+        },
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
           }
         }
       ],
@@ -497,6 +539,18 @@
                   "Value": "2D"
                 }
               }
+            },
+            "lineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
             }
           },
           "selector": {
@@ -572,20 +626,60 @@
             "bottomMargin": {
               "expr": {
                 "Literal": {
-                  "Value": "6L"
+                  "Value": "0L"
                 }
               }
             },
             "topMargin": {
               "expr": {
                 "Literal": {
-                  "Value": "6L"
+                  "Value": "0L"
+                }
+              }
+            },
+            "leftMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "rightMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
                 }
               }
             }
           },
           "selector": {
             "id": "default"
+          }
+        }
+      ],
+      "search": [
+        {
+          "properties": {
+            "backgroundShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "actionState": [
+        {
+          "properties": {
+            "IsButtonsAdvanced": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
           }
         }
       ]

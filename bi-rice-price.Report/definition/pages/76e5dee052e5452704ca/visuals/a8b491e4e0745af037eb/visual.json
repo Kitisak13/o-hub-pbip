@@ -89,7 +89,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'CPI / DIT'"
+                  "Value": "'CPI PRICE'"
                 }
               }
             },
@@ -153,7 +153,7 @@
             "tooltip": {
               "expr": {
                 "Literal": {
-                  "Value": "'Go to CPI / DIT Domestic Dashboard'"
+                  "Value": "'Go to CPI Price Dashboard'"
                 }
               }
             }
