@@ -163,7 +163,7 @@
                   "expr": {
                     "ThemeDataColor": {
                       "ColorId": 5,
-                      "Percent": 0
+                      "Percent": 0.6
                     }
                   }
                 }
@@ -187,6 +187,18 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
                 }
               }
             }

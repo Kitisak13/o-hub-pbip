@@ -23,14 +23,31 @@
                       "Entity": "Dim_Product"
                     }
                   },
-                  "Property": "New Sub Category Name"
+                  "Property": "Benchmark Group"
                 }
               },
-              "queryRef": "Dim_Product.New Sub Category Name",
-              "nativeQueryRef": "New Sub Category Name"
+              "queryRef": "Dim_Product.Benchmark Group",
+              "nativeQueryRef": "Benchmark Group"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Dim_Product"
+                  }
+                },
+                "Property": "Benchmark Group"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
       }
     },
     "objects": {
@@ -59,7 +76,7 @@
                                   "Source": "d"
                                 }
                               },
-                              "Property": "New Sub Category Name"
+                              "Property": "Benchmark Group"
                             }
                           }
                         ],

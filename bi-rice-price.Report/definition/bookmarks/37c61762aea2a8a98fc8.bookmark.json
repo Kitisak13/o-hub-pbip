@@ -258,7 +258,7 @@
                           "Entity": "Dim_Product"
                         }
                       },
-                      "Property": "New Sub Category Name"
+                      "Property": "Benchmark Group"
                     }
                   },
                   "howCreated": 0
@@ -294,7 +294,7 @@
                                               "Source": "d"
                                             }
                                           },
-                                          "Property": "New Sub Category Name"
+                                          "Property": "Benchmark Group"
                                         }
                                       }
                                     ],

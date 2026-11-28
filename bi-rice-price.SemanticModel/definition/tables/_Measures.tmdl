@@ -249,7 +249,7 @@ table _Measures
 	/// ราคาสูงสุดในรอบ 52 สัปดาห์ (52-Week High ตามหน่วยมาตรฐานของแหล่งข้อมูล)
 	measure 'Price 52W High' =
 			VAR _MaxDate = MAX(Dim_Date[Date])
-			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -52, WEEK)
+			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -364, DAY)
 			VAR _IsOryza =
 			    CALCULATE(
 			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
@@ -270,7 +270,7 @@ table _Measures
 	/// ราคาต่ำสุดในรอบ 52 สัปดาห์ (52-Week Low ตามหน่วยมาตรฐานของแหล่งข้อมูล)
 	measure 'Price 52W Low' =
 			VAR _MaxDate = MAX(Dim_Date[Date])
-			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -52, WEEK)
+			VAR _Dates52W = DATESINPERIOD(Dim_Date[Date], _MaxDate, -364, DAY)
 			VAR _IsOryza =
 			    CALCULATE(
 			        SELECTEDVALUE(Fact_Rice_Price[SourceCode]) = "S005",
@@ -1097,7 +1097,7 @@ table _Measures
 
 	/// ชื่อกราฟและสินค้าข้าวสำหรับหัวกราฟ Line Chart
 	measure 'Title Oryza Category & Product' =
-			VAR _SelectedSubCat = SELECTEDVALUE(Dim_Product[New Sub Category Name], "All Categories")
+			VAR _SelectedSubCat = COALESCE(SELECTEDVALUE(Dim_Product[Benchmark Group]), SELECTEDVALUE(Dim_Product[New Sub Category Name]), "All Categories")
 			VAR _Product = SELECTEDVALUE(Dim_Product[Product Name])
 			RETURN
 			    IF(

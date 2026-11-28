@@ -31,6 +31,23 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Dim_Product"
+                  }
+                },
+                "Property": "Benchmark Group"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
       }
     },
     "objects": {
@@ -67,7 +84,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'ข้าวเหนียว'"
+                                "Value": "'ข้าวหอม'"
                               }
                             }
                           ]
