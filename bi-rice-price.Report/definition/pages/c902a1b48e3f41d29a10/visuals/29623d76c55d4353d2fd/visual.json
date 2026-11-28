@@ -323,7 +323,48 @@
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'ข้าวหอม 100%'"
+                        "Value": "'หอมมะลิ 100% ชั้น 1'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#2A9D8F'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Dim_Product"
+                          }
+                        },
+                        "Property": "Domestic Product Group"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'หอมมะลิ 100% ชั้น 2'"
                       }
                     }
                   }
@@ -365,6 +406,47 @@
                     "Right": {
                       "Literal": {
                         "Value": "'ข้าวหอมปทุมธานี'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#0A9396'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "Dim_Product"
+                          }
+                        },
+                        "Property": "Domestic Product Group"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'ข้าวปทุมธานี'"
                       }
                     }
                   }
@@ -446,7 +528,7 @@
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'ข้าวขาว 100% (นาปรัง)'"
+                        "Value": "'ขข. 100% ชั้น 1'"
                       }
                     }
                   }
@@ -487,7 +569,7 @@
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'ข้าวขาว 5% นาปรัง'"
+                        "Value": "'ขข. 5%'"
                       }
                     }
                   }
@@ -528,7 +610,7 @@
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'ข้าวนึ่ง 100% ดีด สี เกรด B'"
+                        "Value": "'ข้าวนึ่ง 100%'"
                       }
                     }
                   }
@@ -569,7 +651,7 @@
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'ข้าวเหนียวนาปรัง'"
+                        "Value": "'ข้าวเหนียว 10% ยาว'"
                       }
                     }
                   }
@@ -692,7 +774,7 @@
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'ข้าวญี่ปุ่น กวก.2'"
+                        "Value": "'ข้าวญี่ปุ่น'"
                       }
                     }
                   }
@@ -774,7 +856,7 @@
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'ปลายข้าวหอมมะลิ'"
+                        "Value": "'ปข.หอมมะลิ'"
                       }
                     }
                   }
@@ -815,7 +897,7 @@
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'ปลายข้าวขาว'"
+                        "Value": "'ปข.เจ้า A1 เลิศ'"
                       }
                     }
                   }
@@ -831,7 +913,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#EC4899'"
+                      "Value": "'#7209B7'"
                     }
                   }
                 }
@@ -856,7 +938,7 @@
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'ปลายข้าวเหนียว'"
+                        "Value": "'ปข.เหนียว A1'"
                       }
                     }
                   }

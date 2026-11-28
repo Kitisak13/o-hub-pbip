@@ -3,10 +3,10 @@
   "name": "576a86dd7d1643c92916",
   "position": {
     "x": 223.03314755060134,
-    "y": 118.95101202698739,
+    "y": 114.89586388970373,
     "z": 9700,
     "height": 40.551481372836612,
-    "width": 715.05778820768558,
+    "width": 704.2440598415958,
     "tabOrder": 2000
   },
   "visual": {
@@ -67,7 +67,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Broken Rice'"
+                                "Value": "'ข้าวเหนียว'"
                               }
                             }
                           ]
@@ -489,7 +489,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "12D"
                 }
               }
             },
@@ -657,7 +657,14 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "10D"
+                  "Value": "12D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

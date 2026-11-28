@@ -5,18 +5,12 @@ expression milled_price_dit =
 		    Sheet1_Table = Source{[name="millet_dit",ItemKind="Table"]}[Data],
 		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Table, [PromoteAllScalars=true]),
 		    #"Removed Other Columns" = Table.SelectColumns(#"Promoted Headers",{"HeaderDate", "SourceCode", "Country Name", "Category Code", "Category Name", "Sub Category Code", "Sub Category Name", "Product Code", "Product Name", "Min Price", "Max Price"}),
-		    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each [SourceCode] = "S003"),
-		    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{{"HeaderDate", type date}}),
+		    #"Filtered remove empty row" = Table.SelectRows(#"Removed Other Columns", each [SourceCode] = "S003"),
+		    #"Changed to date Type" = Table.TransformColumnTypes(#"Filtered remove empty row",{{"HeaderDate", type date}}),
 		
-		    ProductCodeList = {
-		        "P00000000144","P00000000145","P00000000146","P00000000147",
-		        "P00000000150","P00000000151","P00000000158","P00000000159",
-		        "P00000000164","P00000000165","P00000000166","P00000000167",
-		        "P00000000168","P00000000169","P00000000175","P00000000176",
-		        "P00000000179","P00000000180","P00000000181","P00000000183"
-		    },
+		    ProductCodeList = { "P00000000144","P00000000145","P00000000146","P00000000147", "P00000000148","P00000000149","P00000000150","P00000000151", "P00000000152","P00000000153","P00000000154","P00000000155", "P00000000156","P00000000157","P00000000158","P00000000159", "P00000000160","P00000000161","P00000000162","P00000000163", "P00000000164","P00000000165","P00000000166","P00000000167", "P00000000168","P00000000169","P00000000170","P00000000171", "P00000000172","P00000000173","P00000000174","P00000000175", "P00000000176","P00000000177","P00000000178","P00000000179", "P00000000180","P00000000181","P00000000182","P00000000183" },
 		
-		    Filter_Product_Code = Table.SelectRows(#"Changed Type", each List.Contains(ProductCodeList, [Product Code])),
+		    Filter_Product_Code = Table.SelectRows(#"Changed to date Type", each List.Contains(ProductCodeList, [Product Code])),
 		    #"Added Custom" = Table.AddColumn(Filter_Product_Code, "Crop Status", each "New"),
 		    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Price Selection", each "Keep")
 		in
