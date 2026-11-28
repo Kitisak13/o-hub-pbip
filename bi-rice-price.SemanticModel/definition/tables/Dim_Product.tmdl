@@ -66,30 +66,89 @@ table Dim_Product
 
 		annotation SummarizationSetBy = Automatic
 
-	/// กลุ่มเปรียบเทียบมาตรฐานเชื่อมโยง 3 แหล่งข้อมูล (CPI, DIT, Oryza)
+	/// กลุ่มเปรียบเทียบมาตรฐานเชื่อมโยง 3 แหล่งข้อมูล (S005 Oryza, S003 DIT, S001 CPI)
 	column 'Benchmark Group' =
-			VAR _Name = Dim_Product[Product Name]
-			VAR _SubCat = Dim_Product[New Sub Category Name]
+			VAR _Source = Dim_Product[SourceCode]
+			VAR _DomGroup = Dim_Product[Domestic Product Group]
 			RETURN
 			    SWITCH(
-			        TRUE(),
-			        -- 1. Broken Rice must be checked BEFORE Hom Mali ("ปลายข้าวหอมมะลิ")
-			        CONTAINSSTRING(_Name, "ปลายข้าว") || CONTAINSSTRING(_Name, "A1") || CONTAINSSTRING(_Name, "100% broken") || CONTAINSSTRING(_Name, "100% Broken") || CONTAINSSTRING(_Name, "pet food") || _SubCat = "Broken Rice", "ปลายข้าว",
-			        -- 2. Parboiled Rice must be checked BEFORE "5% broken" ("India parboiled 5% broken")
-			        CONTAINSSTRING(_Name, "ข้าวนึ่ง") || CONTAINSSTRING(_Name, "parboiled") || CONTAINSSTRING(_Name, "Parboiled") || _SubCat = "Parboiled Rice", "ข้าวนึ่ง",
-			        -- 3. Glutinous & Medium/Specialty Grain must be checked BEFORE "4% broken" ("U.S. Calrose 4% broken")
-			        CONTAINSSTRING(_Name, "เหนียว") || CONTAINSSTRING(_Name, "กข") || CONTAINSSTRING(_Name, "ญี่ปุ่น") || CONTAINSSTRING(_Name, "กล้อง") || CONTAINSSTRING(_Name, "Calrose") || CONTAINSSTRING(_Name, "risotto") || _SubCat = "Medium Grain", "ข้าวเหนียว",
-			        -- 4. Pathumthani / Fragrant
-			        CONTAINSSTRING(_Name, "ปทุม") || CONTAINSSTRING(_Name, "หอมพวง"), "ข้าวปทุมฯ",
-			        -- 5. Hom Mali / Jasmine
-			        CONTAINSSTRING(_Name, "หอมมะลิ") || CONTAINSSTRING(_Name, "ข้าวหอม 100%") || CONTAINSSTRING(_Name, "Hommali") || CONTAINSSTRING(_Name, "Jasmine") || CONTAINSSTRING(_Name, "ข้าวหอม") || _SubCat = "Fragrant Rice", "ข้าวหอมมะลิ",
-			        -- 6. White Rice 15-25% must be checked BEFORE "5% broken" (since "25% broken" and "15% broken" contain "5% broken")
-			        CONTAINSSTRING(_Name, "25% broken") || CONTAINSSTRING(_Name, "15% broken") || CONTAINSSTRING(_Name, "25%") || CONTAINSSTRING(_Name, "15%") || _SubCat = "White Rice-Low", "ข้าวขาว",
-			        -- 7. White Rice 100%
-			        CONTAINSSTRING(_Name, "ขาว 100%") || CONTAINSSTRING(_Name, "100% B"), "White Rice",
-			        -- 8. White Rice 5%
-			        CONTAINSSTRING(_Name, "ขาว 5%") || CONTAINSSTRING(_Name, "5% broken") || CONTAINSSTRING(_Name, "4% broken") || _SubCat = "White Rice-High", "White Rice",
-			        "ข้าวขาว"
+			        _Source,
+			        -- Rule 1: SourceCode = S005 (Oryza)
+			        "S005", Dim_Product[New Sub Category Name],
+			
+			        -- Rule 2: SourceCode = S003 (DIT)
+			        "S003",
+			            SWITCH(
+			                _DomGroup,
+			                "ปข.นึ่ง A1", "ปลายข้าว",
+			                "ข้าวนึ่ง 5%", "ข้าวนึ่ง",
+			                "ข้าวนึ่ง 100%", "ข้าวนึ่ง",
+			                "ปข.เหนียว A1 (ใหม่)", "ปลายข้าว",
+			                "ปข.เหนียว A1", "ปลายข้าว",
+			                "ข้าวเหนียว 10% สั้น (ใหม่)", "ข้าวเหนียว",
+			                "ข้าวเหนียว 10% สั้น", "ข้าวเหนียว",
+			                "ข้าวเหนียว 10% ยาว (ใหม่)", "ข้าวเหนียว",
+			                "ข้าวเหนียว 10% ยาว", "ข้าวเหนียว",
+			                "ข้าวเหนียว กข. 6 (ใหม่)", "ข้าวเหนียว",
+			                "ข้าวเหนียว กข. 6", "ข้าวเหนียว",
+			                "ปข.ขาว C1", "ปลายข้าว",
+			                "ปข. A1.พิเศษ (ใหม่)", "ปลายข้าว",
+			                "ปข. A1.พิเศษ", "ปลายข้าว",
+			                "ปข.เจ้า A1 เลิศ (ใหม่)", "ปลายข้าว",
+			                "ปข.เจ้า A1 เลิศ", "ปลายข้าว",
+			                "ปข.ปทุมธานี (ใหม่)", "ปลายข้าว",
+			                "ปข.ปทุมธานี", "ปลายข้าว",
+			                "ปข.หอมมะลิ (ใหม่)", "ปลายข้าว",
+			                "ปข.หอมมะลิ", "ปลายข้าว",
+			                "ขข. 25% เลิศ (ใหม่)", "ข้าวขาว",
+			                "ขข. 15% (ใหม่)", "ข้าวขาว",
+			                "ขข. 10% (ใหม่)", "ข้าวขาว",
+			                "ขข. 10%", "ข้าวขาว",
+			                "ขข. 5% (ใหม่)", "ข้าวขาว",
+			                "ขข. 5%", "ข้าวขาว",
+			                "ขข. 100% ชั้น 3 (ใหม่)", "ข้าวขาว",
+			                "ขข. 100% ชั้น 3", "ข้าวขาว",
+			                "ขข. 100% ชั้น 2 (ใหม่)", "ข้าวขาว",
+			                "ขข. 100% ชั้น 2", "ข้าวขาว",
+			                "ขข. 100% ชั้น 1 (ใหม่)", "ข้าวขาว",
+			                "ขข. 100% ชั้น 1 (ใหม่ )", "ข้าวขาว",
+			                "ขข. 100% ชั้น 1", "ข้าวขาว",
+			                "ข้าวปทุมธานี (ใหม่)", "ข้าวปทุมฯ",
+			                "ข้าวปทุมธานี", "ข้าวปทุมฯ",
+			                "ข้าวหอมจังหวัด (ใหม่)", "ข้าวหอม",
+			                "ข้าวหอมจังหวัด", "ข้าวหอม",
+			                "หอมมะลิ 100% ชั้น 2 (ใหม่)", "ข้าวหอม",
+			                "หอมมะลิ 100% ชั้น 2", "ข้าวหอม",
+			                "หอมมะลิ 100% ชั้น 1 (ใหม่)", "ข้าวหอม",
+			                "หอมมะลิ 100% ชั้น 1", "ข้าวหอม",
+			                "ข้าวอื่นๆ"
+			            ),
+			
+			        -- Rule 3: SourceCode = S001 (CPI)
+			        "S001",
+			            SWITCH(
+			                _DomGroup,
+			                "ข้าวกข.43", "ข้าวอื่นๆ",
+			                "ข้าวกข.79", "ข้าวปทุมฯ",
+			                "ข้าวกล้องหอม 100%", "ข้าวหอม",
+			                "ขข. 100% ชั้น 1", "ข้าวขาว",
+			                "ขข. 5%", "ข้าวขาว",
+			                "ข้าวญี่ปุ่น", "ข้าวอื่นๆ",
+			                "ข้าวนึ่ง 100%", "ข้าวนึ่ง",
+			                "ข้าวปทุมธานี", "ข้าวปทุมฯ",
+			                "ข้าวหอมปทุมธานี", "ข้าวปทุมฯ",
+			                "ข้าวหอมพวง", "ข้าวปทุมฯ",
+			                "ข้าวเหนียว 10% ยาว", "ข้าวเหนียว",
+			                "ปข.เจ้า A1 เลิศ", "ปลายข้าว",
+			                "ปข.หอมมะลิ", "ปลายข้าว",
+			                "ปข.เหนียว A1", "ปลายข้าว",
+			                "หอมมะลิ 100% ชั้น 1", "ข้าวหอม",
+			                "หอมมะลิ 100% ชั้น 2", "ข้าวหอม",
+			                "ข้าวอื่นๆ"
+			            ),
+			
+			        -- Fallback for any unmapped source
+			        "ข้าวอื่นๆ"
 			    )
 		dataType: string
 		lineageTag: d8123456-7890-4abc-def0-123456789001
@@ -142,6 +201,7 @@ table Dim_Product
 			                "ข้าวสารเจ้า 100% ชั้น 2(ใหม่)", "ขข. 100% ชั้น 2 (ใหม่)",
 			                "ข้าวสารเจ้า 100% ชั้น 2", "ขข. 100% ชั้น 2",
 			                "ข้าวสารเจ้า 100% ชั้น 1(ใหม่)", "ขข. 100% ชั้น 1 (ใหม่)",
+			                "ข้าวสารเจ้า 100% ชั้น 1(ใหม่ )", "ขข. 100% ชั้น 1 (ใหม่)",
 			                "ข้าวสารเจ้า 100% ชั้น 1", "ขข. 100% ชั้น 1",
 			                "ข้าวปทุมธานี(ใหม่)", "ข้าวปทุมธานี (ใหม่)",
 			                "ข้าวปทุมธานี", "ข้าวปทุมธานี",
@@ -170,7 +230,7 @@ table Dim_Product
 			                _Name = "ข้าวขาว 5% (นาปรัง)" || LEFT(_Name, 19) = "ข้าวขาว 5% (นาปรัง)" || LEFT(_Name, 17) = "ข้าวขาว 5% นาปรัง", "ขข. 5%",
 			                _Name = "ข้าวญี่ปุ่น กวก.2" || LEFT(_Name, 17) = "ข้าวญี่ปุ่น กวก.2", "ข้าวญี่ปุ่น",
 			                _Name = "ข้าวนึ่ง 100% ดีด สี เกรด B" || CONTAINSSTRING(_Name, "ข้าวนึ่ง 100% ดีด สี"), "ข้าวนึ่ง 100%",
-			                _Name = "ข้าวหอมปทุมธานี" || LEFT(_Name, 15) = "ข้าวหอมปทุมธานี", "ข้าวหอมปทุมธานี",
+			                _Name = "ข้าวหอมปทุมธานี" || LEFT(_Name, 15) = "ข้าวหอมปทุมธานี", "ข้าวปทุมธานี",
 			                _Name = "ข้าวหอมพวง" || LEFT(_Name, 10) = "ข้าวหอมพวง", "ข้าวหอมพวง",
 			                _Name = "ข้าวเหนียวนาปรัง" || LEFT(_Name, 16) = "ข้าวเหนียวนาปรัง", "ข้าวเหนียว 10% ยาว",
 			                _Name = "ปลายข้าวขาว" || LEFT(_Name, 11) = "ปลายข้าวขาว", "ปข.เจ้า A1 เลิศ",

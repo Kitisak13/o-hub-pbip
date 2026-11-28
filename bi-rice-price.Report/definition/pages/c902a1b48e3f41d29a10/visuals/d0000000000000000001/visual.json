@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.15.0/schema.json",
   "name": "d0000000000000000001",
   "position": {
-    "x": 28,
-    "y": 20,
+    "x": 17.142857142857142,
+    "y": 17.142857142857142,
     "z": 7500,
-    "height": 58,
-    "width": 178,
+    "height": 87.142857142857153,
+    "width": 194.28571428571431,
     "tabOrder": 6500
   },
   "visual": {
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "ORYZA HUB",
+                    "value": "ORYZA HB",
                     "textStyle": {
                       "fontWeight": "bold",
                       "fontFamily": "Segoe UI",
